@@ -17,22 +17,22 @@ public class UserDao implements IUserDao{
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAll() throws DAOException {
         return null;
     }
 
     @Override
-    public int save(User user) {
+    public int save(User user) throws DAOException {
         return 0;
     }
 
     @Override
-    public int update(Object... params) {
+    public int update(Object... params) throws DAOException {
         return 0;
     }
 
     @Override
-    public int delete(long id) {
+    public int delete(long id) throws DAOException {
         return 0;
     }
 }
