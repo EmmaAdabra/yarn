@@ -9,7 +9,7 @@ public class CreateDbConnection {
     private static final String PASSWORD = "script101";
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/facebook_clone";
 
-    public Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(JDBC_URL, USER_NAME, PASSWORD);
     }
 }
