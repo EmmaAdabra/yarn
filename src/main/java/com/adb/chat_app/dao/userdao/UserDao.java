@@ -3,6 +3,8 @@ package com.adb.chat_app.dao.userdao;
 import com.adb.chat_app.exceptions.DAOException;
 import com.adb.chat_app.models.User;
 import com.adb.chat_app.utils.CreateDbConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDao implements IUserDao{
+    private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
     @Override
     public Optional<User> get(long ID) {
         return Optional.empty();
