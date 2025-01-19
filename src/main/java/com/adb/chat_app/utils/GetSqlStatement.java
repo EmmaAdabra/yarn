@@ -1,38 +1,29 @@
 package com.adb.chat_app.utils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class GetSqlStatement {
     public static String sqlQueryBuilder(String filePath) throws IOException {
+        InputStream sqlScriptStream = GetSqlStatement.class.getClassLoader().getResourceAsStream(filePath);
+        StringBuilder sqlQuery = new StringBuilder();
 
-//        Method 1
-        Path sqlScriptPath = Paths.get(filePath);
-        String sqlStatement = Files.readString(sqlScriptPath);
+        if(sqlScriptStream == null){
+            throw new IOException("file not found: " + filePath);
+        }
 
-        sqlStatement.replace("\\s", " ");
+        try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(sqlScriptStream, StandardCharsets.UTF_8))){
+            String line;
 
-//        Method 2
-//        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))){
-//
-//            StringBuilder sqlQuery = new StringBuilder();
-//
-//            String line;
-//
-//            while ((line = bufferedReader.readLine()) != null){
-//                if(line.trim().startsWith("--")){
-//                    continue;
-//                }
-//
-//                sqlQuery.append(line).append(" ");
-//            }
-//        }
+            while ((line = bufferedReader.readLine()) != null){
+                if(line.trim().startsWith("--")){
+                    continue;
+                }
 
-        return sqlStatement;
+                sqlQuery.append(line).append(" ");
+            }
+        }
+
+        return sqlQuery.toString();
     }
 }
