@@ -81,7 +81,6 @@ public class UserDao implements IUserDao{
             throw new DAOException("Fail to connect to database", e);
         }
 
-
         return userID;
     }
 
