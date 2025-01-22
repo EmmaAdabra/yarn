@@ -2,7 +2,8 @@ package com.adb.chat_app.dao.userdao;
 
 public enum UserSqlScriptsPath {
 
-    INSERT_USER_SCRIPT(getUserScriptDir() + "insert_user.sql");
+    INSERT_USER_SCRIPT(getUserScriptDir() + "insert_user.sql"),
+    GET_USER_BY_EMAIL(getUserScriptDir() + "get_user_by_email.sql");
 
     private String path;
 
