@@ -54,7 +54,7 @@
 <body>
     <main>
         <header>
-            <h1>Chat Adpp</h1>
+            <h1>Chat App</h1>
             </header>
             <section>
                 <div>
