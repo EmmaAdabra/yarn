@@ -1,6 +1,7 @@
 package com.adb.chat_app.models;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class User implements Serializable {
     private static long serialVersionUID = 1l;
@@ -12,6 +13,7 @@ public class User implements Serializable {
     private String lastName;
     private String profilePicture;
     private String bio;
+    private Timestamp createdAt;
 
     // No-argument constructor
     public User() {
@@ -27,7 +29,13 @@ public class User implements Serializable {
     }
 
     //  constructor using data from database
-    public User(int id, String username, String email, String password, String firstName, String lastName, String profilePicture, String bio) {
+    public User(
+            int id, String username,
+            String email, String password,
+            String firstName, String lastName,
+            String profilePicture,
+            String bio, Timestamp createdAt)
+    {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -36,6 +44,8 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.profilePicture = profilePicture;
         this.bio = bio;
+        this.createdAt = createdAt;
+
     }
 
     public static long getSerialVersionUID() {
@@ -108,5 +118,13 @@ public class User implements Serializable {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }
