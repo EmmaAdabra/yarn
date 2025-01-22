@@ -2,8 +2,10 @@ package com.adb.chat_app.filters;
 
 import com.adb.chat_app.dao.userdao.UserDao;
 import com.adb.chat_app.exceptions.InputValidationException;
+import com.adb.chat_app.exceptions.UnknownException;
 import com.adb.chat_app.models.User;
 import com.adb.chat_app.services.UserService;
+import com.adb.chat_app.utils.GlobalErrorHandler;
 import com.adb.chat_app.utils.Response;
 import com.adb.chat_app.utils.ResponseCode;
 import com.adb.chat_app.utils.ValidateUserInputs;
@@ -60,6 +62,10 @@ public class RegistrationFilter implements Filter {
                 request.setAttribute("error", e.getMessage());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/registerUser.jsp");
                 dispatcher.forward(request, response);
+
+            } catch (Exception e){
+                GlobalErrorHandler.handleError(e);
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An internal sever error occur");
             }
         } else {
             filterChain.doFilter(request, response);
