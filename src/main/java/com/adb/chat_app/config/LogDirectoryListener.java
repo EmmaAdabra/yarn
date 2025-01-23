@@ -1,7 +1,6 @@
 package com.adb.chat_app.config;
 
 import com.adb.chat_app.utils.GlobalErrorHandler;
-import com.adb.chat_app.utils.LogPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
