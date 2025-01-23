@@ -4,7 +4,6 @@ import com.adb.chat_app.dao.userdao.UserDao;
 import com.adb.chat_app.models.User;
 import com.adb.chat_app.services.UserService;
 import com.adb.chat_app.utils.GlobalErrorHandler;
-import com.adb.chat_app.utils.LogPath;
 import com.adb.chat_app.utils.Response;
 import com.adb.chat_app.utils.ResponseCode;
 import org.slf4j.Logger;

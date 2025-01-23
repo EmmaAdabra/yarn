@@ -60,7 +60,7 @@ public class RegistrationFilter implements Filter {
             } catch (InputValidationException e){
                 logger.error(e.getMessage());
                 request.setAttribute("error", e.getMessage());
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/registerUser.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/registerUser.jsp");
                 dispatcher.forward(request, response);
 
             } catch (Exception e){
