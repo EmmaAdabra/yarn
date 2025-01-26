@@ -1,12 +1,16 @@
 package com.adb.chat_app.utils;
 
 import com.adb.chat_app.exceptions.InputValidationException;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ValidateUserInputs {
     public static String verifyEmail(String email) throws InputValidationException {
+
+        if(email == null || email.isEmpty()){
+            throw new InputValidationException("Password can't be empty");
+        }
+
         final String emailFormat = "example@hostname.server";
         final String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         var pattern = Pattern.compile(emailRegex);
@@ -20,6 +24,11 @@ public class ValidateUserInputs {
     }
 
     public static String verifyName(String name) throws InputValidationException {
+
+        if(name == null || name.isEmpty()){
+            throw new InputValidationException("Password can't be empty");
+        }
+
         String label = "Firstname or Lastname";
 
         verifyNameLength(name, label);
@@ -38,6 +47,10 @@ public class ValidateUserInputs {
     }
 
     public static String  verifyUsername(String username) throws InputValidationException{
+        if(username == null || username.isEmpty()){
+            throw new InputValidationException("Password can't be empty");
+        }
+
         String label = "UserName";
 
         verifyNameLength(username, label);
@@ -59,6 +72,10 @@ public class ValidateUserInputs {
     public static String verifyPassword(String password) throws InputValidationException{
         final int MIN_PASSWORD_LENGTH = 4;
         final int MAX_PASSWORD_LENGTH = 16;
+
+        if(password == null || password.isEmpty()){
+            throw new InputValidationException("Password can't be empty");
+        }
 
         if(password.length() < MIN_PASSWORD_LENGTH || password.length() > MAX_PASSWORD_LENGTH) {
             throw new InputValidationException(
