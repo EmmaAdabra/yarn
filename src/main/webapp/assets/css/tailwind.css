@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.input-field {
+  @apply bg-bg_color1 text-title_text_clr block w-full p-3 mb-9 outline-none border-none;
+}
+
+.login-sign-btns{
+  @apply border-none outline-none min-w-[200px] mt-2.5 mx-auto block cursor-pointer py-[8px] px-[12px];
+}
+
+/* custom styling for login page*/
+#loginContainer{
+  max-width: 600px;
+  width: 100%;
+}
+
+#divider {
+  height: 1px;
+}
+
+/* custom styling for signup page */
+#signupHeader {
+  padding-block: 35px;
+}
