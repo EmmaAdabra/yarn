@@ -6,6 +6,7 @@ import com.adb.chat_app.services.UserService;
 import com.adb.chat_app.utils.GlobalErrorHandler;
 import com.adb.chat_app.utils.Response;
 import com.adb.chat_app.utils.ResponseCode;
+import com.adb.chat_app.utils.WebPagePaths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,7 @@ import java.io.IOException;
 
 @WebServlet(name = "RegisterUserServlet", value = "/register")
 public class RegisterUserServlet extends HttpServlet {
-    private static Logger logger = LoggerFactory.getLogger(RegisterUserServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegisterUserServlet.class);
     private UserService userService;
     @Override
     public void init() throws ServletException {
@@ -28,7 +29,7 @@ public class RegisterUserServlet extends HttpServlet {
             HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException
     {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/registerUser.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher(WebPagePaths.REGISTER.getPagePath());
         dispatcher.forward(request, response);
     }
 
@@ -50,7 +51,8 @@ public class RegisterUserServlet extends HttpServlet {
             Response<Integer> serviceResponse  = userService.saveUser(user);
 
             if(serviceResponse.getStatus_code() == ResponseCode.RESOURCE_CREATED.getCode()){
-                System.out.println("Account created successfully");
+                logger.info("Account created successfully. UserID - {}", serviceResponse.getData());
+                response.sendRedirect("/login");
             }
 
             if(serviceResponse.getStatus_code() == ResponseCode.INTERNAL_SERVER_ERROR.getCode()){
