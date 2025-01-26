@@ -1,14 +1,7 @@
 package com.adb.chat_app.filters;
 
-import com.adb.chat_app.dao.userdao.UserDao;
 import com.adb.chat_app.exceptions.InputValidationException;
-import com.adb.chat_app.exceptions.UnknownException;
-import com.adb.chat_app.models.User;
-import com.adb.chat_app.services.UserService;
-import com.adb.chat_app.utils.GlobalErrorHandler;
-import com.adb.chat_app.utils.Response;
-import com.adb.chat_app.utils.ResponseCode;
-import com.adb.chat_app.utils.ValidateUserInputs;
+import com.adb.chat_app.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,11 +14,9 @@ import java.io.IOException;
 @WebFilter("/register")
 public class RegistrationFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationFilter.class);
-    private UserService userService;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
-        userService = new UserService(new UserDao());
     }
 
     @Override
@@ -41,9 +32,8 @@ public class RegistrationFilter implements Filter {
 
 //                Verify if user already exist
                 String email = ValidateUserInputs.verifyEmail(request.getParameter("email"));
-                Response<User> serviceResponse = userService.getUserByEmail(email);
 
-                if(serviceResponse.getStatus_code() == ResponseCode.SUCCESS.getCode()) {
+                if(UserUtil.verifyIsUser(email)) {
                     throw new InputValidationException("User with email - " + email + " already exist");
                 }
 //                proceed to verify other data if user do not exist
@@ -60,7 +50,7 @@ public class RegistrationFilter implements Filter {
             } catch (InputValidationException e){
                 logger.error(e.getMessage());
                 request.setAttribute("error", e.getMessage());
-                RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/registerUser.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher(WebPagePaths.DASHBOARD.getPagePath());
                 dispatcher.forward(request, response);
 
             } catch (Exception e){
