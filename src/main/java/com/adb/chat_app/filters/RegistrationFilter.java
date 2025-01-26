@@ -50,9 +50,8 @@ public class RegistrationFilter implements Filter {
             } catch (InputValidationException e){
                 logger.error(e.getMessage());
                 request.setAttribute("error", e.getMessage());
-                RequestDispatcher dispatcher = request.getRequestDispatcher(WebPagePaths.DASHBOARD.getPagePath());
+                RequestDispatcher dispatcher = request.getRequestDispatcher(WebPagePaths.REGISTER.getPagePath());
                 dispatcher.forward(request, response);
-
             } catch (Exception e){
                 GlobalErrorHandler.handleError(e);
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An internal sever error occur");
