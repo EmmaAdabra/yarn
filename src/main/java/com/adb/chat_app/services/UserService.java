@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public Response<Integer> saveUser(User user) throws UnknownException{
-        Response response;
+        Response<Integer> response;
 
         try {
            int userID = userDao.save(user);
@@ -44,9 +44,26 @@ public class UserService {
            response = new Response<>(ResponseCode.RESOURCE_CREATED.getCode(), "User added to database", userID);
         } catch (DAOException e) {
             logger.error("Error occur while saving user to database");
-            response = new Response<>(ResponseCode.INTERNAL_SERVER_ERROR.getCode(), "user not save to database");
+            response = new Response<>(ResponseCode.INTERNAL_SERVER_ERROR.getCode(), "DAO error occur");
         }
 
         return response;
     }
+
+    public Response<User> validateUser(String email, String password) throws UnknownException {
+        Response<User> response;
+
+        try {
+            User user = userDao.findUserByEmail(email);
+            if(user != null && user.getPassword().equals(password)) {
+                response = new Response<>(ResponseCode.SUCCESS.getCode(), "Valid login detail", user);
+            } else {
+              response = new Response<>(ResponseCode.VALIDATION_ERROR.getCode(), "Invalid login details");
+            }
+        } catch (DAOException e) {
+            response = new Response<>(ResponseCode.INTERNAL_SERVER_ERROR.getCode(), "Internal server error");
+        }
+
+        return response;
+}
 }
