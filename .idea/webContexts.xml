@@ -4,8 +4,12 @@
     <option name="state">
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/dashboard.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/editUserProfile.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/fragments/profileMenuDropDown.jspf" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/fragments" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/fragments/profileSettings.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/fragments" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/login.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/registerUser.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/fragments/simpleScrollLinks.jspf" value="file://$PROJECT_DIR$/src/main/webapp/fragments" />
       </map>
     </option>
   </component>

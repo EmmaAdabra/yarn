@@ -4,6 +4,11 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <!--  making upload dir public  -->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>default</servlet-name>-->
+<!--        <url-pattern>/uploads/*</url-pattern>-->
+<!--    </servlet-mapping>-->
     <!-- Register the LogDirectoryListener -->
     <listener>
         <listener-class>com.adb.chat_app.config.LogDirectoryListener</listener-class>
