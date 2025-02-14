@@ -1,14 +1,16 @@
 package com.adb.chat_app.utils;
 
 import com.adb.chat_app.exceptions.InputValidationException;
+
+import javax.servlet.http.Part;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ValidateUserInputs {
+public class ValidateInputs {
     public static String verifyEmail(String email) throws InputValidationException {
 
         if(email == null || email.isEmpty()){
-            throw new InputValidationException("Password can't be empty");
+            throw new InputValidationException("Email can't be empty");
         }
 
         final String emailFormat = "example@hostname.server";
@@ -24,12 +26,12 @@ public class ValidateUserInputs {
     }
 
     public static String verifyName(String name) throws InputValidationException {
+        String label = "Firstname or Lastname";
 
         if(name == null || name.isEmpty()){
-            throw new InputValidationException("Password can't be empty");
+            throw new InputValidationException(label + " can't be empty");
         }
 
-        String label = "Firstname or Lastname";
 
         verifyNameLength(name, label);
 
@@ -40,16 +42,12 @@ public class ValidateUserInputs {
         if(!matcher.matches()){
             throw new InputValidationException(
                     "Name contains illegal character - only [space, letters, ',-] are allowed"
-
             );
         }
         return name;
     }
 
     public static String  verifyUsername(String username) throws InputValidationException{
-        if(username == null || username.isEmpty()){
-            throw new InputValidationException("Password can't be empty");
-        }
 
         String label = "UserName";
 
@@ -110,6 +108,39 @@ public class ValidateUserInputs {
             throw new InputValidationException(label + " too long - max length should be 50");
         }
 
+        return true;
+    }
+
+    public static boolean validatePfpUpload(Part imagePart) throws InputValidationException{
+        final int MAX_IMAGE_SIZE = 500 * 1024;
+        if (imagePart == null || imagePart.getSize() == 0 || imagePart.getSubmittedFileName() == null) {
+            throw new InputValidationException("No file uploaded");
+        }
+
+        if(imagePart.getSize() > MAX_IMAGE_SIZE) {
+            throw new InputValidationException("File should not be greater than 500KB");
+        }
+
+        return true;
+    }
+
+    public static boolean validateUserBio(String bio) throws InputValidationException {
+        if(bio.trim().length() > 166){
+            throw new InputValidationException("User bio should not be greater than 166 characters");
+        }
+
+        return true;
+    }
+
+    public static boolean validatePostImage(Part postImage) throws InputValidationException {
+//        ToDo: change size literal
+        if(postImage.getSize() > 1024 * 500){
+            throw new InputValidationException("Attached image should not be greater than 500kb");
+        }
+
+        if(!postImage.getContentType().startsWith("image/")){
+            throw new InputValidationException("Invalid file type --- post attachment should only be image format");
+        }
         return true;
     }
 }
