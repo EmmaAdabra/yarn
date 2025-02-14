@@ -29,20 +29,19 @@ public class RegistrationFilter implements Filter {
 
         if("POST".equalsIgnoreCase(request.getMethod())) {
             try{
-
 //                Verify if user already exist
-                String email = ValidateUserInputs.verifyEmail(request.getParameter("email"));
+                String email = ValidateInputs.verifyEmail(request.getParameter("email"));
 
                 if(UserUtil.verifyIsUser(email)) {
                     throw new InputValidationException("User with email - " + email + " already exist");
                 }
-//                proceed to verify other data if user do not exist
-                ValidateUserInputs.verifyName(request.getParameter("firstName"));
-                ValidateUserInputs.verifyName(request.getParameter("lastName"));
-                ValidateUserInputs.verifyUsername(request.getParameter("username"));
-                password = ValidateUserInputs.verifyPassword(request.getParameter("password")).trim();
+
+                ValidateInputs.verifyName(request.getParameter("firstName"));
+                ValidateInputs.verifyName(request.getParameter("lastName"));
+                ValidateInputs.verifyUsername(request.getParameter("username"));
+                password = ValidateInputs.verifyPassword(request.getParameter("password")).trim();
                 confirmPassword = request.getParameter("confirmPassword").trim();
-                ValidateUserInputs.verifyConfirmPassword(password, confirmPassword);
+                ValidateInputs.verifyConfirmPassword(password, confirmPassword);
 
 //                send request to the appropriate servlet
                 filterChain.doFilter(request, response);
