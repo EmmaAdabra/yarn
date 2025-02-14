@@ -1,12 +1,10 @@
 package com.adb.chat_app.controllers;
 
 import com.adb.chat_app.dao.userdao.UserDao;
+import com.adb.chat_app.dto.SessionUserDTO;
 import com.adb.chat_app.models.User;
 import com.adb.chat_app.services.UserService;
-import com.adb.chat_app.utils.GlobalErrorHandler;
-import com.adb.chat_app.utils.Response;
-import com.adb.chat_app.utils.ResponseCode;
-import com.adb.chat_app.utils.WebPagePaths;
+import com.adb.chat_app.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,10 +32,22 @@ public class LoginServlet extends HttpServlet {
         try {
             Response<User> serviceResponse = userService.validateUser(email, password);
 
+//            get session user
             if(serviceResponse.getStatus_code() == ResponseCode.SUCCESS.getCode()){
+                Response<SessionUserDTO> sessionUserRes = userService.createSessionUser(serviceResponse.getData());
+                SessionUserDTO sessionUser = sessionUserRes.getData();
+
+//                add pfp url
+                if(sessionUser.isHasPfp()){
+                    String pfpUrl = UserUtil.getUserPfpUrl(request.getContextPath(), sessionUser.getUserID());
+                    sessionUser.setPfpUrl(pfpUrl);
+                    System.out.println("pfp url: " + sessionUser.getPfpUrl());
+                }
+
 //                creating session
                 HttpSession session = request.getSession();
-                session.setAttribute("userID", serviceResponse.getData().getId());
+                session.setAttribute("sessionUser", sessionUser);
+
                 logger.info("login successfully, userID - {}", serviceResponse.getData().getId());
                 response.sendRedirect("/dashboard");
             } else if(serviceResponse.getStatus_code() == ResponseCode.VALIDATION_ERROR.getCode()){
@@ -54,6 +64,5 @@ public class LoginServlet extends HttpServlet {
             GlobalErrorHandler.handleError(e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
         }
-
     }
 }
