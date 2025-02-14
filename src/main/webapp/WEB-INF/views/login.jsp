@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <%@include file="/WEB-INF/fragments/head.jspf"%>
+    <%@include file="/WEB-INF/views/fragments/head.jspf"%>
     <title>Login to ChatApp</title>
 </head>
 <body class="bg-bg_color1">
@@ -22,17 +22,18 @@
             </c:if>
             <form method="post" action="/login">
                 <label class="" for="email"></label>
-                <input class="input-field" type="email" id="email" name="email" placeholder="Email" required/>
+                <input class="input-field text-title_text_clr" type="email" id="email" name="email" placeholder="Email" required/>
                 <label class="text-title_text_clr" for="password"></label>
-                <input class="input-field" type="password" id="password" name="password" placeholder="Password" pattern=".{4,18}" required/>
-                <button class="bg-yellow-700 hover:bg-yellow-600 text-gray-200 login-sign-btns" id="signIn">Sign In</button>
+                <input class="input-field text-title_text_clr" type="password" id="password" name="password" placeholder="Password" pattern=".{4,18}" required/>
+                <button class="yellow-btn primary-btns" id="signIn">Sign In</button>
                 
                 <div class="bg-bg_color1 rounded-md mt-7 mb-10" id="divider"></div>
             </form>
             <a href="<c:url value="/register"/>">
-                <button class="bg-gray-300 hover:bg-gray-200 text-gray-900 login-sign-btns" id="signUP">Create Account</button>
+                <button class="bg-gray-300 hover:bg-gray-200 text-gray-900 primary-btns" id="signUP">Create Account</button>
             </a>
         </section>
     </main>
+<%--    <script src="<c:url value="/assets/js/index.js" />"></script>--%>
 </body>
 </html>
