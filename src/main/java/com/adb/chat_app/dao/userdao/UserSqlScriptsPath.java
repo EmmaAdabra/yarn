@@ -3,8 +3,11 @@ package com.adb.chat_app.dao.userdao;
 public enum UserSqlScriptsPath {
 
     INSERT_USER_SCRIPT(getUserScriptDir() + "insert_user.sql"),
-    GET_USER_BY_EMAIL(getUserScriptDir() + "get_user_by_email.sql");
-
+    GET_USER_BY_EMAIL(getUserScriptDir() + "get_user_by_email.sql"),
+    INSERT_USER_PFP(getUserScriptDir() + "insert_user_pfp.sql"),
+    HAS_USER_PFP(getUserScriptDir() + "has_user_pfp.sql"),
+    FETCH_USER_PFP(getUserScriptDir() + "fetch_user_pfp.sql"),
+    UPDATE_USER_BIO(getUserScriptDir() + "update_user_bio.sql");
     private String path;
 
     private final static String sqrScriptsDir = "sql_scripts/userscripts/";
