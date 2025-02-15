@@ -48,7 +48,7 @@
             <!-- display post -->
             <div class="post-container flex flex-col gap-5 items-center pt-6 pb-10 text-main_text w-full">
               <c:forEach var="post" items="${posts}">
-                <div class="bg-bg_color2 w-full rounded-md post" data-post-id="${post.getPostId()}">
+                <div class="bg-bg_color2 w-full rounded-md post">
                   <div data-comment-modal="ModalContainer">
                     <div data-comment-modal="postContainer">
                       <header class="comment-modal-header hidden border-b-borderClr bg-bg_color2" data-comment-modal="modalHeader">
@@ -115,10 +115,10 @@
                         <span class="flex justify-center items-center w-[40px] h-[40px] text-fade_text text-[20px] uppercase rounded-full bg-bg_color3">
                           <%@include file="/WEB-INF/views/fragments/pfpWrapper.jspf"%>
                         </span>
-                        <form class="w-full" action="">
+                        <form class="w-full comment-form" action="" >
                           <div class="relative">
-                            <textarea class="p-3 border-none outline-none resize-none w-full overflow-auto bg-bg_color1 text-main_text rounded-md min-h-[60px] max-h-[320px]" placeholder="Let's have it !!" name="post" maxlength="10001"></textarea>
-                            <button class="absolute top-[50%] translate-y-[-50%] right-4 text-[25px] text-logo_clr1">
+                            <textarea class="p-3 border-none outline-none resize-none w-full overflow-auto bg-bg_color1 text-main_text rounded-md min-h-[60px] max-h-[320px]" placeholder="Let's have it !!" name="comment" maxlength="1001"></textarea>
+                            <button class="absolute top-[50%] translate-y-[-50%] right-4 text-[25px] text-fade_text cursor-not-allowed" data-post-id="${post.getPostId()}" disabled>
                               <i class="ri-send-plane-2-fill"></i>
                             </button>
                           </div>
