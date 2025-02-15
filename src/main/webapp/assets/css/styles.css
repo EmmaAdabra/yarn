@@ -891,6 +891,10 @@ video {
   cursor: pointer;
 }
 
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 .resize-none {
   resize: none;
 }
@@ -1081,6 +1085,11 @@ video {
 
 .bg-modalBg {
   background-color: #1e1e20c5;
+}
+
+.bg-fade_text {
+  --tw-bg-opacity: 1;
+  background-color: rgb(128 128 128 / var(--tw-bg-opacity, 1));
 }
 
 .object-cover {
