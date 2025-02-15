@@ -36,7 +36,6 @@ public class SubmitPostServlet extends HttpServlet {
 
         try {
             HttpSession session = request.getSession(false);
-            int updatedRow;
 
             if(session != null && session.getAttribute("sessionUser") != null){
                 SessionUserDTO sessionUser = (SessionUserDTO) session.getAttribute("sessionUser");
@@ -48,7 +47,7 @@ public class SubmitPostServlet extends HttpServlet {
                 String imagePath = null;
 
                 if(imagePart != null && imagePart.getSize() > 0) {
-                    ValidateInputs.validatePostImage(imagePart);
+                    ValidateInputs.validatePostImage(imagePart); // throws InputValidationException
 
                     String fileName = PostUtils.generateFileName(imagePart);
                     String uploadDir = getServletContext().getRealPath("/uploads");
@@ -72,14 +71,24 @@ public class SubmitPostServlet extends HttpServlet {
                     imagePath = "uploads/" + fileName;
                 }
 
-                Post post = new Post (userId, postTitle, postContent, imagePath);
+                if(imagePart != null || (postContent != null || postContent.trim().isEmpty())){
+                    Post post = new Post (userId, postTitle, postContent, imagePath);
 
-                updatedRow = postDao.save(post);
-                jsonResponse.put("status", ResponseCode.RESOURCE_CREATED.getCode());
-                jsonResponse.put("message", "Post created successfully");
+                    postDao.save(post);
+                    jsonResponse.put("status", ResponseCode.RESOURCE_CREATED.getCode());
+                    jsonResponse.put("message", "Post created successfully");
+                    response.getWriter().write(jsonResponse.toString());
+                } else {
+                    jsonResponse.put("status", HttpServletResponse.SC_BAD_REQUEST);
+                    jsonResponse.put("message", "Post can't be empty");
+                    response.getWriter().write(jsonResponse.toString());
+                }
+
+
+            } else {
+                jsonResponse.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+                jsonResponse.put("message", "Session Expired, refresh and login");
                 response.getWriter().write(jsonResponse.toString());
-
-                logger.info("Update row: " + updatedRow + " Post saved to db");
             }
         } catch (InputValidationException e){
             logger.error(e.getMessage());
@@ -93,6 +102,5 @@ public class SubmitPostServlet extends HttpServlet {
             response.getWriter().write(jsonResponse.toString());
             logger.error("An error occur while saving post to db -- {}", e.getMessage(), e);
         }
-
     }
 }
