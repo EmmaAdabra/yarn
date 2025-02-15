@@ -22,9 +22,9 @@
             </c:if>
             <form method="post" action="/login">
                 <label class="" for="email"></label>
-                <input class="input-field text-title_text_clr" type="email" id="email" name="email" placeholder="Email" required/>
+                <input class="input-field text-title_text_clr" type="email" id="email" name="email" placeholder="Email" autocomplete="email" required/>
                 <label class="text-title_text_clr" for="password"></label>
-                <input class="input-field text-title_text_clr" type="password" id="password" name="password" placeholder="Password" pattern=".{4,18}" required/>
+                <input class="input-field text-title_text_clr" type="password" id="password" name="password" placeholder="Password" autocomplete="current-password" pattern=".{4,18}" required/>
                 <button class="yellow-btn primary-btns" id="signIn">Sign In</button>
                 
                 <div class="bg-bg_color1 rounded-md mt-7 mb-10" id="divider"></div>
