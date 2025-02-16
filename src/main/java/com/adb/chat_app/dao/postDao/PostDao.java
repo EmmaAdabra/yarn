@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class PostDao implements IPostDao{
-    private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(IPostDao.class);
 
     @Override
     public Optional<Post> get(long ID) throws DAOException {
@@ -97,7 +97,7 @@ public class PostDao implements IPostDao{
             throw new DAOException("Fail to connect to database", e);
         } catch (IOException e){
             logger.error("Failed to fetch update user bio sql query -- " + e.getMessage());
-            throw new DAOException("Failed to fetch get insert user pfp sql query", e);
+            throw new DAOException("Failed to fetch update user bio sql query", e);
         }
 
         return updatedRow;

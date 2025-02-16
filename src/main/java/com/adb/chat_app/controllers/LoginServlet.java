@@ -29,6 +29,8 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         String email = request.getParameter("email");
 
+
+
         try {
             Response<User> serviceResponse = userService.validateUser(email, password);
 
@@ -39,9 +41,10 @@ public class LoginServlet extends HttpServlet {
 
 //                add pfp url
                 if(sessionUser.isHasPfp()){
-                    String pfpUrl = UserUtil.getUserPfpUrl(request.getContextPath(), sessionUser.getUserID());
+                    String pfpUrl = UserUtil.getUserPfpUrl(sessionUser.getUserID());
+                    System.out.println("servletContextPath: " + GetContextPath.getContextPath());
+//                    String pfpUrl = StringUtil.randomAvatarUrl();
                     sessionUser.setPfpUrl(pfpUrl);
-                    System.out.println("pfp url: " + sessionUser.getPfpUrl());
                 }
 
 //                creating session

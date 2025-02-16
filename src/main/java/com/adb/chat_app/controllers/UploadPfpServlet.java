@@ -44,7 +44,7 @@ public class UploadPfpServlet extends HttpServlet {
 
                 Response<Object> serviceResponse = userService.uploadUserPfp(sessionUser.getUserID(), filePart);
                 sessionUser.setHasPfp(true);
-                sessionUser.setPfpUrl(UserUtil.getUserPfpUrl(request.getContextPath(), sessionUser.getUserID()));
+                sessionUser.setPfpUrl(UserUtil.getUserPfpUrl(sessionUser.getUserID()));
 
                 session.setAttribute("sessionUser", sessionUser);
                 jsonResponse.put("status", String.valueOf(serviceResponse.getStatus_code()));

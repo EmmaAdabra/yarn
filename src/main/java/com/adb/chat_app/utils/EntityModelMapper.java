@@ -56,7 +56,7 @@ public class EntityModelMapper  {
         );
 
         if(resultSet.getInt("has_pfp") == 1){
-            posterDto.setPfp(UserUtil.getUserPfpUrl(appPath, posterId));
+            posterDto.setPfp(UserUtil.getUserPfpUrl(posterId));
         }
 
         return posterDto;
