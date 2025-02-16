@@ -36,7 +36,7 @@ public class EntityModelMapper  {
         return postDto;
     }
 
-    public static PosterDto posterMapper(String appPath, ResultSet resultSet) throws SQLException {
+    public static PosterDto posterMapper(ResultSet resultSet) throws SQLException {
         PosterDto posterDto = new PosterDto();
         int posterId = resultSet.getInt("user_id");
 
