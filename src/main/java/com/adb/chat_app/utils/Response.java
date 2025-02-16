@@ -5,6 +5,9 @@ public class Response<T> {
     private String message;
     private T data;
 
+    public Response() {
+    }
+
     public Response(int status_code, String message, T data) {
         this.status_code = status_code;
         this.message = message;
@@ -29,4 +32,15 @@ public class Response<T> {
         return data;
     }
 
+    public void setStatus_code(int status_code) {
+        this.status_code = status_code;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 }
