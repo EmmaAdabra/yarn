@@ -94,8 +94,6 @@ public class ValidateInputs {
     }
 
     private static boolean verifyNameLength(String name, String label) throws InputValidationException {
-//        throws InputValidationException error if name > 50
-//        throws InputValidationException if name < 2
 
         final int MAX_NAME_LENGTH = 50;
         final int MIN_NAME_LENGTH = 2;
@@ -141,6 +139,14 @@ public class ValidateInputs {
         if(!postImage.getContentType().startsWith("image/")){
             throw new InputValidationException("Invalid file type --- post attachment should only be image format");
         }
+        return true;
+    }
+
+    public static boolean validateComment(String comment) throws InputValidationException{
+        if(comment == null || comment.trim().isEmpty()){
+            throw new InputValidationException("Comment can't be empty");
+        }
+
         return true;
     }
 }
