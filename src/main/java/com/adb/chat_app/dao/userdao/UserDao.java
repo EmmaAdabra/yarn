@@ -22,8 +22,47 @@ import java.util.Optional;
 public class UserDao implements IUserDao{
     private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
     @Override
-    public Optional<User> get(long ID) {
-        return Optional.empty();
+    public Optional<User> get(long userId) throws DAOException {
+        Optional<User> userOptional = Optional.empty();
+
+        logger.info("connecting to database");
+        try(Connection connection = CreateDbConnection.getConnection()){
+            logger.info("Database connected successfully");
+
+            String getUserByIdSqlQuery;
+            String sqlScriptPath = UserSqlScriptsPath.GET_USER_BY_ID.getPath();
+
+            logger.info("fetching get user by id sql query from " + sqlScriptPath);
+            try{
+                getUserByIdSqlQuery = GetSqlStatement.sqlQueryBuilder(sqlScriptPath);
+                logger.info("get user by id sql query fetched successfully");
+            }  catch (IOException e) {
+                logger.error("Failed to fetch get user by id sql query from " + sqlScriptPath, e);
+                throw new DAOException("Failed to fetch get user by email sql query", e);
+            }
+
+            try(PreparedStatement preparedStatement = connection.prepareStatement(getUserByIdSqlQuery)){
+                preparedStatement.setInt(1, (int) userId);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if(resultSet.next()){
+                    userOptional = Optional.ofNullable(EntityModelMapper.userMapper(resultSet));
+                }
+
+                logger.info("get user by email query executed successfully");
+
+            } catch (SQLException e){
+                logger.error("SQL execution error: " + e.getMessage(), e);
+                throw new DAOException("sql execution error", e);
+            }
+
+        } catch (SQLException e){
+            logger.error("Fail to connect to database: " + e.getMessage(), e);
+            throw new DAOException("Fail to connect to database", e);
+        }
+
+        return userOptional;
     }
 
     @Override
