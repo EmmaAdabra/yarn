@@ -31,7 +31,7 @@ public class PostDao implements IPostDao{
        return null;
     }
 
-    public List<PostDto> getAllPost(String appPath) throws DAOException {
+    public List<PostDto> getAllPost() throws DAOException {
         List<PostDto> allPosts = new ArrayList<>();
 
         try(Connection connection = CreateDbConnection.getConnection()){
@@ -45,7 +45,7 @@ public class PostDao implements IPostDao{
                         PostDto postDto = new PostDto();
                         PosterDto posterDto = new PosterDto();
                         postDto = EntityModelMapper.postMapper(resultSet);
-                        posterDto = EntityModelMapper.posterMapper(appPath, resultSet);
+                        posterDto = EntityModelMapper.posterMapper(resultSet);
                         postDto.setPosterData(posterDto);
                         allPosts.add(postDto);
                     }

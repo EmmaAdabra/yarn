@@ -31,7 +31,7 @@ public class DashboardServlet extends HttpServlet {
 
 //        fetch posts
         try {
-            allPost = postDao.getAllPost(request.getContextPath());
+            allPost = postDao.getAllPost();
             request.setAttribute("posts", allPost);
         } catch (DAOException e) {
             logger.error("Failed to fetch posts -- {}", e.getMessage());
