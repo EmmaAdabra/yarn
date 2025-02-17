@@ -38,7 +38,7 @@ public class UserDao implements IUserDao{
                 logger.info("get user by id sql query fetched successfully");
             }  catch (IOException e) {
                 logger.error("Failed to fetch get user by id sql query from " + sqlScriptPath, e);
-                throw new DAOException("Failed to fetch get user by email sql query", e);
+                throw new DAOException("Failed to fetch get user by id sql query", e);
             }
 
             try(PreparedStatement preparedStatement = connection.prepareStatement(getUserByIdSqlQuery)){
@@ -50,7 +50,7 @@ public class UserDao implements IUserDao{
                     userOptional = Optional.ofNullable(EntityModelMapper.userMapper(resultSet));
                 }
 
-                logger.info("get user by email query executed successfully");
+                logger.info("get user by id query executed successfully");
 
             } catch (SQLException e){
                 logger.error("SQL execution error: " + e.getMessage(), e);
