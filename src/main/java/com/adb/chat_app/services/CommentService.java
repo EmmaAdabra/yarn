@@ -38,7 +38,7 @@ public class CommentService {
                 serviceResponse = new Response<>(ResponseCode.RESOURCE_CREATED.getCode(), "comment added", commenterDto);
                 logger.info("Comment with ID: {} added to post with ID {}", commentId, comment.getPostId());
             } else {
-                serviceResponse = new Response<>(HttpServletResponse.SC_BAD_REQUEST,
+                serviceResponse = new Response<>(HttpServletResponse.SC_NOT_FOUND,
                         "This have be deleted or do no longer exist");
             }
         } catch (DAOException e) {
