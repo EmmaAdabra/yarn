@@ -2,26 +2,27 @@ package com.adb.chat_app.models;
 
 public class Comment {
     private int commentId;
-    private String postId;
+    private Integer postId;
     private int userId;
-    private String commenterName;
     private String comment;
+
+    private String time;
 
     public Comment() {
     }
 
-    public Comment(String postId, int userId, String commenterName, String comment) {
+    public Comment(int postId, int userId, String comment, String createdAt) {
         this.postId = postId;
         this.userId = userId;
-        this.commenterName = commenterName;
         this.comment = comment;
+        this.time = createdAt;
     }
 
-    public String getPostId() {
+    public int getPostId() {
         return postId;
     }
 
-    public void setPostId(String postId) {
+    public void setPostId(int postId) {
         this.postId = postId;
     }
 
@@ -31,14 +32,6 @@ public class Comment {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public String getCommenterName() {
-        return commenterName;
-    }
-
-    public void setCommenterName(String commenterName) {
-        this.commenterName = commenterName;
     }
 
     public String getComment() {
@@ -55,5 +48,17 @@ public class Comment {
 
     public void setCommentId(int commentId) {
         this.commentId = commentId;
+    }
+
+    public void setPostId(Integer postId) {
+        this.postId = postId;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
