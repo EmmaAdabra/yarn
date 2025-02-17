@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
             Response<User> serviceResponse = userService.validateUser(email, password);
 
 //            get session user
-            if(serviceResponse.getStatus_code() == ResponseCode.SUCCESS.getCode()){
+            if(serviceResponse.getStatus() == ResponseCode.SUCCESS.getCode()){
                 Response<SessionUserDTO> sessionUserRes = userService.createSessionUser(serviceResponse.getData());
                 SessionUserDTO sessionUser = sessionUserRes.getData();
 
@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
 
                 logger.info("login successfully, userID - {}", serviceResponse.getData().getId());
                 response.sendRedirect("/dashboard");
-            } else if(serviceResponse.getStatus_code() == ResponseCode.VALIDATION_ERROR.getCode()){
+            } else if(serviceResponse.getStatus() == ResponseCode.VALIDATION_ERROR.getCode()){
                 logger.error("failed login, user email - {}", email);
 
                 request.setAttribute("error", serviceResponse.getMessage());

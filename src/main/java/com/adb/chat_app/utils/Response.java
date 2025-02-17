@@ -1,7 +1,7 @@
 package com.adb.chat_app.utils;
 
 public class Response<T> {
-    private int status_code;
+    private int status;
     private String message;
     private T data;
 
@@ -9,19 +9,19 @@ public class Response<T> {
     }
 
     public Response(int status_code, String message, T data) {
-        this.status_code = status_code;
+        this.status = status_code;
         this.message = message;
         this.data = data;
     }
 
     public Response(int status_code, String message) {
-        this.status_code = status_code;
+        this.status = status_code;
         this.message = message;
 
     }
 
-    public int getStatus_code() {
-        return status_code;
+    public int getStatus() {
+        return status;
     }
 
     public String getMessage() {
@@ -32,8 +32,8 @@ public class Response<T> {
         return data;
     }
 
-    public void setStatus_code(int status_code) {
-        this.status_code = status_code;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public void setMessage(String message) {

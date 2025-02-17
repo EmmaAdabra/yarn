@@ -41,7 +41,7 @@ public class UpdateUserBioServlet extends HttpServlet {
                     ValidateInputs.validateUserBio(userBio);
                 }
                 serviceResponse = userService.addBio(userBio, sessionUser.getUserID());
-                if(serviceResponse.getStatus_code() == ResponseCode.RESOURCE_CREATED.getCode()){
+                if(serviceResponse.getStatus() == ResponseCode.RESOURCE_CREATED.getCode()){
                     response.getWriter().write(serviceResponse.getMessage());
                     sessionUser.setBio(userBio);
                     session.setAttribute("sessionUser", sessionUser);

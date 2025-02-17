@@ -50,12 +50,12 @@ public class RegisterUserServlet extends HttpServlet {
 
             Response<Integer> serviceResponse  = userService.saveUser(user);
 
-            if(serviceResponse.getStatus_code() == ResponseCode.RESOURCE_CREATED.getCode()){
+            if(serviceResponse.getStatus() == ResponseCode.RESOURCE_CREATED.getCode()){
                 logger.info("Account created successfully. UserID - {}", serviceResponse.getData());
                 response.sendRedirect("/login");
             }
 
-            if(serviceResponse.getStatus_code() == ResponseCode.INTERNAL_SERVER_ERROR.getCode()){
+            if(serviceResponse.getStatus() == ResponseCode.INTERNAL_SERVER_ERROR.getCode()){
                 System.out.println("Fail to create Account");
             }
         } catch (Exception e){
