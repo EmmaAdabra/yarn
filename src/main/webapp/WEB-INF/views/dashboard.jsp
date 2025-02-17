@@ -96,7 +96,7 @@
                             </c:if>
                           </div>
                           <div class="comments-container hidden mt-5 pt-5 border-t border-borderClr" data-comment-modal="commentContainer">
-                            <!-- <p class="bg-bg_color3 rounded-lg py-2 text-fade_text text-center">No comment</p> -->
+                            <!-- <p class="bg-bg_color3 rounded-lg py-2 text-fade_text text-center mb-5">No comment</p> -->
                             <div class="comment mb-5">
                               <div class="flex gap-1">
                                 <span class="flex justify-center items-center w-[40px] h-[40px] text-fade_text text-[25px] uppercase rounded-full">
@@ -106,6 +106,7 @@
                                   <h3 class="text-title_text_clr mb-1 text-[12px]">John Doe <span class="text-fade_text text-[12px]"> Today at 7:50</span></h3>
                                   <p>I love your post</p>
                                 </div>
+                                
                               </div>
                             </div>
                           </div>
