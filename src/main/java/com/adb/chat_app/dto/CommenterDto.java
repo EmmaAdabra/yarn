@@ -4,13 +4,15 @@ import com.adb.chat_app.models.Comment;
 
 public class CommenterDto {
     private String name;
+    private String initial;
     private String pfp;
     private Comment comment;
 
-    public CommenterDto(String name, String pfp, Comment comment) {
+    public CommenterDto(String name, String pfp, Comment comment, String initial) {
         this.name = name;
         this.pfp = pfp;
         this.comment = comment;
+        this.initial = initial;
     }
 
     public String getName() {
@@ -35,5 +37,13 @@ public class CommenterDto {
 
     public void setComment(Comment comment) {
         this.comment = comment;
+    }
+
+    public String getInitial() {
+        return initial;
+    }
+
+    public void setInitial(String initial) {
+        this.initial = initial;
     }
 }
