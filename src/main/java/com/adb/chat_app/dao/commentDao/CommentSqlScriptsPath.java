@@ -2,7 +2,8 @@ package com.adb.chat_app.dao.commentDao;
 
 public enum CommentSqlScriptsPath {
 
-    INSERT_COMMENT(getUserScriptDir() + "insert_comment.sql");
+    INSERT_COMMENT(getUserScriptDir() + "insert_comment.sql"),
+    GET_POST_COMMENTS(getUserScriptDir() + "get_post_comments.sql");
 
     private String path;
 
