@@ -1,12 +1,10 @@
 package com.adb.chat_app.controllers;
 
 import com.adb.chat_app.dao.commentDao.CommentDao;
-import com.adb.chat_app.dao.userdao.UserDao;
-import com.adb.chat_app.dto.CommenterDto;
+import com.adb.chat_app.dto.CommentDto;
 import com.adb.chat_app.dto.SessionUserDTO;
 import com.adb.chat_app.exceptions.InputValidationException;
 import com.adb.chat_app.models.Comment;
-import com.adb.chat_app.models.User;
 import com.adb.chat_app.services.CommentService;
 import com.adb.chat_app.utils.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,15 +15,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @WebServlet(name = "AddCommentServlet", value = "/add_comment")
 public class AddCommentServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(AddCommentServlet.class);
-//    private final CommentDao commentDao = new CommentDao();
-//    private final UserDao userDao = new UserDao();
     private final CommentService commentService = new CommentService(new CommentDao());
 
     @Override
@@ -37,7 +30,7 @@ public class AddCommentServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        Response<CommenterDto> jsonResponse;
+        Response<CommentDto> jsonResponse;
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
