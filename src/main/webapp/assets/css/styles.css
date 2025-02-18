@@ -789,10 +789,6 @@ video {
   height: 100%;
 }
 
-.h-\[px\] {
-  height: px;
-}
-
 .max-h-\[320px\] {
   max-height: 320px;
 }
@@ -803,6 +799,10 @@ video {
 
 .min-h-\[60px\] {
   min-height: 60px;
+}
+
+.w-1\/2 {
+  width: 50%;
 }
 
 .w-\[100\%\] {
@@ -969,18 +969,6 @@ video {
 
 .gap-\[5px\] {
   gap: 5px;
-}
-
-.gap-\[\] {
-  gap: ;
-}
-
-.gap-\[5\] {
-  gap: 5;
-}
-
-.gap-\[5pc\] {
-  gap: 5pc;
 }
 
 .overflow-auto {
