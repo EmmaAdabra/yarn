@@ -51,7 +51,6 @@ public class PostDao implements IPostDao{
                     }
                 }
 
-                logger.info("total post: {}", allPosts.size());
             } catch (SQLException e){
                 logger.error("SQL query execution error: " + e.getMessage(), e);
                 throw new DAOException("sql execution error", e);
