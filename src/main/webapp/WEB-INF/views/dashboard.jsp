@@ -95,21 +95,13 @@
                                     alt="">
                             </c:if>
                           </div>
+                         
                           <div class="comments-container hidden mt-5 pt-5 border-t border-borderClr" data-comment-modal="commentContainer">
-                            <!-- <p class="bg-bg_color3 rounded-lg py-2 text-fade_text text-center mb-5">No comment</p> -->
-                            <div class="comment mb-5">
-                              <div class="flex gap-1">
-                                <span class="flex justify-center items-center w-[40px] h-[40px] text-fade_text text-[25px] uppercase rounded-full">
-                                  <span>mj</span>
-                                </span>
-                                <div class="bg-bg_color3 w-fit text-main_text p-2 rounded-lg">
-                                  <h3 class="text-title_text_clr mb-1 text-[12px]">John Doe <span class="text-fade_text text-[12px]"> Today at 7:50</span></h3>
-                                  <p>I love your post</p>
-                                </div>
-                                
-                              </div>
+                            <p class="bg-bg_color3 rounded-lg py-2 px-7 text-fade_text text-center w-1/2 mx-auto mb-5 no-comment hidden">No comment</p>
+                            <div class="all-comment">
+
                             </div>
-                          </div>
+                          </div> 
                         </div>
                       </div>
                       <div class="post-comment-box hidden border-t-borderClr bg-bg_color2" data-comment-modal="commentBox">
@@ -120,7 +112,9 @@
                           <div class="relative">
                             <textarea class="p-3 border-none outline-none resize-none w-full overflow-auto bg-bg_color1 text-main_text rounded-md min-h-[60px] max-h-[320px]" placeholder="Let's have it !!" name="comment" maxlength="1001"></textarea>
                             <button class="absolute top-[50%] translate-y-[-50%] right-4 text-[25px] text-fade_text cursor-not-allowed" data-post-id="${post.getPostId()}" disabled>
-                              <i class="ri-send-plane-2-fill"></i>
+                              <span class="w-[40px] h-[40px] center-icon p-2 hover:bg-bg_color2">
+                                <i class="ri-send-plane-2-fill"></i>
+                              </span>
                             </button>
                           </div>
                         </form>
@@ -130,7 +124,7 @@
                   <div class="post-props px-3 mt-2">
                     <ul>
                       <li class="comment w-fit">
-                        <a class="flex items-center gap-[5px] text-fade_text relative z-10 comment-icon" href="">
+                        <a class="flex items-center gap-[5px] text-fade_text relative z-10 comment-icon" href="" id="${post.getPostId()}">
                           <button class="icon text-[25px]">
                             <i class="ri-chat-1-line"></i>
                           </button>
