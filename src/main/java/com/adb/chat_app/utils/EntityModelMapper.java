@@ -1,8 +1,11 @@
 package com.adb.chat_app.utils;
 
+import com.adb.chat_app.dao.userdao.UserDao;
+import com.adb.chat_app.dto.CommentDto;
 import com.adb.chat_app.dto.PostDto;
 import com.adb.chat_app.dto.PosterDto;
-import com.adb.chat_app.models.Post;
+import com.adb.chat_app.exceptions.DAOException;
+import com.adb.chat_app.models.Comment;
 import com.adb.chat_app.models.User;
 
 import java.sql.ResultSet;
@@ -60,6 +63,36 @@ public class EntityModelMapper  {
         }
 
         return posterDto;
+    }
+
+    public static CommentDto commentMapper(ResultSet resultSet) throws SQLException, DAOException {
+        CommentDto commentDto = new CommentDto();
+        UserDao userDao = new UserDao();
+        String name = resultSet.getString("commenter_name");
+        String[] names = name.split(" ");
+
+        commentDto.setCommentId(resultSet.getInt("id"));
+        commentDto.setName(name);
+        commentDto.setComment(resultSet.getString("content"));
+        commentDto.setTime(
+                DateUtil.formatPostDate(resultSet.getTimestamp("created_at"))
+        );
+
+        int userId = resultSet.getInt("user_id");
+        if(userId != 0){
+            commentDto.setUserId(userId);
+            if(userDao.hasUserPfp(userId)){
+                commentDto.setPfp(UserUtil.getUserPfpUrl(userId));
+            } else{
+                commentDto.setInitial(
+                        StringUtil.getUserInitial(names[0], names[1])
+                );
+            }
+        } else{
+            commentDto.setPfp(StringUtil.randomAvatarUrl());
+        }
+
+        return commentDto;
     }
 
 }
