@@ -64,7 +64,11 @@ public class CommentDao implements ICommentDao{
 
     @Override
     public int save(Comment comment) throws DAOException {
-        int commentId = 0;
+       return 0;
+    }
+
+    public Optional<CommentDto> saveComment(Comment comment) throws DAOException{
+        Optional<CommentDto> optionalCommentDto = Optional.empty();
 
         try(Connection connection = CreateDbConnection.getConnection()){
             String sqlScriptPath = CommentSqlScriptsPath.INSERT_COMMENT.getPath();
@@ -77,14 +81,15 @@ public class CommentDao implements ICommentDao{
                 BuildSqlStatement.setParameters(
                         preparedStatement,
                         comment.getPostId(),
-                        userId,
-                        comment.getComment()
+                        comment.getComment(),
+                        userId
                 );
 
+                System.out.println(preparedStatement);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if(resultSet.next()){
-                    commentId = resultSet.getInt("id");
+                     optionalCommentDto = Optional.ofNullable(EntityModelMapper.commentMapper(resultSet));
                 }
 
                 resultSet.close();
@@ -99,7 +104,8 @@ public class CommentDao implements ICommentDao{
             logger.error("Failed to fetch insert comment sql query -- " + e.getMessage());
             throw new DAOException("Failed to fetch insert comment sql query", e);
         }
-        return commentId;
+
+        return optionalCommentDto;
     }
 
     @Override
