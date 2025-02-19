@@ -380,8 +380,13 @@ function displayEditProfileError(currentEvent, errorMsg) {
           if (result.data) {
             commentBox.value = "";
             console.log(result.data);
-            commentList.add(result.data);
-            addComment(commentList, form.closest('[data-comment-modal="ModalContainer"]'), "prepend");
+            commentList.push(result.data);
+            const postContainer =  form.closest('[data-comment-modal="ModalContainer"]')
+            addComment(commentList, postContainer, "append");
+            const noComment = postContainer.querySelector(".no-comment");
+            if(!noComment.classList.contains("hidden")){
+              noComment.classList.add("hidden");
+            }
           }
         }
       } catch (error) {
