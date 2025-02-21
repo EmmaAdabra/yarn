@@ -35,6 +35,7 @@ public class EntityModelMapper  {
         postDto.setContent(resultSet.getString("content"));
         postDto.setMedia(resultSet.getString("media_path"));
         postDto.setPostDate(DateUtil.formatPostDate(resultSet.getTimestamp("created_at")));
+        postDto.setComment(resultSet.getInt("comment"));
 
         return postDto;
     }
