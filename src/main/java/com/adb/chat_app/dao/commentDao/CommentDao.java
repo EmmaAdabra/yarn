@@ -85,7 +85,6 @@ public class CommentDao implements ICommentDao{
                         userId
                 );
 
-                System.out.println(preparedStatement);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if(resultSet.next()){
