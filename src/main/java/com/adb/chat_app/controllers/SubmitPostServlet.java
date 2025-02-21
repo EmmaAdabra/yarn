@@ -41,7 +41,8 @@ public class SubmitPostServlet extends HttpServlet {
                 SessionUserDTO sessionUser = (SessionUserDTO) session.getAttribute("sessionUser");
                 int userId = (int) sessionUser.getUserID();
 
-                String postContent = request.getParameter("postContent");
+                String unformattedPostContent = request.getParameter("postContent");
+                String postContent = unformattedPostContent.replace("\n", "<br>");
                 String postTitle = request.getParameter("postTitle");
                 Part imagePart = request.getPart("postImage");
                 String imagePath = null;
