@@ -7,25 +7,30 @@
     profileMenu.classList.toggle("hidden");
   });
 
+  function hideProfileMenu() {
+    const profileMenu = document.querySelector("#profileMenu");
+    profileMenu.classList.add("hidden");
+  }
+
   // close top nave profile menu on click even not within profile menu
   document.addEventListener("click", function (event) {
     if (!profileMenu.contains(event.target)) {
-      profileMenu.classList.add("hidden");
+      hideProfileMenu();
+    }
+
+    // create post
+    if(event.target.classList.contains("create-post") || event.target.parentElement.classList.contains("create-post")){
+      createPost();
     }
   });
 }
 
 // open create post modal
-{
-  const createPostBtn = document.querySelector("#createPostBtn");
+function createPost(){
+  const createPostModal = document.querySelector("#createPostModal");
 
-  createPostBtn.addEventListener("click", function (event) {
-    event.preventDefault();
-    const createPostModal = document.querySelector("#createPostModal");
-
-    createPostModal.classList.remove("hidden");
-    createPostModal.classList.add("flex");
-  });
+  createPostModal.classList.remove("hidden");
+  createPostModal.classList.add("flex");
 }
 
 // close modal
@@ -113,7 +118,7 @@
           }
 
           // add a notification
-          console.log(result.message)
+          console.log(result.message);
           location.reload();
         } catch (error) {
           // add a notification
@@ -200,8 +205,8 @@ function displayEditProfileError(currentEvent, errorMsg) {
   commentBtns.forEach((btn) => {
     btn.addEventListener("click", async function (event) {
       event.preventDefault();
-      let postId = btn.getAttribute("id");
       const modalElement = this.closest(".post");
+      let postId = btn.getAttribute("id");
 
       const commentModal = modalElement.querySelector(
         '[data-comment-modal = "ModalContainer"]'
@@ -215,7 +220,7 @@ function displayEditProfileError(currentEvent, errorMsg) {
 
       // for show more button
       const postText = modalElement.querySelector(".post-text");
-      if (postText.getAttribute("data-big-text") == "true") {
+      if (postText.getAttribute("data-big-text") === "true") {
         postText.classList.remove("ellipsis");
 
         const seeMoreBtn = modalElement.querySelector(".see-more-btn");
@@ -242,15 +247,21 @@ function displayEditProfileError(currentEvent, errorMsg) {
       );
       commentBox.classList.remove("hidden");
       commentBox.classList.add("flex");
-    const noComment = commentModal.querySelector(".no-comment");
-    let comments = await fetchPostComment(postId);
+      const noComment = commentModal.querySelector(".no-comment");
 
-    if(comments.length > 0){
-      addComment(comments, commentModal, "append");
+      const loader = modalElement.querySelector(".loader");
+      loader.classList.remove("hidden");
 
-    } else{
-      noComment.classList.remove("hidden")
-    }
+      let comments = await fetchPostComment(postId);
+
+      loader.classList.add("hidden");
+
+      if (comments.length > 0) {
+        addComment(comments, commentModal);
+        updateCommentCount(modalElement, comments.length);
+      } else {
+        noComment.classList.remove("hidden");
+      }
     });
   });
 }
@@ -278,7 +289,7 @@ function displayEditProfileError(currentEvent, errorMsg) {
 
       // big text and see more button
       const postText = modalElement.querySelector(".post-text");
-      if (postText.getAttribute("data-big-text") == "true") {
+      if (postText.getAttribute("data-big-text") === "true") {
         postText.classList.add("ellipsis");
 
         const seeMoreBtn = modalElement.querySelector(".see-more-btn");
@@ -303,14 +314,12 @@ function displayEditProfileError(currentEvent, errorMsg) {
 
       const noComment = commentModal.querySelector(".no-comment");
 
-      if(!noComment.classList.contains("hidden")) {
+      if (!noComment.classList.contains("hidden")) {
         noComment.classList.add("hidden");
       }
 
-      const allComment =  commentModal.querySelector(".all-comment");
+      const allComment = commentModal.querySelector(".all-comment");
       allComment.innerHTML = "";
-      console.log(`this is test data ${allComment}`)
-
     });
   });
 }
@@ -350,6 +359,10 @@ function displayEditProfileError(currentEvent, errorMsg) {
       const comment = commentBox.value;
       let commentList = [];
       console.log(postId, comment);
+      const postContainer = form.closest(".post");
+
+      const loader = form.querySelector(".loader");
+      loader.classList.remove("hidden");
 
       try {
         const response = await fetch("/add_comment", {
@@ -357,18 +370,19 @@ function displayEditProfileError(currentEvent, errorMsg) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ postId, comment }),
         });
-      
+
         console.log("response info:", response.ok, response.status);
-      
+
         if (!response.ok) {
           throw new Error(`HTTP Error: ${response.status}`);
         }
 
         let result;
 
-        if (response.headers.get("content-type")?.includes("application/json")) {
+        if (
+          response.headers.get("content-type")?.includes("application/json")
+        ) {
           result = await response.json();
-
         } else {
           throw new Error("Server returned non-JSON response");
         }
@@ -381,57 +395,65 @@ function displayEditProfileError(currentEvent, errorMsg) {
             commentBox.value = "";
             console.log(result.data);
             commentList.push(result.data);
-            const postContainer =  form.closest('[data-comment-modal="ModalContainer"]')
-            addComment(commentList, postContainer, "append");
+            addComment(commentList, postContainer, "prepend");
             const noComment = postContainer.querySelector(".no-comment");
-            if(!noComment.classList.contains("hidden")){
+
+            loader.classList.add("hidden");
+
+            updateCommentCount(postContainer, 1, "add");
+            if (!noComment.classList.contains("hidden")) {
               noComment.classList.add("hidden");
             }
           }
         }
       } catch (error) {
+        loader.classList.add("hidden");
         // alert("Something went wrong, check console for details");
         console.error("Error:", error);
       }
-      
     });
   });
 }
 
-function addComment(commentList, post, position){
+function addComment(commentList, post, position) {
   const commentContainer = post.querySelector(".all-comment");
-  const commentDiv = document.createElement("div");
-  let pfp; 
-  
-  if(commentList.length > 0){
-    commentList.forEach(comment => {
-      if(comment.pfp !== null){
-        pfp = `<img class="w-full, h-full rounded-full object-cover" src="${comment.pfp}" alt="commenter pfp">`;
-      } else{
+
+  if (commentList.length > 0) {
+    commentList.forEach((comment) => {
+      let commentDiv = document.createElement("div");
+      let pfp;
+
+      if (comment.pfp !== null) {
+        pfp = `<img class="w-full h-full rounded-full object-cover" src="${comment.pfp}" alt="commenter pfp">`;
+      } else {
         pfp = `<span>${comment.initial}</span>`;
       }
+
       commentDiv.classList.add("comment", "mb-5");
-  commentDiv.setAttribute("data-comment-id", comment.commentId);
-  commentDiv.innerHTML = `<div class="flex gap-[5px]">
-                                <span class="flex justify-center items-center w-[35px] h-[35px] text-fade_text text-[25px] uppercase rounded-full">
-                                  ${pfp}
-                                </span>
-                                <div class="bg-bg_color3 w-fit text-main_text p-2 rounded-lg">
-                                  <h3 class="text-title_text_clr mb-1 text-[12px]">${comment.name}<span class="text-fade_text text-[12px]"> ${comment.time}</span></h3>
-                                  <p>${comment.comment}</p>
-                                </div>`;
-  
-  if(position === "prepend"){
-    commentContainer.prepend(commentDiv);
-  } else{
-    commentContainer.appendChild(commentDiv);
-  }                         
-    })
+      commentDiv.setAttribute("data-comment-id", comment.commentId);
+      commentDiv.innerHTML = `
+        <div class="flex gap-[5px]">
+          <span class="flex justify-center items-center w-[35px] h-[35px] text-fade_text text-[25px] uppercase rounded-full">
+            ${pfp}
+          </span>
+          <div class="bg-bg_color3 w-fit text-main_text p-2 rounded-lg">
+            <h3 class="text-title_text_clr mb-1 text-[12px]">${comment.name}
+              <span class="text-fade_text text-[12px]"> ${comment.time}</span>
+            </h3>
+            <p>${comment.comment}</p>
+          </div>
+        </div>`;
+
+      if (position === "prepend") {
+        commentContainer.prepend(commentDiv);
+      } else {
+        commentContainer.appendChild(commentDiv);
+      }
+    });
   }
 }
 
-
-// Retrieve post comment 
+// Retrieve post comment
 async function fetchPostComment(postId) {
   try {
     const response = await fetch(`fetch_post_comment?postId=${postId}`, {
@@ -453,9 +475,64 @@ async function fetchPostComment(postId) {
 
     console.log(result.message);
     return result.data;
-
   } catch (error) {
     console.error("Error:", error);
     return -1;
   }
 }
+
+function updateCommentCount(post, value, action = "") {
+  const commentCountElem = post.querySelector(".comment-number");
+  const commentCount = Number.parseInt(
+    commentCountElem.getAttribute("data-comment-count")
+  );
+
+  if (action === "add") {
+    commentCountElem.textContent = commentCount + value;
+    value = commentCount + value;
+  } else {
+    commentCountElem.textContent = value;
+  }
+
+  commentCountElem.setAttribute("data-comment-count", value);
+}
+
+// scroll to top
+
+// Show or hide the button on scroll
+const scrollContainer = document.getElementById("scrollContainer");
+const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+// Show button when user scrolls inside the container
+scrollContainer.addEventListener("scroll", () => {
+  if (scrollContainer.scrollTop > 200) {
+    scrollToTopBtn.classList.remove("hidden");
+    scrollToTopBtn.classList.add("flex");
+  } else {
+    scrollToTopBtn.classList.add("hidden");
+    scrollToTopBtn.classList.remove("flex");
+  }
+});
+
+// Scroll to the top of the container
+scrollToTopBtn.addEventListener("click", () => {
+  scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+function toggleQuotes() {
+  const quotePane = document.getElementById("rightPane");
+
+  if (quotePane.classList.contains("hidden")) {
+    quotePane.classList.remove("hidden");
+  } else {
+    quotePane.classList.add("hidden");
+  }
+}
+
+// show quote btn
+document.getElementById("getInspired")
+  .addEventListener("click", () => {
+    toggleQuotes();
+    hideProfileMenu();
+  });
+
