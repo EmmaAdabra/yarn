@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <%@include file="/WEB-INF/views/fragments/head.jspf"%>
+    <%@include file="/WEB-INF/views/fragments/head.jsp"%>
     <title>Login to ChatApp</title>
 </head>
 <body class="bg-bg_color1">
