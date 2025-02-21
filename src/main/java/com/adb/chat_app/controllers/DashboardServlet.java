@@ -40,7 +40,7 @@ public class DashboardServlet extends HttpServlet {
 //        temporary use only (for development)
 //        try {
 //            Response<User> serviceResponse = userService.validateUser("emma@gmail.com", "1234");
-//            if(serviceResponse.getStatus_code() == ResponseCode.SUCCESS.getCode()){
+//            if(serviceResponse.getStatus() == ResponseCode.SUCCESS.getCode()){
 //                Response<SessionUserDTO> sessionUserRes = userService.createSessionUser(serviceResponse.getData());
 //                SessionUserDTO sessionUser = sessionUserRes.getData();
 ////                add pfp url
