@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <span class="text-fade_text flex justify-center items-center w-[150px] h-[150px] mt-10 mx-auto text-[80px] uppercase rounded-full bg-bg_color3">
-                <%@include file="/WEB-INF/views/fragments/pfpWrapper.jspf"%>
+                <%@include file="/WEB-INF/views/fragments/pfpWrapper.jsp"%>
               </span>
                 <p class="text-red-200 error mt-2"></p>
                 <p class="text-green-700 mt-2 overflow-hidden file-name"></p>
