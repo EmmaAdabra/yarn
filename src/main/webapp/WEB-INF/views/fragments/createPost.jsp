@@ -2,13 +2,13 @@
     <div class="modal-content pb-8 max-w-[550px]">
         <header class="modal-header">
             <h1 class="text-[18px]">Create post</h1>
-            <a class="modal-close-icon " id="closeProfileSetting" href="">
+            <a class="modal-close-icon " href="">
                 <i class="ri-close-large-fill text-[25px]"></i>
             </a>
         </header>
         <div class="flex items-center gap-2 option mb-5">
           <span class="flex justify-center items-center w-[35px] h-[35px] text-fade_text text-[20px] uppercase rounded-full bg-bg_color3">
-            <%@include file="/WEB-INF/views/fragments/pfpWrapper.jspf"%>
+            <%@include file="/WEB-INF/views/fragments/pfpWrapper.jsp"%>
           </span>
             <a class="text-title_text_clr text-[16px]" href="">${sessionScope.sessionUser.getUserFullName()}</a>
         </div>

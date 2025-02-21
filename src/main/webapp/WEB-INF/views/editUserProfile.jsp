@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <%@include file="/WEB-INF/views/fragments/head.jspf"%>
+    <%@include file="/WEB-INF/views/fragments/head.jsp"%>
     <title>ChatApp - Edit Profile</title>
 </head>
 <body class="bg-bg_color1 h-[100%] overflow-hidden overflow-y-scroll relative">
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <span class="text-fade_text flex justify-center items-center w-[150px] h-[150px] mt-10 mx-auto text-[80px] uppercase rounded-full bg-bg_color3">
-                <%@include file="/WEB-INF/views/fragments/pfpWrapper.jspf"%>
+                <%@include file="/WEB-INF/views/fragments/pfpWrapper.jsp"%>
               </span>
                     <p class="text-red-200 error mt-2"></p>
                     <p class="text-green-700 mt-2 overflow-hidden file-name"></p>
@@ -95,7 +95,7 @@
             </section>
         </div>
     </div>
-    <%@include file="/WEB-INF/views/fragments/topNavBar.jspf"%>
+    <%@include file="/WEB-INF/views/fragments/topNavBar.jsp"%>
     <script src="<c:url value='/assets/js/edit_profile.js'/>?v=<%= System.currentTimeMillis() %>"></script>
 </body>
 </html>
