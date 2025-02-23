@@ -1438,6 +1438,18 @@ video {
   padding-bottom: 1.75rem;
 }
 
+.ps-1 {
+  padding-inline-start: 0.25rem;
+}
+
+.ps-\[5px\] {
+  padding-inline-start: 5px;
+}
+
+.ps-\[3px\] {
+  padding-inline-start: 3px;
+}
+
 .text-left {
   text-align: left;
 }
@@ -1523,6 +1535,10 @@ video {
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+.text-\[2px\] {
+  font-size: 2px;
 }
 
 .font-light {
