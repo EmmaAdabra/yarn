@@ -32,6 +32,7 @@ public class SubmitPostServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject jsonResponse = new JSONObject();
+        request.setCharacterEncoding("UTF-8");
         PostDao postDao = new PostDao(); // temp use
 
         try {

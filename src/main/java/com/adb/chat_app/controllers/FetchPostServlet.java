@@ -21,6 +21,7 @@ public class FetchPostServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
         List<PostDto> allPost;
 
         try {
