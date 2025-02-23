@@ -22,9 +22,23 @@
     if(event.target.classList.contains("create-post") || event.target.parentElement.classList.contains("create-post")){
       createPost();
     }
+
+    // create post on index page
+    if(event.target.classList.contains("index-create-post") || event.target.parentElement.classList.contains("index-create-post")){
+      openCreatePostNotice();
+    }
   });
 }
 
+// for index page
+function openCreatePostNotice(){
+  let noticeModal;
+
+  if(document.getElementById("IndexCreatePost")){
+    noticeModal = document.getElementById("IndexCreatePost");
+    noticeModal.classList.remove("hidden");
+  }
+}
 // open create post modal
 function createPost(){
   const createPostModal = document.querySelector("#createPostModal");
@@ -498,41 +512,47 @@ function updateCommentCount(post, value, action = "") {
 }
 
 // scroll to top
-
 // Show or hide the button on scroll
-const scrollContainer = document.getElementById("scrollContainer");
-const scrollToTopBtn = document.getElementById("scrollToTopBtn");
-
 // Show button when user scrolls inside the container
-scrollContainer.addEventListener("scroll", () => {
-  if (scrollContainer.scrollTop > 200) {
-    scrollToTopBtn.classList.remove("hidden");
-    scrollToTopBtn.classList.add("flex");
-  } else {
-    scrollToTopBtn.classList.add("hidden");
-    scrollToTopBtn.classList.remove("flex");
+function gotoTop(){
+  const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+  let scrollContainer = document.getElementById("scrollContainer");
+
+  if(document.getElementById("heroAndPostContainer")){
+    if(window.innerWidth < 768){
+      scrollContainer = document.getElementById("heroAndPostContainer");
+    }
   }
-});
+  
+
+  scrollContainer.addEventListener("scroll", () => {
+    if (scrollContainer.scrollTop > 200) {
+      scrollToTopBtn.classList.remove("hidden");
+      scrollToTopBtn.classList.add("flex");
+    } else {
+      scrollToTopBtn.classList.add("hidden");
+      scrollToTopBtn.classList.remove("flex");
+    }
+  });
 
 // Scroll to the top of the container
-scrollToTopBtn.addEventListener("click", () => {
-  scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-function toggleQuotes() {
-  const quotePane = document.getElementById("rightPane");
-
-  if (quotePane.classList.contains("hidden")) {
-    quotePane.classList.remove("hidden");
-  } else {
-    quotePane.classList.add("hidden");
-  }
+  scrollToTopBtn.addEventListener("click", () => {
+    scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+  });
 }
 
-// show quote btn
-document.getElementById("getInspired")
-  .addEventListener("click", () => {
-    toggleQuotes();
-    hideProfileMenu();
-  });
+window.addEventListener("resize", ()=> {
+  gotoTop();
+  hideIndexRightPane();
+})
+gotoTop();
+
+// hide index right pane on resize
+function hideIndexRightPane() {
+  const rightPane = document.querySelector(".index-right-pane");
+
+  if (rightPane && window.innerWidth > 768 && window.innerWidth < 1024 && !rightPane.classList.contains("hidden")) {
+    rightPane.classList.add("hidden");
+  }
+}
 
