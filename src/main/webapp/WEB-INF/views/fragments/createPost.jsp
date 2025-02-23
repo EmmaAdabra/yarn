@@ -1,4 +1,4 @@
-<div class="modal-container hidden bg-modalBg" id="createPostModal">
+<div class="modal-container hidden bg-[#1e1e20e7]" id="createPostModal">
     <div class="modal-content pb-8 max-w-[550px]">
         <header class="modal-header">
             <h1 class="text-[18px]">Create post</h1>
