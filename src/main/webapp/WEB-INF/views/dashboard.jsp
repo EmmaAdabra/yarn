@@ -22,13 +22,19 @@
       <section class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 mt-[60px] w-[100vw] h-[calc(100vh-60px)] main-content relative">
 
         <!-- left nav bar -->
-        <%@include file="/WEB-INF/views/fragments/leftNavBar.jsp" %>
+        <div class="hidden lg:block col-span-1 left-sidebar row-span-full" >
+          <%@include file="/WEB-INF/views/fragments/leftNavBar.jsp" %>
+        </div>
 
         <!-- center pane -->
-        <%@include file="/WEB-INF/views/fragments/centerPane.jsp" %>
+        <div class="md:col-span-2 md:px-0 px-10 overflow-auto sm:mx-10 center-content col-span-full" id="scrollContainer">
+          <%@include file="/WEB-INF/views/fragments/centerPane.jsp" %>
+      </div>
 
-        <!-- right pane -->
-        <%@include file="/WEB-INF/views/fragments/rightPane.jsp" %>
+      <!-- right pane -->
+      <div class="hidden md:block col-span-1 right-sidebar lg:pl-7  md:pt-5 md:relative md:top-0 md:right-0 md:w-full sm:w-[250px] w-[200px] absolute top-5 right-5" id="rightPane">
+          <%@include file="/WEB-INF/views/fragments/rightPane.jsp" %>
+      </div>
       </section>
 
       <!-- Create Post Button (Always Visible) -->
@@ -45,6 +51,6 @@
     </main>
      
     <script src="<c:url value='/assets/js/index.js'/>?v=<%= System.currentTimeMillis() %>"></script>
-    <script src="<c:url value="/assets/js/quotes.js" />"></script>
+    <script src="<c:url value="/assets/js/quote.js" />"></script>
   </body>
 </html>
