@@ -222,6 +222,11 @@ function displayEditProfileError(currentEvent, errorMsg) {
       const modalElement = this.closest(".post");
       let postId = btn.getAttribute("id");
 
+      // hide short post date
+      modalElement.querySelector(".short-date").classList.add("hidden");
+      // show full post date
+      modalElement.querySelector(".long-date").classList.remove("hidden");
+
       const commentModal = modalElement.querySelector(
         '[data-comment-modal = "ModalContainer"]'
       );
@@ -290,6 +295,11 @@ function displayEditProfileError(currentEvent, errorMsg) {
         '[data-comment-modal = "ModalContainer"]'
       );
       commentModal.classList.remove("comment-modal");
+
+      // show short post date
+      modalElement.querySelector(".short-date").classList.remove("hidden");
+      // hide full post date
+      modalElement.querySelector(".long-date").classList.add("hidden");
 
       const header = modalElement.querySelector(
         '[data-comment-modal = "modalHeader"]'
@@ -452,7 +462,7 @@ function addComment(commentList, post, position) {
           </span>
           <div class="bg-bg_color3 w-fit text-main_text p-2 rounded-lg">
             <h3 class="text-title_text_clr mb-1 text-[12px]">${comment.name}
-              <span class="text-fade_text text-[12px]"> ${comment.time}</span>
+              <span class="text-fade_text text-[12px] ps-[3px]"> ${comment.time}</span>
             </h3>
             <p>${comment.comment}</p>
           </div>
