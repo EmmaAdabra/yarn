@@ -2,7 +2,7 @@
         <nav class="grid grid-cols-3 align-middle w-full">
           <div class="col-span-1">
             <div class="flex-auto flex items-center gap-3">
-                <img class="h-[35px] w-[35px] object-cover" src="<c:url value="/assets/images/newlogo.png" />" alt="">
+                <img class="h-[35px] w-[35px] object-cover" src="<c:url value="/assets/images/logo.png" />" alt="">
                 <div class="bg-bg_color2 px-1  py-[2px] hidden lg:flex items-center rounded-[30px]">
                   <span class="flex-none  text-title_text_clr text-[18px] w-fit p-1 border-spacing-6">
                     <i class="ri-search-line"></i>
@@ -12,23 +12,17 @@
             </div>
           </div>
           <div class="col-span-1 flex justify-center gap-20 items-center center-icons text-title_text_clr">
-            <span class="center-icon w-[35px] h-[35px] hover:bg-bg_color2  text-[20px] cursor-pointer">
+            <span class="hidden md:flex justify-center items-center rounded-full w-[35px] h-[35px] hover:bg-bg_color2  text-[20px] cursor-pointer">
                 <i class="ri-home-4-line"></i>
             </span>
             <!-- <span class=" text-[20px]">
                   <i class="ri-group-line"></i>
             </span> -->
-            <span class="center-icon w-[35px] h-[35px] hover:bg-bg_color2  text-[20px] cursor-pointer create-post">
+            <span class="hidden md:flex justify-center items-center rounded-full w-[35px] h-[35px] hover:bg-bg_color2  text-[20px] cursor-pointer create-post">
               <i class="ri-quill-pen-ai-line"></i>
             </span>
           </div>
           <div class="col-span-1 flex justify-end gap-7 items-center text-title_text_clr">
-            <!-- <span class="w-[35px] h-[35px]  p-1 flex justify-center items-center text-[20px] rounded-full bg-bg_color2">
-              <i class="ri-chat-3-line"></i>
-            </span>
-            <span class="w-[35px] h-[35px] bg-bg_color2  p-1 flex justify-center items-center text-[20px] rounded-full">
-              <i class="ri-notification-line"></i>
-            </span> -->
             <!-- profile menu icon/button -->
             <span class="w-[35px] h-[35px] bg-bg_color2  flex justify-center items-center text-[20px] rounded-full cursor-pointer relative" id="navPfp">
               <%@include file="/WEB-INF/views/fragments/pfpWrapper.jsp"%>
