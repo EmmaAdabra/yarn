@@ -10,17 +10,26 @@
 <html>
 <head>
     <%@include file="/WEB-INF/views/fragments/head.jsp"%>
-    <title>Sign up for ChatApp</title>
-    <style>
-    </style>
+    <title>Sign up for Yarn</title>
 </head>
 <body class="text-center bg-bg_color1">
-    <main class="py-11">
-        <header class="pb-[35px]" id="signupHeader">
-            <h1 class="text-logo_clr1 text-2xl mb-2">Create Account</h1>
+    <!-- brand logo -->
+    <div class="p-2">
+        <a class="flex w-fit items-center py-1 px-2 gap-2 option hover:bg-bg_color2 rounded-2xl" href="<c:url value="/"/>">
+            <span class="text-fade_text flex justify-center items-center w-[40px] h-[40px] uppercase rounded-full bg-bg_color3">
+              <img class="object-cover h-[34px] w-[34px]" src="<c:url value="/assets/images/logo.png" />" alt="">
+            </span>
+            <span class="text-[18px] text-title_text_clr">
+                Yarn
+            </span>
+        </a>
+    </div>
+    <main class="pb-7">
+        <header class="pb-[25px]" id="signupHeader">
+            <h1 class="text-title_text_clr text-2xl mb-2 mx-auto line">Create Account</h1>
             <p class="text-title_text_clr">It's quick and easy.</p>
         </header>
-        <section class="bg-bg_color2 px-8 py-10 mx-auto max-w-[600px]">
+        <section class="bg-bg_color2 px-8 py-7 mx-auto max-w-[600px] rounded">
             <form method="post" action="/register" >
                 <c:if test="${error != null}">
                     <p class="text-red-200 text-center pb-10" id="errors">${error}</p>
@@ -69,7 +78,5 @@
             <a class="block text-logo_clr mt-2" href="<c:url value="/login"/>">Already have an account</a>
         </section>
     </main>
-    <script src="">
-    </script>
 </body>
 </html>

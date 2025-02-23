@@ -10,13 +10,24 @@
 <html>
 <head>
     <%@include file="/WEB-INF/views/fragments/head.jsp"%>
-    <title>Login to ChatApp</title>
+    <title>Login to Yarn</title>
 </head>
 <body class="bg-bg_color1">
-    <main class="text-center">
-        <h1 class="text-logo_clr1 text-2xl my-8">ChatApp</h1>
-        <section id="loginContainer" class="bg-bg_color2 px-8 pb-11 mx-auto">
-            <p class="text-title_text_clr py-7">Login to ChatApp</p>
+    <!-- brand logo -->
+    <div class="p-2">
+        <a class="flex w-fit items-center py-1 px-2 gap-2 option hover:bg-bg_color2 rounded-2xl" href="<c:url value="/"/>">
+            <span class="text-fade_text flex justify-center items-center w-[40px] h-[40px] uppercase rounded-full bg-bg_color3">
+              <img class="object-cover h-[34px] w-[34px]" src="<c:url value="/assets/images/logo.png" />" alt="">
+            </span>
+            <span class="text-[18px] text-title_text_clr">
+                Yarn
+            </span>
+        </a>
+    </div>
+    <main class="text-center ">
+        <h1 class="text-title_text_clr text-2xl mb-8 line mx-auto">Sign In</h1>
+        <section id="loginContainer" class="bg-bg_color2 px-8 pb-11 mx-auto rounded">
+            <p class="text-title_text_clr py-7">Login to Yarn</p>
             <c:if test="${error != null}">
                 <p class="text-red-200 text-center pb-10" id="error">${error}</p>
             </c:if>
@@ -27,7 +38,7 @@
                 <input class="input-field text-title_text_clr" type="password" id="password" name="password" placeholder="Password" autocomplete="current-password" pattern=".{4,18}" required/>
                 <button class="yellow-btn primary-btns" id="signIn">Sign In</button>
                 
-                <div class="bg-bg_color1 rounded-md mt-7 mb-10" id="divider"></div>
+                <div class="bg-borderClr rounded-md mt-7 mb-10" id="divider"></div>
             </form>
             <a href="<c:url value="/register"/>">
                 <button class="bg-gray-300 hover:bg-gray-200 text-gray-900 primary-btns" id="signUP">Create Account</button>
