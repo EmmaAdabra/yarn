@@ -4,7 +4,17 @@ import com.adb.chat_app.models.Post;
 
 public class PostDto extends Post {
     private PosterDto posterData;
-    private String postDate;
+    private String longDate;
+
+    public String getShortDate() {
+        return shortDate;
+    }
+
+    public void setShortDate(String shortDate) {
+        this.shortDate = shortDate;
+    }
+
+    private String shortDate;
     private int comment;
 
     public PosterDto getPosterData() {
@@ -15,12 +25,12 @@ public class PostDto extends Post {
         this.posterData = posterData;
     }
 
-    public String getPostDate() {
-        return postDate;
+    public String getLongDate() {
+        return longDate;
     }
 
-    public void setPostDate(String postDate) {
-        this.postDate = postDate;
+    public void setLongDate(String longDate) {
+        this.longDate = longDate;
     }
 
     public int getComment() {

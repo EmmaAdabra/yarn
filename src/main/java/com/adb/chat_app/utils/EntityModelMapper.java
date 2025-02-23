@@ -5,7 +5,6 @@ import com.adb.chat_app.dto.CommentDto;
 import com.adb.chat_app.dto.PostDto;
 import com.adb.chat_app.dto.PosterDto;
 import com.adb.chat_app.exceptions.DAOException;
-import com.adb.chat_app.models.Comment;
 import com.adb.chat_app.models.User;
 
 import java.sql.ResultSet;
@@ -34,7 +33,8 @@ public class EntityModelMapper  {
         postDto.setPostTile(resultSet.getString("title"));
         postDto.setContent(resultSet.getString("content"));
         postDto.setMedia(resultSet.getString("media_path"));
-        postDto.setPostDate(DateUtil.formatPostDate(resultSet.getTimestamp("created_at")));
+        postDto.setLongDate(DateUtil.formatPostDate(resultSet.getTimestamp("created_at")));
+        postDto.setShortDate(DateUtil.shortDateFormat(resultSet.getTimestamp("created_at")));
         postDto.setComment(resultSet.getInt("comment"));
 
         return postDto;
@@ -76,7 +76,7 @@ public class EntityModelMapper  {
         commentDto.setName(name);
         commentDto.setComment(resultSet.getString("content"));
         commentDto.setTime(
-                DateUtil.formatPostDate(resultSet.getTimestamp("created_at"))
+                DateUtil.shortDateFormat(resultSet.getTimestamp("created_at"))
         );
 
         int userId = resultSet.getInt("user_id");
