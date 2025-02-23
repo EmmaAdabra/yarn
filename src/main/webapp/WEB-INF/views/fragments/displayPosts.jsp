@@ -27,8 +27,11 @@
                 <h3 class="poster">
                   <a class="text-title_text_clr text-[16px]" href="">${post.posterData.name}</a>
                 </h3>
-                <span class="post-time text-fade_text text-[12px]">
-                  ${post.postDate}
+                <span class="post-time text-fade_text text-[12px] short-date">
+                  ${post.shortDate}
+                </span>
+                <span class="hidden post-time text-fade_text text-[12px] long-date">
+                    ${post.longDate}
                 </span>
               </div>
             </div>
