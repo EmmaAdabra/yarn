@@ -1,5 +1,6 @@
 package com.adb.chat_app.utils;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +20,30 @@ public class DateUtil {
             return "Yesterday at " + postDateTime.format(DateTimeFormatter.ofPattern("h:mm a"));
         } else {
             // Else: "February 12, at 3:17"
-            return postDateTime.format(DateTimeFormatter.ofPattern("MMMM d, 'at' h:mm a"));
+            return postDateTime.format(DateTimeFormatter.ofPattern("h:mm a, d MMM yy"));
+        }
+    }
+
+    public static String shortDateFormat(Date date){
+        LocalDateTime postDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime now = LocalDateTime.now();
+
+        Duration duration = Duration.between(postDateTime, now);
+
+        if (duration.getSeconds() < 60) {
+            return duration.getSeconds() + "s";
+        }
+        else if (duration.toMinutes() < 60) {
+            return duration.toMinutes() + "m";
+        }
+        else if (duration.toHours() < 24) {
+            return duration.toHours() + "h";
+        }
+        else if (duration.toDays() < 7) {
+            return duration.toDays() + "d";
+        }
+        else {
+            return postDateTime.format(DateTimeFormatter.ofPattern("d MMM"));
         }
     }
 }
