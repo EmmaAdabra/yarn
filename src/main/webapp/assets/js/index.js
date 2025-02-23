@@ -447,7 +447,7 @@ function addComment(commentList, post, position) {
       commentDiv.setAttribute("data-comment-id", comment.commentId);
       commentDiv.innerHTML = `
         <div class="flex gap-[5px]">
-          <span class="flex justify-center items-center w-[35px] h-[35px] text-fade_text text-[25px] uppercase rounded-full">
+          <span class="center-icon w-[35px] h-[35px] text-fade_text text-[20px] bg-bg_color3">
             ${pfp}
           </span>
           <div class="bg-bg_color3 w-fit text-main_text p-2 rounded-lg">

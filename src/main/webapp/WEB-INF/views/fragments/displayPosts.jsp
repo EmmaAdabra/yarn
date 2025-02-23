@@ -55,7 +55,7 @@
             </div> 
           </div>
           <div class="hidden post-comment-box border-t-borderClr bg-bg_color2" data-comment-modal="commentBox">
-            <span class="flex justify-center items-center w-[40px] h-[40px] text-fade_text text-[20px] uppercase rounded-full bg-bg_color3">
+            <span class="center-icon bg-bg_color3 w-[40px] h-[40px] text-fade_text text-[20px]">
               <%@include file="/WEB-INF/views/fragments/pfpWrapper.jsp"%>
             </span>
             <form class="w-full comment-form" action="" >
@@ -65,7 +65,7 @@
                   <span class="w-[40px] h-[40px] center-icon p-2 hover:bg-bg_color2">
                     <i class="ri-send-plane-2-fill"></i>
                   </span>
-                  <span class="loader hidden justify-center items-center absolute inset-0 w-full h-full rounded-full bg-bg_color1">
+                  <span class="loader hidden justify-center items-center absolute inset-0 w-full h-full rounded-full bg-bg_color">
                     <%@include file="/WEB-INF/views/fragments/loader.jsp"%>
                   </span>
                 </button>
