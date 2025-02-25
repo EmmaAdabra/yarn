@@ -40,7 +40,7 @@ public class SubmitPostServlet extends HttpServlet {
 
             if(session != null && session.getAttribute("sessionUser") != null){
                 SessionUserDTO sessionUser = (SessionUserDTO) session.getAttribute("sessionUser");
-                int userId = (int) sessionUser.getUserID();
+                int userId = sessionUser.getUserId();
 
                 String unformattedPostContent = request.getParameter("postContent");
                 String postContent = unformattedPostContent.replace("\n", "<br>");
