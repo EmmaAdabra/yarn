@@ -1,2 +1,2 @@
-delete from posts
-where id = ? and userid = ?;
+DELETE FROM posts
+WHERE id = ? and userid = ?;
