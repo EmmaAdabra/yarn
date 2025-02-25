@@ -73,7 +73,7 @@ public class UserService {
 
     public Response<SessionUserDTO> createSessionUser(User user) throws UnknownException {
         SessionUserDTO sessionUser = new SessionUserDTO();
-        sessionUser.setUserID(user.getId());
+        sessionUser.setUserId(user.getId());
         sessionUser.setfName(user.getFirstName());
         sessionUser.setlName(user.getLastName());
         sessionUser.setEmail(user.getEmail());
@@ -132,9 +132,9 @@ public class UserService {
         return new Response<>(ResponseCode.RESOURCE_NOT_FOUND.getCode(), "user have no pfp", new byte[0]);
     }
 
-    public Response<Integer> addBio(String bio, long userId) throws UnknownException{
+    public Response<Integer> addBio(String bio, int userId) throws UnknownException{
         try{
-            int updateBio = userDao.updateUserBio(bio, (int) userId);
+            int updateBio = userDao.updateUserBio(bio, userId);
             if(updateBio != 0){
                 return new Response<>(ResponseCode.RESOURCE_CREATED.getCode(), "User bio updated");
             }
