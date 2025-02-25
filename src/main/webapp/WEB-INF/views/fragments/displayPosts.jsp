@@ -1,8 +1,8 @@
 <div class="post-container flex flex-col gap-5 items-center pt-6 pb-10 text-main_text w-full">
   <c:forEach var="post" items="${posts}">
-    <div class="bg-bg_color2 w-full border border-borderClr shadow-lg rounded-md post">
+    <div class="bg-bg_color2 w-full border border-borderClr shadow-lg rounded-md post" id="post-${post.postId}">
       <div class="" data-comment-modal="ModalContainer">
-        <div class="" data-comment-modal="postContainer">
+        <div data-comment-modal="postContainer">
           <header class="hidden comment-modal-header border-b-borderClr bg-bg_color2" data-comment-modal="modalHeader">
             <h2 class="text-title_text_clr text-[18px]">${post.posterData.firstName}'s Post</h2>
             <button class="modal-close-icon close-comment-btn border-borderClr shadow-lg rounded-full">
@@ -10,7 +10,19 @@
             </button>
           </header>
           <div class="px-3 scroll-container" data-comment-modal="postTextComment">
-            <div class="flex items-center justify-start gap-3 post-header pt-3 pb-1.5">
+            <div class="flex items-center justify-start gap-3 post-header pt-3 pb-1.5 relative overflow-hidden">
+              <!-- post more icon -->
+              <c:if test="${not empty sessionScope.sessionUser and post.posterData.id == sessionScope.sessionUser.userId}">
+                <div class="absolute top-2 right-0 post-more">
+                  <div class="center-icon w-[35px] h-[35px] bg-bg_color3 text-[20px] text-fade_text cursor-pointer  hover:border hover:border-borderClr post-see-more">
+                    <i class="ri-more-2-line"></i>
+                  </div>
+                  <div class="w-fit p-3 bg-bg_color3 border border-borderClr text-main_text text-sm rounded absolute top-0 -right-[250%] transition post-more-menu">
+                    <button class="cursor-pointer hover:text-title_text_clr delete-post" data-postid="${post.postId}" data-posterid="${sessionScope.sessionUser.userId}">Delete</button>
+                  </div>
+                </div>
+              </c:if>
+
               <span class="flex justify-center items-center w-[40px] h-[40px] text-fade_text text-[20px] uppercase rounded-full bg-bg_color3">
                 <c:choose>
                   <c:when test="${not empty post.posterData.pfp}">
@@ -80,18 +92,18 @@
       <div class="post-props px-3 mt-3 bg-bg_color3">
         <ul>
           <li class="comment w-fit">
-            <a class="gap-[5px] text-fade_text hover:text-main_text comment-icon" href="" id="${post.getPostId()}">
+            <a class="gap-[5px] text-fade_text hover:text-main_text comment-icon" href="" id="${post.postId}">
               <button class="flex gap-2 items-center text-[25px]">
                 <span class="flex items-center gap-[2px]">
                   <i class="ri-chat-1-line"></i>
                 <c:choose>
                   <c:when test="${post.comment > 0}">
-                    <span class="comment-number text-[12px]" data-comment-count="${post.getComment()}">
+                    <span class="comment-number text-[12px]" data-comment-count="${post.comment}">
                       ${post.comment}
                     </span>
                   </c:when>
                   <c:otherwise>
-                    <span class="comment-number text-[12px]" data-comment-count="${post.getComment()}"></span>
+                    <span class="comment-number text-[12px]" data-comment-count="${post.comment}"></span>
                   </c:otherwise>
                 </c:choose>
                 </span>
