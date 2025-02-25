@@ -9,7 +9,7 @@ public class SessionUserDTO implements Serializable {
     private String email;
     private String bio;
     private String pfp;
-    private long userID;
+    private long userId;
     private String userFullName;
     private String UserInitial;
     private boolean hasPfp = false;
@@ -18,7 +18,7 @@ public class SessionUserDTO implements Serializable {
 
     public SessionUserDTO(
             String fName, String lName, boolean hasPfp,
-            String username, String bio, long userID,
+            String username, String bio, long userId,
             String userFullName, String initial
 )
     {
@@ -26,7 +26,7 @@ public class SessionUserDTO implements Serializable {
         this.lName = lName;
         this.username = username;
         this.bio = bio;
-        this.userID = userID;
+        this.userId = userId;
         this.userFullName = userFullName;
         this.UserInitial = initial;
         this.hasPfp = hasPfp;
@@ -83,12 +83,12 @@ public class SessionUserDTO implements Serializable {
         this.pfp = pfp;
     }
 
-    public long getUserID() {
-        return userID;
+    public int getUserId() {
+        return (int) userId;
     }
 
-    public void setUserID(long userID) {
-        this.userID = userID;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getUserFullName() {

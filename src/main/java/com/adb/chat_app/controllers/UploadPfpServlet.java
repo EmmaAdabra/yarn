@@ -42,9 +42,9 @@ public class UploadPfpServlet extends HttpServlet {
                 Part filePart = request.getPart("image"); // get uploaded image
                 ValidateInputs.validatePfpUpload(filePart);
 
-                Response<Object> serviceResponse = userService.uploadUserPfp(sessionUser.getUserID(), filePart);
+                Response<Object> serviceResponse = userService.uploadUserPfp(sessionUser.getUserId(), filePart);
                 sessionUser.setHasPfp(true);
-                sessionUser.setPfpUrl(UserUtil.getUserPfpUrl(sessionUser.getUserID()));
+                sessionUser.setPfpUrl(UserUtil.getUserPfpUrl(sessionUser.getUserId()));
 
                 session.setAttribute("sessionUser", sessionUser);
                 jsonResponse.put("status", String.valueOf(serviceResponse.getStatus()));
