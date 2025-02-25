@@ -46,7 +46,7 @@ public class AddCommentServlet extends HttpServlet {
                 HttpSession session = request.getSession(false);
                 SessionUserDTO sessionUser = (session != null) ? (SessionUserDTO) session.getAttribute("sessionUser") : null;
 
-                comment.setUserId((sessionUser != null) ? (int) sessionUser.getUserID() : 0);
+                comment.setUserId((sessionUser != null) ? sessionUser.getUserId() : 0);
 
                 jsonResponse = commentService.addComment(comment);
                 response.getWriter().write(objectMapper.writeValueAsString(jsonResponse));
