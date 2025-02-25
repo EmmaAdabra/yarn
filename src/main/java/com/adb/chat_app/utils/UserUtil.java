@@ -14,7 +14,7 @@ public class UserUtil {
         return serviceResponse.getStatus() == ResponseCode.SUCCESS.getCode();
     }
 
-    public static String getUserPfpUrl(long userId){
+    public static String getUserPfpUrl(int userId){
         return GetContextPath.getContextPath() + "/fetchPfp?id=" + userId;
     }
 }
