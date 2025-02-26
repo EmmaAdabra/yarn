@@ -43,39 +43,4 @@ public class CommentService {
 
         return serviceResponse;
     }
-
-//    public CommentDto createCommenterDto(Comment comment) throws DAOException {
-//        UserDao userDao = new UserDao();
-//        String commenterName = null;
-//        String commenterPfpUrl = null;
-//        String commenterInitial = null;
-//
-//
-//        if(comment.getUserId() != 0){
-//            Optional<User> user = userDao.get(comment.getUserId());
-//
-//            if(user.isPresent()){
-//                User commenter = user.get();
-//                commenterName = StringUtil.getUSerFullName(
-//                        commenter.getFirstName(),
-//                        commenter.getLastName()
-//                );
-//
-//                commenterInitial = StringUtil.getUserInitial( commenter.getFirstName(),
-//                        commenter.getLastName());
-//
-//                commenterPfpUrl = (userDao.hasUserPfp(commenter.getId())) ?
-//                        UserUtil.getUserPfpUrl(comment.getUserId()) : null;
-//
-//            }
-//        } else {
-//            commenterInitial = "A";
-//            commenterName = "Anonymous";
-//            commenterPfpUrl = StringUtil.randomAvatarUrl();
-//        }
-//        String time = (DateUtil.formatPostDate(new Date()));
-//        CommentDto commentDto = new CommentDto(1, commenterName, commenterPfpUrl, commenterInitial, time, comment);
-//
-//        return commentDto;
-//    }
 }
