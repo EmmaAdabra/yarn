@@ -1,5 +1,109 @@
-// show nav profile menu
 {
+  // confirmation modal, delete post or comment related variables and functions
+  const confirmModal = document.getElementById("confirmModal");
+  const confirmDeleteBtn = document.getElementById("confirmDelete");
+  const cancelDeleteBtn = document.getElementById("cancelDelete");
+  let itemToBeDeletedId; // could be comment or post
+  let loginUserId; // login user
+  let itemType; // comment or post
+
+  if(confirmModal){
+    confirmModal.addEventListener("click", function (event){
+      event.stopPropagation();
+    })
+  }
+
+  // activate confirm modal
+  function showConfirmActionModal(itemId, ownerId, func){
+    confirmModal.classList.add("show")
+  }
+
+  document.getElementById("centerPaneContent").addEventListener("click", function (event){
+    // post see more button
+    if(event.target.classList.contains("post-see-more") || event.target.parentElement.classList.contains("post-see-more")){
+      hideShowElement();
+      const postMoreMenu = event.target.closest(".post").querySelector(".post-more-menu");
+      postMoreMenu.removeEventListener("click", stopClickPropagate)
+      postMoreMenu.addEventListener("click", stopClickPropagate)
+      postMoreMenu.classList.add("show");
+    } else{
+      hideShowElement();
+    }
+
+    // delete post
+    if(event.target.classList.contains("delete-post")){
+      const deleteBtn = event.target
+      console.log(deleteBtn);
+      itemToBeDeletedId = deleteBtn.dataset.postid;
+      loginUserId = deleteBtn.dataset.posterid;
+      itemType = "post";
+      showConfirmActionModal();
+    }
+  })
+
+  // cancel delete action
+  cancelDeleteBtn.addEventListener("click", function(){
+    confirmModal.classList.remove("show");
+  })
+
+  confirmDeleteBtn.addEventListener("click", function (){
+    if(itemType === "post"){
+      deletePost(itemToBeDeletedId, loginUserId);
+    }
+    if(itemType === "comment"){
+      // deletePost(itemToBeDeletedId, loginUserId);
+    }
+    // console.log(`post ID: ${itemToBeDeletedId} User ID: ${loginUserId}`)
+    confirmModal.classList.remove("show");
+  })
+}
+
+function deletePost(postId, userId){
+  const url = `/delete_post?postId=${postId}&ownerId=${userId}`;
+  const post = document.getElementById(`post-${postId}`);
+
+  let response = (deleteItem(postId, userId, url));
+
+  if(response && post){
+    post.remove();
+  }
+}
+
+function deleteComment(postId, userId){
+
+}
+
+async function deleteItem(itemId, ownerId, route){
+
+  try{
+    let response = await fetch(route, {
+      method: "DELETE"
+    })
+
+    if(response.ok){
+      console.log(`Post with ID: ${itemId} deleted successfully`)
+      return true;
+    } else if(response.status === 404) {
+      console.log(`Post with ID: ${itemId}, was not found`);
+      return true;
+    } else {
+      throw new Error(`error: ${response.status}`)
+      return false
+    }
+  } catch (error){
+    console.error(`Error: ${error.message}`)
+  }
+
+
+
+
+
+
+}
+
+
+{
+  // top nav dropdown menu
   const profileIcon = document.querySelector("#navPfp");
   const profileMenu = document.querySelector("#profileMenu");
   profileIcon.addEventListener("click", (event) => {
@@ -11,9 +115,12 @@
     const profileMenu = document.querySelector("#profileMenu");
     profileMenu.classList.add("hidden");
   }
+}
 
-  // close top nave profile menu on click even not within profile menu
+  // document click event delegation
   document.addEventListener("click", function (event) {
+    
+  // close top nave profile menu on click even not within profile menu
     if (!profileMenu.contains(event.target)) {
       hideProfileMenu();
     }
@@ -27,7 +134,33 @@
     if(event.target.classList.contains("index-create-post") || event.target.parentElement.classList.contains("index-create-post")){
       openCreatePostNotice();
     }
+
+
   });
+
+
+
+
+//stop post more menu container click propagation
+function stopClickPropagate(event){
+  if(event.target.classList.contains("post-more-menu")){
+    event.stopPropagation();
+  }
+}
+
+
+// hide show element on scroll
+document.querySelectorAll(".scroll-container").forEach((scrollElem) => {
+  scrollElem.addEventListener("scroll", hideShowElement);
+})
+
+
+// hide all show more menu and confirmation modal
+function hideShowElement(){
+  let showElement = document.querySelector(".show");
+  if(showElement){
+    showElement.classList.remove("show");
+  }
 }
 
 // for index page
@@ -222,6 +355,13 @@ function displayEditProfileError(currentEvent, errorMsg) {
       const modalElement = this.closest(".post");
       let postId = btn.getAttribute("id");
 
+      // push more button down
+      let postMore = modalElement.querySelector(".post-more");
+      if(postMore) {
+        postMore.classList.add("top-16");
+      }
+
+
       // hide short post date
       modalElement.querySelector(".short-date").classList.add("hidden");
       // show full post date
@@ -296,6 +436,12 @@ function displayEditProfileError(currentEvent, errorMsg) {
       );
       commentModal.classList.remove("comment-modal");
 
+      // return more buttons to normal position
+      let postMore = modalElement.querySelector(".post-more");
+      if(postMore) {
+        postMore.classList.remove("top-16");
+      }
+
       // show short post date
       modalElement.querySelector(".short-date").classList.remove("hidden");
       // hide full post date
@@ -352,21 +498,31 @@ function displayEditProfileError(currentEvent, errorMsg) {
 {
   const commentBoxes = document.querySelectorAll(".comment-form textarea");
   commentBoxes.forEach((commentBox) => {
-    const commentBtn = commentBox.parentElement.querySelector("button");
-
-    commentBox.addEventListener("input", function () {
-      if (commentBox.value.length > 0) {
-        commentBtn.disabled = false;
-        commentBtn.classList.remove("cursor-not-allowed");
-        commentBtn.classList.add("text-logo_clr1");
-      } else {
-        commentBtn.disabled = true;
-        commentBtn.classList.remove("text-logo_clr1");
-        commentBtn.classList.add("cursor-not-allowed");
-        commentBtn.classList.add("text-fade_text");
-      }
-    });
+    commentBox.addEventListener("input", activateAndDeactivateCommentBtn);
   });
+}
+
+function activateAndDeactivateCommentBtn(event){
+  let commentBox;
+
+  if(event.target){
+    commentBox = event.target;
+  } else {
+    commentBox = event;
+  }
+
+  const commentBtn = commentBox.parentElement.querySelector("button");
+
+  if (commentBox.value.length > 0) {
+    commentBtn.disabled = false;
+    commentBtn.classList.remove("cursor-not-allowed");
+    commentBtn.classList.add("text-logo_clr1");
+  } else {
+    commentBtn.disabled = true;
+    commentBtn.classList.remove("text-logo_clr1");
+    commentBtn.classList.add("cursor-not-allowed");
+    commentBtn.classList.add("text-fade_text");
+  }
 }
 
 // AJAX for submitting comment on posts
@@ -395,8 +551,6 @@ function displayEditProfileError(currentEvent, errorMsg) {
           body: JSON.stringify({ postId, comment }),
         });
 
-        console.log("response info:", response.ok, response.status);
-
         if (!response.ok) {
           throw new Error(`HTTP Error: ${response.status}`);
         }
@@ -417,12 +571,12 @@ function displayEditProfileError(currentEvent, errorMsg) {
         } else {
           if (result.data) {
             commentBox.value = "";
-            console.log(result.data);
             commentList.push(result.data);
             addComment(commentList, postContainer, "prepend");
             const noComment = postContainer.querySelector(".no-comment");
 
             loader.classList.add("hidden");
+            activateAndDeactivateCommentBtn(commentBox);
 
             updateCommentCount(postContainer, 1, "add");
             if (!noComment.classList.contains("hidden")) {
