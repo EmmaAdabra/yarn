@@ -25,7 +25,7 @@ public class ValidateInputs {
         return email;
     }
 
-    public static String verifyName(String name) throws InputValidationException {
+    public static void verifyName(String name) throws InputValidationException {
         String label = "Firstname or Lastname";
 
         if(name == null || name.isEmpty()){
@@ -44,10 +44,9 @@ public class ValidateInputs {
                     "Name contains illegal character - only [space, letters, ',-] are allowed"
             );
         }
-        return name;
     }
 
-    public static String  verifyUsername(String username) throws InputValidationException{
+    public static void  verifyUsername(String username) throws InputValidationException{
 
         String label = "UserName";
 
@@ -62,7 +61,6 @@ public class ValidateInputs {
                     "Username contains invalid character - valid character - [letters, numbers, or .]"
             );
         }
-        return username;
     }
 
 
@@ -83,17 +81,15 @@ public class ValidateInputs {
         return password;
     }
 
-    public static boolean verifyConfirmPassword(
+    public static void verifyConfirmPassword(
             String password, String confirmPassword
     ) throws InputValidationException{
         if(!password.equals(confirmPassword)){
             throw new InputValidationException("Confirm password not match password");
         }
-
-        return true;
     }
 
-    private static boolean verifyNameLength(String name, String label) throws InputValidationException {
+    private static void verifyNameLength(String name, String label) throws InputValidationException {
 
         final int MAX_NAME_LENGTH = 50;
         final int MIN_NAME_LENGTH = 2;
@@ -105,11 +101,9 @@ public class ValidateInputs {
         if(name.length() > MAX_NAME_LENGTH) {
             throw new InputValidationException(label + " too long - max length should be 50");
         }
-
-        return true;
     }
 
-    public static boolean validatePfpUpload(Part imagePart) throws InputValidationException{
+    public static void validatePfpUpload(Part imagePart) throws InputValidationException{
         final int MAX_IMAGE_SIZE = 500 * 1024;
         if (imagePart == null || imagePart.getSize() == 0 || imagePart.getSubmittedFileName() == null) {
             throw new InputValidationException("No file uploaded");
@@ -118,19 +112,15 @@ public class ValidateInputs {
         if(imagePart.getSize() > MAX_IMAGE_SIZE) {
             throw new InputValidationException("File should not be greater than 500KB");
         }
-
-        return true;
     }
 
-    public static boolean validateUserBio(String bio) throws InputValidationException {
+    public static void validateUserBio(String bio) throws InputValidationException {
         if(bio.trim().length() > 166){
             throw new InputValidationException("User bio should not be greater than 166 characters");
         }
-
-        return true;
     }
 
-    public static boolean validatePostImage(Part postImage) throws InputValidationException {
+    public static void validatePostImage(Part postImage) throws InputValidationException {
 //        ToDo: change size literal
         if(postImage.getSize() > 1024 * 500){
             throw new InputValidationException("Attached image should not be greater than 500kb");
@@ -139,14 +129,19 @@ public class ValidateInputs {
         if(!postImage.getContentType().startsWith("image/")){
             throw new InputValidationException("Invalid file type --- post attachment should only be image format");
         }
-        return true;
     }
 
-    public static boolean validateComment(String comment) throws InputValidationException{
+    public static void validateComment(String comment) throws InputValidationException{
         if(comment == null || comment.trim().isEmpty()){
             throw new InputValidationException("Comment can't be empty");
         }
+    }
 
-        return true;
+    public static void validateQueryParam(String ... values) throws InputValidationException{
+        for (String value : values) {
+            if (value == null || value.isEmpty()) {
+                throw new InputValidationException("Query parameters can't be null or empty");
+            }
+        }
     }
 }
