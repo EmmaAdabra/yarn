@@ -3,7 +3,8 @@ package com.adb.chat_app.dao.postDao;
 public enum PostSqlScriptsPath {
 
     INSERT_USER_SCRIPT(getUserScriptDir() + "insert_post.sql"),
-    GET_ALL_POSTS(getUserScriptDir() + "get_all_posts.sql");
+    GET_ALL_POSTS(getUserScriptDir() + "get_all_posts.sql"),
+    DELETE_POST(getUserScriptDir() + "delete_post.sql");
 
     private String path;
 
