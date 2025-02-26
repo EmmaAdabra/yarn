@@ -111,4 +111,34 @@ public class PostDao implements IPostDao{
     public int delete(long id) throws DAOException {
         return 0;
     }
+
+    public int deletePost(int postId, int ownerId) throws DAOException{
+        int deletedRow;
+
+        try(Connection connection = CreateDbConnection.getConnection()){
+            String sqlScriptPath = PostSqlScriptsPath.DELETE_POST.getPath();
+            String deletePostQuery = GetSqlStatement.sqlQueryBuilder(sqlScriptPath);
+
+            try(PreparedStatement preparedStatement = connection.prepareStatement(deletePostQuery)){
+
+               preparedStatement.setInt(1, postId);
+               preparedStatement.setInt(2, ownerId);
+
+               deletedRow = preparedStatement.executeUpdate();
+
+            } catch (SQLException e){
+                logger.error("SQL query execution error: " + e.getMessage(), e);
+                throw new DAOException("sql execution error", e);
+            }
+
+        } catch (SQLException e) {
+            logger.error("Fail to connect to database: " + e.getMessage(), e);
+            throw new DAOException("Fail to connect to database", e);
+        } catch (IOException e){
+            logger.error("Failed to fetch delete post sql query -- " + e.getMessage());
+            throw new DAOException("Failed to fetch delete post sql query", e);
+        }
+
+        return deletedRow;
+    }
 }
