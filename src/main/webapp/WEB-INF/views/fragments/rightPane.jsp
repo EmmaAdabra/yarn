@@ -26,12 +26,12 @@
     <p id="quote-author" class="text-fade_text text-sm mt-2">- Unknown</p>
 
       <!-- Controls -->
-    <div class="flex justify-between items-center mt-6">
-      <button id="prev" class="px-4 py-2 rounded-lg text-fade_text border border-borderClr bg-bg_color3 hover:text-title_text_clr hover:bg-extra1_clr1 transition disabled:opacity-50" disabled>
-          Prev
+    <div class="flex justify-around items-center mt-6">
+      <button id="prev" class="px-2 py-[3px] rounded-lg text-[25px] text-fade_text border border-borderClr bg-bg_color3 hover:text-title_text_clr hover:bg-extra1_clr1 transition disabled:opacity-50" disabled>
+        <i class="ri-arrow-drop-left-line"></i>
       </button>
-      <button id="next" class="px-4 py-2 rounded-lg text-fade_text border border-borderClr bg-bg_color3 hover:text-title_text_clr hover:bg-extra2 transition">
-          Next
+      <button id="next" class="px-2 py-[3px] rounded-lg text-[25px] text-fade_text border border-borderClr bg-bg_color3 hover:text-title_text_clr hover:bg-extra2 transition">
+        <i class="ri-arrow-right-s-line"></i>
       </button>
     </div>
   </div>
