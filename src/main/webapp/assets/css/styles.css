@@ -620,10 +620,6 @@ video {
   inset: 0px;
 }
 
-.-right-\[-10px\] {
-  right: 10px;
-}
-
 .-top-5 {
   top: -1.25rem;
 }
@@ -672,10 +668,6 @@ video {
   right: 1.25rem;
 }
 
-.right-\[-10px\] {
-  right: -10px;
-}
-
 .right-\[-3px\] {
   right: -3px;
 }
@@ -710,10 +702,6 @@ video {
 
 .top-\[58px\] {
   top: 58px;
-}
-
-.-right-\[10px\] {
-  right: -10px;
 }
 
 .z-30 {
@@ -1133,6 +1121,10 @@ video {
   justify-content: space-between;
 }
 
+.justify-around {
+  justify-content: space-around;
+}
+
 .gap-1 {
   gap: 0.25rem;
 }
@@ -1428,6 +1420,11 @@ video {
 .py-\[4px\] {
   padding-top: 4px;
   padding-bottom: 4px;
+}
+
+.py-\[3px\] {
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 .pb-1\.5 {
@@ -2250,6 +2247,11 @@ textarea::-webkit-scrollbar
   .sm\:px-10 {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .sm\:text-xl {

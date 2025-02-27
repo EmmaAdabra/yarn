@@ -276,6 +276,7 @@ function createPost(){
           location.reload();
         } catch (error) {
           // add a notification
+          alert(error.message)
           console.error(`Error: ${error.message}`);
         }
       } else {
