@@ -63,25 +63,25 @@ function deletePost(postId, userId){
   const url = `/delete_post?postId=${postId}&ownerId=${userId}`;
   const post = document.getElementById(`post-${postId}`);
 
-  let response = (deleteItem(postId, userId, url));
-
-  if(response && post){
-    post.remove();
-  }
+  (deleteItem(postId, userId, url)).then(response => {
+    if(response && post){
+      post.remove();
+    }
+  }).catch(error => console.error(error));
 }
 
 function deleteComment(commentId, ownerId){
-  const url = `/delete_comment?postId=${commentId}&ownerId=${ownerId}`;
+  const url = `/delete_comment?commentId=${commentId}&ownerId=${ownerId}`;
   const comment = document.getElementById(`comment-${commentId}`);
   const post = comment.closest(".post");
-  // let response = (deleteItem(commentId, ownerId, url));
-  let response = true;
 
-  if(response && comment){
-    comment.remove();
-    updateCommentCount(post, -1, "add");
-    checkIfCommentIsEmpty(post);
-  }
+  (deleteItem(commentId, ownerId, url)).then(response => {
+      if(response && comment){
+        comment.remove();
+        updateCommentCount(post, -1, "add");
+        checkIfCommentIsEmpty(post);
+      }
+  }).catch(error => console.error(error));
 }
 
 async function deleteItem(itemId, ownerId, route){
@@ -231,7 +231,6 @@ function createPost(){
         } else {
           countBar.classList.add("hidden");
         }
-
         countBar.textContent = `${elem.value.length}/${maxLength}`;
       }
     });
