@@ -22,7 +22,7 @@
                     <i class="ri-close-large-fill text-[25px]"></i>
                 </a>
             </header>
-            <section class= "px-8 py-10 text-title_text_clr">
+            <section class= "sm:px-8 px-3 py-10 text-title_text_clr">
                 <form class="text-center mb-8 data-edit-wrapper" id="uploadForm" enctype="multipart/form-data">
                     <div class="flex  justify-between items-center w-full">
                         <span class="">Profile Picture</span>
@@ -58,9 +58,9 @@
                             </c:otherwise>
                         </c:choose>
                     </div>
-                    <div class="w-[70%] hidden flex-col items-center gap-2" id="bioTextContainer">
+                    <div class="sm:w-[70%] w-full hidden flex-col items-center gap-2" id="bioTextContainer">
                         <div class="flex items-center gap-2 w-full">
-                            <input class="bg-bg_color1 w-[90%] h-min-[60px] h-[fit-content] p-3 text-center resize-none text-fade_text h-max-[fit-content] rounded-md border-none outline-none" name="userBio" type="text" value="${sessionScope.sessionUser.getBio()}" readonly id="userBio" />
+                            <input class="flex-auto bg-bg_color1 sm:w-[90%] w-full h-min-[60px] h-[fit-content] p-3 text-center resize-none text-fade_text h-max-[fit-content] rounded-md border-none outline-none" name="userBio" type="text" value="${sessionScope.sessionUser.getBio()}" readonly id="userBio" />
                             <button class="hidden gray-btn px-2 py-1 rounded-md" id="saveBio">Save</button>
                         </div>
                         <p class="count-bar w-[75%] text-main_text text-right text-[10px] px-2 font-mono"></p>
