@@ -13,12 +13,14 @@
             <div class="flex items-center justify-start gap-3 post-header pt-3 pb-1.5 relative overflow-hidden">
               <!-- post more icon -->
               <c:if test="${not empty sessionScope.sessionUser and post.posterData.id == sessionScope.sessionUser.userId}">
-                <div class="absolute top-2 right-0 post-more">
+                <div class="absolute top-2 right-0 more-menu-container">
                   <div class="center-icon w-[35px] h-[35px] bg-bg_color3 text-[20px] text-fade_text cursor-pointer  hover:border hover:border-borderClr post-see-more">
                     <i class="ri-more-2-line"></i>
                   </div>
-                  <div class="w-fit p-3 bg-bg_color3 border border-borderClr text-main_text text-sm rounded absolute top-0 -right-[250%] transition post-more-menu">
-                    <button class="cursor-pointer hover:text-title_text_clr delete-post" data-postid="${post.postId}" data-posterid="${sessionScope.sessionUser.userId}">Delete</button>
+                  <div class="hidden w-fit p-2 bg-bg_color3 border border-borderClr text-main_text text-sm rounded absolute top-0 right-0 transition post-more-menu">
+                    <button class="cursor-pointer hover:text-title_text_clr delete-item" data-type="post" data-itemid="${post.postId}" data-ownerid="${sessionScope.sessionUser.userId}">
+                      <i class="ri-delete-bin-2-line text-[25px] text-fade_text hover:text-title_text_clr"></i>
+                    </button>
                   </div>
                 </div>
               </c:if>
@@ -80,7 +82,7 @@
                   <span class="w-[40px] h-[40px] center-icon p-2 hover:bg-bg_color2">
                     <i class="ri-send-plane-2-fill"></i>
                   </span>
-                  <span class="loader hidden justify-center items-center absolute inset-0 w-full h-full rounded-full bg-bg_color">
+                  <span class="loader hidden justify-center items-center absolute inset-0 w-full h-full rounded-full bg-bg_color1">
                     <%@include file="/WEB-INF/views/fragments/loader.jsp"%>
                   </span>
                 </button>
@@ -91,7 +93,7 @@
       </div>
       <div class="post-props px-3 mt-3 bg-bg_color3">
         <ul>
-          <li class="comment w-fit">
+          <li class="comments w-fit">
             <a class="gap-[5px] text-fade_text hover:text-main_text comment-icon" href="" id="${post.postId}">
               <button class="flex gap-2 items-center text-[25px]">
                 <span class="flex items-center gap-[2px]">

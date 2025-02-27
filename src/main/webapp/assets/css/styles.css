@@ -620,8 +620,8 @@ video {
   inset: 0px;
 }
 
-.-right-\[250\%\] {
-  right: -250%;
+.-right-\[-10px\] {
+  right: 10px;
 }
 
 .-top-5 {
@@ -672,6 +672,10 @@ video {
   right: 1.25rem;
 }
 
+.right-\[-10px\] {
+  right: -10px;
+}
+
 .right-\[-3px\] {
   right: -3px;
 }
@@ -706,6 +710,10 @@ video {
 
 .top-\[58px\] {
   top: 58px;
+}
+
+.-right-\[10px\] {
+  right: -10px;
 }
 
 .z-30 {
@@ -842,6 +850,10 @@ video {
   height: 18px;
 }
 
+.h-\[25px\] {
+  height: 25px;
+}
+
 .h-\[30px\] {
   height: 30px;
 }
@@ -934,6 +946,10 @@ video {
 
 .w-\[200px\] {
   width: 200px;
+}
+
+.w-\[25px\] {
+  width: 25px;
 }
 
 .w-\[30px\] {
@@ -1085,6 +1101,10 @@ video {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -1143,6 +1163,10 @@ video {
 
 .gap-\[2px\] {
   gap: 2px;
+}
+
+.gap-\[3px\] {
+  gap: 3px;
 }
 
 .gap-\[5px\] {
@@ -1322,6 +1346,10 @@ video {
   padding: 1.25rem;
 }
 
+.p-\[3px\] {
+  padding: 3px;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -1428,6 +1456,10 @@ video {
 
 .pr-2 {
   padding-right: 0.5rem;
+}
+
+.pr-3 {
+  padding-right: 0.75rem;
 }
 
 .ps-4 {
@@ -1968,7 +2000,7 @@ body::-webkit-scrollbar-track,
 /* custom styling for login page*/
 
 .post-more-menu.show{
-  right: 0;
+  display: block;
 }
 
 #confirmModal.show{

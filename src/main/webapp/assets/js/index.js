@@ -1,3 +1,5 @@
+const SESSION_USER_ID = Number.parseInt(document.querySelector("body").dataset.user);
+
 {
   // confirmation modal, delete post or comment related variables and functions
   const confirmModal = document.getElementById("confirmModal");
@@ -14,48 +16,47 @@
   }
 
   // activate confirm modal
-  function showConfirmActionModal(itemId, ownerId, func){
+  function showConfirmActionModal(){
+    const deleteCommentMsg = "Do you want to delete this comment ?";
+    const deletePostMsg = "Do you want to delete this Post ?";
+    confirmModal.querySelector("#deleteModalMessage").textContent = (itemType === "post") ? deletePostMsg : deleteCommentMsg;
+
     confirmModal.classList.add("show")
   }
 
-  document.getElementById("centerPaneContent").addEventListener("click", function (event){
-    // post see more button
-    if(event.target.classList.contains("post-see-more") || event.target.parentElement.classList.contains("post-see-more")){
-      hideShowElement();
-      const postMoreMenu = event.target.closest(".post").querySelector(".post-more-menu");
-      postMoreMenu.removeEventListener("click", stopClickPropagate)
-      postMoreMenu.addEventListener("click", stopClickPropagate)
-      postMoreMenu.classList.add("show");
-    } else{
-      hideShowElement();
-    }
+  const centerPaneContent =  document.getElementById("centerPaneContent");
 
-    // delete post
-    if(event.target.classList.contains("delete-post")){
-      const deleteBtn = event.target
-      console.log(deleteBtn);
-      itemToBeDeletedId = deleteBtn.dataset.postid;
-      loginUserId = deleteBtn.dataset.posterid;
-      itemType = "post";
-      showConfirmActionModal();
-    }
-  })
+  if(centerPaneContent){
+    centerPaneContent.addEventListener("click", function (event){
+      // delete post
+      if(event.target.classList.contains("delete-item") || event.target.parentElement.classList.contains("delete-item")){
+        event.stopPropagation()
+        const deleteBtn = event.target.closest(".more-menu-container").querySelector(".delete-item")
+        itemToBeDeletedId = deleteBtn.dataset.itemid;
+        loginUserId = deleteBtn.dataset.ownerid;
+        itemType = deleteBtn.dataset.type;
+        showConfirmActionModal();
+        deleteBtn.parentElement.classList.remove("show");
+      }
+    })
+  }
 
   // cancel delete action
-  cancelDeleteBtn.addEventListener("click", function(){
-    confirmModal.classList.remove("show");
-  })
+  if(cancelDeleteBtn && confirmDeleteBtn){
+    cancelDeleteBtn.addEventListener("click", function(){
+      confirmModal.classList.remove("show");
+    })
 
-  confirmDeleteBtn.addEventListener("click", function (){
-    if(itemType === "post"){
-      deletePost(itemToBeDeletedId, loginUserId);
-    }
-    if(itemType === "comment"){
-      // deletePost(itemToBeDeletedId, loginUserId);
-    }
-    // console.log(`post ID: ${itemToBeDeletedId} User ID: ${loginUserId}`)
-    confirmModal.classList.remove("show");
-  })
+    confirmDeleteBtn.addEventListener("click", function (){
+      if(itemType === "post"){
+        deletePost(itemToBeDeletedId, loginUserId);
+      }
+      if(itemType === "comment"){
+        deleteComment(itemToBeDeletedId, loginUserId);
+      }
+      confirmModal.classList.remove("show");
+    })
+  }
 }
 
 function deletePost(postId, userId){
@@ -69,12 +70,21 @@ function deletePost(postId, userId){
   }
 }
 
-function deleteComment(postId, userId){
+function deleteComment(commentId, ownerId){
+  const url = `/delete_comment?postId=${commentId}&ownerId=${ownerId}`;
+  const comment = document.getElementById(`comment-${commentId}`);
+  const post = comment.closest(".post");
+  // let response = (deleteItem(commentId, ownerId, url));
+  let response = true;
 
+  if(response && comment){
+    comment.remove();
+    updateCommentCount(post, -1, "add");
+    checkIfCommentIsEmpty(post);
+  }
 }
 
 async function deleteItem(itemId, ownerId, route){
-
   try{
     let response = await fetch(route, {
       method: "DELETE"
@@ -87,34 +97,26 @@ async function deleteItem(itemId, ownerId, route){
       console.log(`Post with ID: ${itemId}, was not found`);
       return true;
     } else {
-      throw new Error(`error: ${response.status}`)
-      return false
+     return false;
     }
   } catch (error){
+    return false;
     console.error(`Error: ${error.message}`)
   }
-
-
-
-
-
-
 }
 
 
-{
-  // top nav dropdown menu
-  const profileIcon = document.querySelector("#navPfp");
-  const profileMenu = document.querySelector("#profileMenu");
-  profileIcon.addEventListener("click", (event) => {
-    event.stopPropagation();
-    profileMenu.classList.toggle("hidden");
-  });
+// top nav dropdown menu
+const profileIcon = document.querySelector("#navPfp");
+const profileMenu = document.querySelector("#profileMenu");
+profileIcon.addEventListener("click", (event) => {
+  event.stopPropagation();
+  profileMenu.classList.toggle("hidden");
+});
 
-  function hideProfileMenu() {
-    const profileMenu = document.querySelector("#profileMenu");
-    profileMenu.classList.add("hidden");
-  }
+function hideProfileMenu() {
+  const profileMenu = document.querySelector("#profileMenu");
+  profileMenu.classList.add("hidden");
 }
 
   // document click event delegation
@@ -135,10 +137,17 @@ async function deleteItem(itemId, ownerId, route){
       openCreatePostNotice();
     }
 
-
+    // post see more button
+    if(event.target.classList.contains("post-see-more") || event.target.parentElement.classList.contains("post-see-more")){
+      hideShowElement();
+      const postMoreMenu = event.target.closest(".more-menu-container").querySelector(".post-more-menu");
+      postMoreMenu.removeEventListener("click", stopClickPropagate)
+      postMoreMenu.addEventListener("click", stopClickPropagate)
+      postMoreMenu.classList.add("show");
+    } else{
+      hideShowElement();
+    }
   });
-
-
 
 
 //stop post more menu container click propagation
@@ -148,12 +157,10 @@ function stopClickPropagate(event){
   }
 }
 
-
 // hide show element on scroll
 document.querySelectorAll(".scroll-container").forEach((scrollElem) => {
   scrollElem.addEventListener("scroll", hideShowElement);
 })
-
 
 // hide all show more menu and confirmation modal
 function hideShowElement(){
@@ -231,7 +238,8 @@ function createPost(){
   });
 }
 
-// submit post
+//
+//  post
 {
   const postForm = document.querySelector("#postForm");
 
@@ -356,7 +364,7 @@ function displayEditProfileError(currentEvent, errorMsg) {
       let postId = btn.getAttribute("id");
 
       // push more button down
-      let postMore = modalElement.querySelector(".post-more");
+      let postMore = modalElement.querySelector(".more-menu-container");
       if(postMore) {
         postMore.classList.add("top-16");
       }
@@ -437,7 +445,7 @@ function displayEditProfileError(currentEvent, errorMsg) {
       commentModal.classList.remove("comment-modal");
 
       // return more buttons to normal position
-      let postMore = modalElement.querySelector(".post-more");
+      let postMore = modalElement.querySelector(".more-menu-container");
       if(postMore) {
         postMore.classList.remove("top-16");
       }
@@ -600,6 +608,28 @@ function addComment(commentList, post, position) {
     commentList.forEach((comment) => {
       let commentDiv = document.createElement("div");
       let pfp;
+      let seeMore;
+
+
+      commentDiv.classList.add("comment", "mb-5", "flex", "flex-row-reverse", "justify-end", "gap-1", "w-fit", "pr-3", "overflow-hidden");
+      commentDiv.setAttribute("id", `comment-${comment.commentId}`);
+
+      if(comment.userId === SESSION_USER_ID){
+        seeMore = `
+          <div class="more-menu-container relative">
+            <div class="center-icon w-[25px] h-[25px] bg-bg_color3 text-[18px] text-fade_text cursor-pointer  hover:border hover:border-borderClr post-see-more">
+              <i class="ri-more-2-line"></i>
+            </div>
+            <div class="hidden w-fit p-[3px] bg-bg_color3 border border-borderClr text-main_text text-sm rounded absolute top-0 right-0 transition post-more-menu">
+              <button class="cursor-pointer text-[12px] flex items-center gap-[3px] hover:text-title_text_clr delete-item" data-type="comment" data-itemid="${comment.commentId}" data-ownerid="${comment.userId}">
+                <i class="ri-delete-bin-2-line text-[18px] text-fade_text hover:text-title_text_clr"></i>
+              </button>
+            </div>
+          </div>
+        `
+      } else {
+        seeMore = ``;
+      }
 
       if (comment.pfp !== null) {
         pfp = `<img class="w-full h-full rounded-full object-cover" src="${comment.pfp}" alt="commenter pfp">`;
@@ -607,9 +637,8 @@ function addComment(commentList, post, position) {
         pfp = `<span>${comment.initial}</span>`;
       }
 
-      commentDiv.classList.add("comment", "mb-5");
-      commentDiv.setAttribute("data-comment-id", comment.commentId);
       commentDiv.innerHTML = `
+         ${seeMore}
         <div class="flex gap-[5px]">
           <span class="center-icon w-[35px] h-[35px] text-fade_text text-[20px] bg-bg_color3">
             ${pfp}
@@ -651,7 +680,7 @@ async function fetchPostComment(postId) {
 
     const result = await response.json();
 
-    console.log(result.message);
+    // console.log(result.message);
     return result.data;
   } catch (error) {
     console.error("Error:", error);
@@ -660,19 +689,28 @@ async function fetchPostComment(postId) {
 }
 
 function updateCommentCount(post, value, action = "") {
-  const commentCountElem = post.querySelector(".comment-number");
+  const totalCommentElem = post.querySelector(".comment-number");
   const commentCount = Number.parseInt(
-    commentCountElem.getAttribute("data-comment-count")
+    totalCommentElem.getAttribute("data-comment-count")
   );
 
   if (action === "add") {
-    commentCountElem.textContent = commentCount + value;
-    value = commentCount + value;
+    let totalComment = commentCount + value
+    totalCommentElem.textContent = totalComment === 0 ? "" : totalComment;
+    value += commentCount;
   } else {
-    commentCountElem.textContent = value;
+    totalCommentElem.textContent = value;
   }
 
-  commentCountElem.setAttribute("data-comment-count", value);
+  totalCommentElem.setAttribute("data-comment-count", value);
+}
+
+function checkIfCommentIsEmpty(post){
+  const commentList = post.querySelectorAll(".comment");
+
+  if(commentList.length === 0){
+    post.querySelector(".no-comment").classList.remove("hidden")
+  }
 }
 
 // scroll to top
