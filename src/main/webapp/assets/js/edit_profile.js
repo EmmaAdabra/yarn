@@ -32,22 +32,6 @@ function displayEditProfileError(currentEvent, errorMsg){
   let error = currentEvent.querySelector(".error");
   error.textContent = errorMsg;
 }
-// open profile editing modal
-// {
-//   const profileSettings = document.querySelector("#profileSettings");
-  
-//   profileSettings.addEventListener("click", function(event){
-//     event.preventDefault();
-//     const profileModal = document.querySelector("#settingsModal");
-//     const modalContent = document.getElementById('modalContent');
-//     modalContent.setAttribute('tabindex', '-1');
-//     modalContent.focus();
-    
-//     closeProfileMenu();
-//     profileModal.classList.remove("hidden");
-//     profileModal.classList.add("flex");
-//   })
-// }
 
  function closeProfileMenu(){
   //  profileMenu already define above as global variable
@@ -113,7 +97,6 @@ function displayEditProfileError(currentEvent, errorMsg){
 }
 
 function countCharacters (textField, countBar, max){
-  console.log(countBar);
   textField.addEventListener("input", function(){
     if(textField.value.length > max){
       textField.value = textField.value.substring(0, max);
@@ -138,8 +121,7 @@ document.querySelector("#bioForm").addEventListener("submit",
     } else{
         displayEditProfileError(event.target, "");
         try{
-          console.log(bioText)
-          const response = await fetch("/updateBio", 
+          const response = await fetch("/updateBio",
           {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
