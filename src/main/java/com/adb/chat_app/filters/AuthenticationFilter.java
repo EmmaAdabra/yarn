@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter({"/dashboard"})
+@WebFilter({"/dashboard", "/edit_profile"})
 public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -20,7 +20,7 @@ public class AuthenticationFilter implements Filter {
         if(session != null && session.getAttribute("sessionUser") != null){
             filterChain.doFilter(request, servletResponse);
         } else {
-            ((HttpServletResponse) servletResponse).sendRedirect("/login");
+            ((HttpServletResponse) servletResponse).sendRedirect("/");
         }
     }
 }
