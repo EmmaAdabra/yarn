@@ -1,5 +1,6 @@
 package com.adb.chat_app.dao.commentDao;
 
+import com.adb.chat_app.dao.postDao.PostSqlScriptsPath;
 import com.adb.chat_app.dto.CommentDto;
 import com.adb.chat_app.exceptions.DAOException;
 import com.adb.chat_app.models.Comment;
@@ -115,5 +116,35 @@ public class CommentDao implements ICommentDao{
     @Override
     public int delete(long id) throws DAOException {
         return 0;
+    }
+
+    public int deleteComment(int commentId, int ownerId) throws DAOException{
+        int deletedRow;
+
+        try(Connection connection = CreateDbConnection.getConnection()){
+            String sqlScriptPath = CommentSqlScriptsPath.DELETE_COMMENT.getPath();
+            String deleteCommentQuery = GetSqlStatement.sqlQueryBuilder(sqlScriptPath);
+
+            try(PreparedStatement preparedStatement = connection.prepareStatement(deleteCommentQuery)){
+
+                preparedStatement.setInt(1, commentId);
+                preparedStatement.setInt(2, ownerId);
+
+                deletedRow = preparedStatement.executeUpdate();
+
+            } catch (SQLException e){
+                logger.error("SQL query execution error: " + e.getMessage(), e);
+                throw new DAOException("sql execution error", e);
+            }
+
+        } catch (SQLException e) {
+            logger.error("Fail to connect to database: " + e.getMessage(), e);
+            throw new DAOException("Fail to connect to database", e);
+        } catch (IOException e){
+            logger.error("Failed to fetch delete comment sql query -- " + e.getMessage());
+            throw new DAOException("Failed to fetch delete comment sql query", e);
+        }
+
+        return deletedRow;
     }
 }
