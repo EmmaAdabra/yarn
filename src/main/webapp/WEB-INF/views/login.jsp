@@ -10,7 +10,7 @@
 <html>
 <head>
     <%@include file="/WEB-INF/views/fragments/head.jsp"%>
-    <title>Login to Yarn</title>
+    <title>Yarn | Login</title>
 </head>
 <body class="bg-bg_color1">
     <!-- brand logo -->

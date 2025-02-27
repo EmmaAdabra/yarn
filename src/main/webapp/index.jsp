@@ -9,7 +9,7 @@
 <head>
     <%@include file="/WEB-INF/views/fragments/head.jsp"%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <title>ChatApp Dashboard</title>
+    <title>Yarn | Home</title>
 </head>
 <body class="bg-bg_color1 h-[100%] overflow-hidden overflow-y-scroll relative">
 <!-- create post modal -->

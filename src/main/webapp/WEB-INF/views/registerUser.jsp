@@ -10,7 +10,7 @@
 <html>
 <head>
     <%@include file="/WEB-INF/views/fragments/head.jsp"%>
-    <title>Sign up for Yarn</title>
+    <title>Yarn | Sign up</title>
 </head>
 <body class="text-center bg-bg_color1">
     <!-- brand logo -->
@@ -29,7 +29,7 @@
             <h1 class="text-title_text_clr text-2xl mb-2 mx-auto line">Create Account</h1>
             <p class="text-title_text_clr">It's quick and easy.</p>
         </header>
-        <section class="bg-bg_color2 px-8 py-7 mx-auto max-w-[600px] rounded">
+        <section class="bg-bg_color2 sm:px-8 px-3 py-7 mx-auto max-w-[600px] rounded">
             <form method="post" action="/register" >
                 <c:if test="${error != null}">
                     <p class="text-red-200 text-center pb-10" id="errors">${error}</p>
