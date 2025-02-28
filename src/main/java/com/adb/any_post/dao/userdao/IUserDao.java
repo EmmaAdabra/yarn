@@ -1,11 +1,10 @@
-package com.adb.chat_app.dao.userdao;
+package com.adb.any_post.dao.userdao;
 
-import com.adb.chat_app.dao.IDAO;
-import com.adb.chat_app.exceptions.DAOException;
-import com.adb.chat_app.models.User;
+import com.adb.any_post.dao.IDAO;
+import com.adb.any_post.exceptions.DAOException;
+import com.adb.any_post.models.User;
 
 import javax.servlet.http.Part;
-import java.util.Optional;
 
 public interface IUserDao extends IDAO<User> {
     User findUserByEmail(String email) throws DAOException;
