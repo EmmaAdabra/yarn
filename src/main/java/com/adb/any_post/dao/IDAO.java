@@ -1,6 +1,6 @@
-package com.adb.chat_app.dao;
+package com.adb.any_post.dao;
 
-import com.adb.chat_app.exceptions.DAOException;
+import com.adb.any_post.exceptions.DAOException;
 
 import java.util.List;
 import java.util.Optional;
