@@ -51,19 +51,20 @@ public class SubmitPostServlet extends HttpServlet {
                 if(imagePart != null && imagePart.getSize() > 0) {
                     ValidateInputs.validatePostImage(imagePart); // throws InputValidationException
 
-                    String fileName = PostUtils.generateFileName(imagePart);
-                    String uploadDir = getServletContext().getRealPath("/uploads");
-                    logger.info("post upload dir: {}", uploadDir);
+                    String uploadDir = System.getenv("UPLOAD_DIR");
+                    if (uploadDir == null || uploadDir.isEmpty()) {
+                        uploadDir = getServletContext().getRealPath("/uploads");
+                    }
+                    logger.info("Post upload dir: {}", uploadDir);
 
-                    File uploadFolder = new File(uploadDir);
                     // Ensure the upload folder exists
-                    if (!uploadFolder.exists()) uploadFolder.mkdirs();
+                    File uploadFolder = new File(uploadDir);
+                    if (!uploadFolder.exists()) {
+                        uploadFolder.mkdirs();
+                    }
 
                     // Save the image file
-//                    File file = new File(uploadFolder, fileName);
-//                    imagePart.write(file.getAbsolutePath());
-
-                    // Write file to the upload folder
+                    String fileName = PostUtils.generateFileName(imagePart);
                     String fullImagePath = uploadDir + File.separator + fileName;
                     imagePart.write(fullImagePath);
 
