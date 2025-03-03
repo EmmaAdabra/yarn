@@ -15,6 +15,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
         <junit.version>5.8.2</junit.version>
+        <tomcat.version>9.0.98</tomcat.version>
     </properties>
 
     <dependencies>
@@ -54,7 +55,6 @@
         </dependency>
 
         <!--   Database     -->
-        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -62,14 +62,13 @@
         </dependency>
 
         <!--    jsp file    -->
-        <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <!-- JSON processing -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -77,43 +76,80 @@
         </dependency>
 
         <!--  detect image format      -->
-        <!-- https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
             <version>3.1.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <!-- Gson for JSON processing -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <!-- Jackson for JSON processing -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.18.2</version>
         </dependency>
-
     </dependencies>
 
     <build>
+        <finalName>any_post</finalName>
         <plugins>
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <release>11</release>
+                </configuration>
+            </plugin>
+
+            <!-- Maven War Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
             </plugin>
+
+            <!-- Maven Dependency Plugin (for Dockerization) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+            </plugin>
+
+            <!-- Maven Antrun Plugin (for Dockerization) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo>Copying WAR file to Tomcat webapps directory...</echo>
+                                <copy file="${project.build.directory}/${project.build.finalName}.war"
+                                      todir="${env.CATALINA_HOME}/webapps"
+                                      failonerror="false"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
