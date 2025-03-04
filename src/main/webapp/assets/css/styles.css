@@ -720,6 +720,10 @@ video {
   z-index: 60;
 }
 
+.z-10 {
+  z-index: 10;
+}
+
 .col-span-1 {
   grid-column: span 1 / span 1;
 }
@@ -1015,10 +1019,6 @@ video {
 
 .flex-none {
   flex: none;
-}
-
-.flex-initial {
-  flex: 0 1 auto;
 }
 
 .flex-grow {
@@ -1421,14 +1421,14 @@ video {
   padding-bottom: 2px;
 }
 
-.py-\[4px\] {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
 .py-\[3px\] {
   padding-top: 3px;
   padding-bottom: 3px;
+}
+
+.py-\[4px\] {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .pb-1\.5 {
@@ -2018,7 +2018,8 @@ body::-webkit-scrollbar-track,
 }
 
 .error{
-  font-size: 12px;
+  font-size: 14px;
+  color: #FECACA;
 }
 
 input{
@@ -2248,12 +2249,12 @@ textarea::-webkit-scrollbar
     width: 250px;
   }
 
-  .sm\:w-\[90\%\] {
-    width: 90%;
-  }
-
   .sm\:w-\[70\%\] {
     width: 70%;
+  }
+
+  .sm\:w-\[90\%\] {
+    width: 90%;
   }
 
   .sm\:px-10 {

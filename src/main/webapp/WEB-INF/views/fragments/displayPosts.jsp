@@ -5,7 +5,8 @@
         <div data-comment-modal="postContainer">
           <header class="hidden comment-modal-header border-b-borderClr bg-bg_color2" data-comment-modal="modalHeader">
             <h2 class="text-title_text_clr text-[18px]">${post.posterData.firstName}'s Post</h2>
-            <button class="modal-close-icon close-comment-btn border-borderClr shadow-lg rounded-full">
+            <button
+                    class="modal-close-icon border-borderClr shadow-lg rounded-full close-full-post">
               <i class="ri-close-large-fill text-[25px]"></i>
             </button>
           </header>
@@ -94,8 +95,9 @@
       <div class="post-props px-3 mt-3 bg-bg_color3">
         <ul>
           <li class="comments w-fit">
-            <a class="gap-[5px] text-fade_text hover:text-main_text comment-icon" href="" id="${post.postId}">
-              <button class="flex gap-2 items-center text-[25px]">
+            <div class="text-fade_text hover:text-main_text relative z-30 comment-btn-container">
+              <button class="flex gap-2 items-center text-[25px] relative z-10 comment-btn"
+                      id="${post.postId}">
                 <span class="flex items-center gap-[2px]">
                   <i class="ri-chat-1-line"></i>
                 <c:choose>
@@ -111,7 +113,7 @@
                 </span>
                 <span class="text-[14px]"> comment</span>
               </button>
-            </a>
+            </div>
           </li>
         </ul>
       </div>

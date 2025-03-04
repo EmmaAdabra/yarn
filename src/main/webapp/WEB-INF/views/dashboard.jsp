@@ -41,7 +41,7 @@
         </div>
 
         <!-- center pane -->
-        <div class="md:col-span-2 md:px-0 px-10 overflow-auto sm:mx-10 center-content col-span-full scroll-container" id="scrollContainer">
+        <div class="md:col-span-2 md:px-0 px-10 overflow-auto sm:mx-10 col-span-full center-content scroll-container" id="scrollContainer">
           <%@include file="/WEB-INF/views/fragments/centerPane.jsp" %>
       </div>
 
