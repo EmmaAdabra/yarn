@@ -92,11 +92,11 @@
           </div>
         </div>
       </div>
-      <div class="post-props px-3 mt-3 bg-bg_color3">
-        <ul>
+      <div class="post-props px-3 py-2 mt-3 bg-bg_color3">
+        <ul class="flex gap-5 items-center">
           <li class="comments w-fit">
             <div class="text-fade_text hover:text-main_text relative z-30 comment-btn-container">
-              <button class="flex gap-2 items-center text-[25px] relative z-10 comment-btn"
+              <button class="flex gap-2 items-center text-[22px] relative z-10 comment-btn"
                       id="${post.postId}">
                 <span class="flex items-center gap-[2px]">
                   <i class="ri-chat-1-line"></i>
@@ -113,6 +113,31 @@
                 </span>
                 <span class="text-[14px]"> comment</span>
               </button>
+            </div>
+          </li>
+          <li class="likes w-fit">
+            <div
+                    class="flex items-center gap-[2px] text-fade_text hover:text-main_text relative z-30 like-btn-container" data-likePost="${post.postId}">
+              <button class="text-[22px] relative z-10 like-btn">
+                <span>
+                  <i class="ri-heart-add-line"></i>
+                </span>
+              </button>
+              <button class="hidden text-[22px] relative z-10 unlike-btn">
+                <span class="text-[#fc036b]">
+                  <i class="ri-heart-fill" ></i>
+                </span>
+              </button>
+              <c:choose>
+                <c:when test="${post.comment > 0}">
+                    <span class="total-like text-[12px]" data-likes="${post.comment}">
+                        ${post.comment}
+                    </span>
+                </c:when>
+                <c:otherwise>
+                  <span class="total-like text-[12px]"></span>
+                </c:otherwise>
+              </c:choose>
             </div>
           </li>
         </ul>
