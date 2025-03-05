@@ -15,21 +15,9 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class PostDao implements IPostDao{
     private static final Logger logger = LoggerFactory.getLogger(IPostDao.class);
-
-    @Override
-    public Optional<Post> get(long ID) throws DAOException {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<Post> getAll() throws DAOException {
-       return null;
-    }
-
     public List<PostDto> getAllPost() throws DAOException {
         List<PostDto> allPosts = new ArrayList<>();
 
@@ -41,8 +29,8 @@ public class PostDao implements IPostDao{
 
                 try(ResultSet resultSet = callableStatement.executeQuery()){
                     while(resultSet.next()){
-                        PostDto postDto = new PostDto();
-                        PosterDto posterDto = new PosterDto();
+                        PostDto postDto;
+                        PosterDto posterDto;
                         postDto = EntityModelMapper.postMapper(resultSet);
                         posterDto = EntityModelMapper.posterMapper(resultSet);
                         postDto.setPosterData(posterDto);
@@ -99,16 +87,6 @@ public class PostDao implements IPostDao{
         }
 
         return updatedRow;
-    }
-
-    @Override
-    public int update(Object... params) throws DAOException {
-        return 0;
-    }
-
-    @Override
-    public int delete(long id) throws DAOException {
-        return 0;
     }
 
     public int deletePost(int postId, int ownerId) throws DAOException{
