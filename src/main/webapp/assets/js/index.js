@@ -60,6 +60,18 @@ const SESSION_USER_ID = Number.parseInt(document.querySelector("body").dataset.u
             if(closePostIcon){
                 closePost(closePostIcon);
             }
+
+            // like post
+            const likeBtn = target.closest(".like-btn")
+            if(likeBtn){
+                likePost(likeBtn)
+            }
+
+            // unlike post
+            const unlikeBtn = target.closest(".unlike-btn")
+            if(unlikeBtn){
+                unlikePost(unlikeBtn)
+            }
         })
 
         // keydown event delegation
@@ -100,7 +112,7 @@ const SESSION_USER_ID = Number.parseInt(document.querySelector("body").dataset.u
     }
 }
 
-// delete post
+// prepare delete post
 function deletePost(postId, userId) {
     const url = `/delete_post?postId=${postId}&ownerId=${userId}`;
     const post = document.getElementById(`post-${postId}`);
@@ -112,7 +124,7 @@ function deletePost(postId, userId) {
     }).catch(error => console.error(error));
 }
 
-// delete comment
+// prepare delete comment
 function deleteComment(commentId, ownerId) {
     const url = `/delete_comment?commentId=${commentId}&ownerId=${ownerId}`;
     const comment = document.getElementById(`comment-${commentId}`);
@@ -127,6 +139,7 @@ function deleteComment(commentId, ownerId) {
     }).catch(error => console.error(error));
 }
 
+// delete item
 async function deleteItem(itemId, ownerId, route) {
     try {
         let response = await fetch(route, {
@@ -148,6 +161,80 @@ async function deleteItem(itemId, ownerId, route) {
     }
 }
 
+// like post
+function likePost(likeBtn){
+    const likeBtnContainer = likeBtn.closest(".like-btn-container")
+    const postId = likeBtnContainer.dataset.likepost;
+    const unlikeBtn = likeBtnContainer.querySelector(".unlike-btn");
+
+    persistGuestLike(postId);
+
+    likeBtn.classList.add("hidden");
+    unlikeBtn.classList.remove("hidden")
+
+    handleLikeCount(likeBtnContainer, "like");
+
+}
+
+function handleLikeCount(likeBtnContainer, action=""){
+    const totalLikeElem = likeBtnContainer.querySelector(".total-like");
+    const totalLike = Number.parseInt(totalLikeElem.textContent);
+
+    if(action === "like"){
+        totalLikeElem.textContent = totalLike > 0 ? totalLike + 1 : 1;
+    }else {
+        totalLikeElem.textContent = totalLike > 1 ? totalLike - 1 : "";
+    }
+}
+
+// unlike post
+function unlikePost(unlikeBtn){
+    const likeBtnContainer = unlikeBtn.closest(".like-btn-container")
+    const postId = likeBtnContainer.dataset.likepost;
+    const likeBtn = likeBtnContainer.querySelector(".like-btn");
+
+    persistGuestLike(postId);
+
+    unlikeBtn.classList.add("hidden");
+    likeBtn.classList.remove("hidden")
+    handleLikeCount(likeBtnContainer);
+}
+
+// save guest user like post to browser storage
+function persistGuestLike(postID){
+    let postId = postID;
+    let likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || [];
+
+    const postIndex = likedPosts.findIndex(post => post.postId === postId);
+
+    if(postIndex === -1){
+        likedPosts.push({postId: postId})
+    } else {
+        likedPosts.splice(postIndex, 1)
+    }
+
+    localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
+}
+
+function initializeGuestLikeBtn(){
+    const guestLikedPost = JSON.parse(localStorage.getItem("likedPosts")) || [];
+
+    if(guestLikedPost.length > 0){
+        const allLikeBtnContainer = document.querySelectorAll(".like-btn-container");
+        allLikeBtnContainer.forEach(eachContainer => {
+            let postId = eachContainer.dataset.likepost;
+            const isLiked = guestLikedPost.some(post => post.postId === postId)
+
+            if(isLiked){
+                const likeBtn = eachContainer.querySelector(".like-btn");
+                const unlikeBtn = eachContainer.querySelector(".unlike-btn");
+
+                likeBtn.classList.add("hidden")
+                unlikeBtn.classList.remove("hidden");
+            }
+        })
+    }
+}
 
 // top nav dropdown menu
 const profileIcon = document.querySelector("#navPfp");
@@ -231,6 +318,8 @@ function createPost() {
     createPostModal.classList.remove("hidden");
     createPostModal.classList.add("flex");
 }
+
+
 
 // general close modal
 {
@@ -766,5 +855,9 @@ function hideIndexRightPane() {
     if (rightPane && window.innerWidth > 768 && window.innerWidth < 1024 && !rightPane.classList.contains("hidden")) {
         rightPane.classList.add("hidden");
     }
+}
+
+if(!SESSION_USER_ID){
+    window.addEventListener("load", initializeGuestLikeBtn);
 }
 
