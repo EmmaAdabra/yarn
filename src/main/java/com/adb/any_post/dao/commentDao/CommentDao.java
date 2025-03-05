@@ -19,16 +19,6 @@ import java.util.Optional;
 public class CommentDao implements ICommentDao{
     private static final Logger logger = LoggerFactory.getLogger(CommentDao.class);
 
-    @Override
-    public Optional<Comment> get(long ID) throws DAOException {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<Comment> getAll() throws DAOException {
-        return null;
-    }
-
     public List<CommentDto> getPostComments(int postId) throws DAOException{
         List<CommentDto> allComments = new ArrayList<>();
 
@@ -62,11 +52,6 @@ public class CommentDao implements ICommentDao{
         return allComments;
     }
 
-    @Override
-    public int save(Comment comment) throws DAOException {
-       return 0;
-    }
-
     public Optional<CommentDto> saveComment(Comment comment) throws DAOException{
         Optional<CommentDto> optionalCommentDto = Optional.empty();
 
@@ -88,7 +73,7 @@ public class CommentDao implements ICommentDao{
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if(resultSet.next()){
-                     optionalCommentDto = Optional.ofNullable(EntityModelMapper.commentMapper(resultSet));
+                     optionalCommentDto = Optional.of(EntityModelMapper.commentMapper(resultSet));
                 }
 
                 resultSet.close();
@@ -105,16 +90,6 @@ public class CommentDao implements ICommentDao{
         }
 
         return optionalCommentDto;
-    }
-
-    @Override
-    public int update(Object... params) throws DAOException {
-        return 0;
-    }
-
-    @Override
-    public int delete(long id) throws DAOException {
-        return 0;
     }
 
     public int deleteComment(int commentId, int ownerId) throws DAOException{
