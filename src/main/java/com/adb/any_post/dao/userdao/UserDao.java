@@ -16,7 +16,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
 public class UserDao implements IUserDao{
@@ -47,7 +46,7 @@ public class UserDao implements IUserDao{
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if(resultSet.next()){
-                    userOptional = Optional.ofNullable(EntityModelMapper.userMapper(resultSet));
+                    userOptional = Optional.of(EntityModelMapper.userMapper(resultSet));
                 }
 
                 logger.info("get user by id query executed successfully");
@@ -63,11 +62,6 @@ public class UserDao implements IUserDao{
         }
 
         return userOptional;
-    }
-
-    @Override
-    public List<User> getAll() throws DAOException {
-        return null;
     }
 
     @Override
@@ -124,17 +118,6 @@ public class UserDao implements IUserDao{
 
         return userID;
     }
-
-    @Override
-    public int update(Object... params) throws DAOException {
-        return 0;
-    }
-
-    @Override
-    public int delete(long id) throws DAOException {
-        return 0;
-    }
-
 
     @Override
     public User findUserByEmail(String email) throws DAOException {
