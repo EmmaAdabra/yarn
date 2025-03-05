@@ -28,10 +28,12 @@ const SESSION_USER_ID = Number.parseInt(document.querySelector("body").dataset.u
         confirmModal.classList.add("show")
     }
 
-    // assigning click event listener to center pane element for event delegation
+    // assigning event listener to center pane element for event delegation
     const centerPaneContent = document.querySelector("#scrollContainer.center-content");
 
     if (centerPaneContent) {
+
+        // click event delegation
         centerPaneContent.addEventListener("click", function (event) {
             const target = event.target;
             // delete post
@@ -57,6 +59,19 @@ const SESSION_USER_ID = Number.parseInt(document.querySelector("body").dataset.u
             const closePostIcon = target.closest(".close-full-post");
             if(closePostIcon){
                 closePost(closePostIcon);
+            }
+        })
+
+        // keydown event delegation
+        centerPaneContent.addEventListener("keydown", function (event){
+            const target = event.target;
+            const key = event.key
+            let targetName = target.getAttribute("name");
+
+            if(key === "Enter" && targetName === "comment"){
+                event.preventDefault()
+                const commentForm = target.closest("form");
+                submitComment(commentForm);
             }
         })
     }
@@ -165,7 +180,8 @@ document.addEventListener("click", function (event) {
         openCreatePostNotice();
     }
 
-    // post see more button
+    // post see more button (for accessing delete post btn), this is not the see more for excess
+    // post text
     if (event.target.classList.contains("post-see-more") || event.target.parentElement.classList.contains("post-see-more")) {
         hideShowElement();
         const postMoreMenu = event.target.closest(".more-menu-container").querySelector(".post-more-menu");
@@ -537,63 +553,65 @@ function activateAndDeactivateCommentBtn(event) {
     commentForms.forEach((form) => {
         form.addEventListener("submit", async function (event) {
             event.preventDefault();
-
-            const submitBtn = form.querySelector("button");
-            const postId = submitBtn.getAttribute("data-post-id");
-            const commentBox = form.querySelector("textarea");
-            const comment = commentBox.value;
-            let commentList = [];
-            console.log(postId, comment);
-            const postContainer = form.closest(".post");
-
-            const loader = form.querySelector(".loader");
-            loader.classList.remove("hidden");
-
-            try {
-                const response = await fetch("/add_comment", {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({postId, comment}),
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP Error: ${response.status}`);
-                }
-
-                let result;
-
-                if (response.headers.get("content-type")?.includes("application/json")) {
-                    result = await response.json();
-                } else {
-                    throw new Error("Server returned non-JSON response");
-                }
-
-                // Application-level error handling
-                if (result.status !== 201) {
-                    console.error(result.message || "Something went wrong");
-                } else {
-                    if (result.data) {
-                        commentBox.value = "";
-                        commentList.push(result.data);
-                        addComment(commentList, postContainer, "prepend");
-                        const noComment = postContainer.querySelector(".no-comment");
-
-                        loader.classList.add("hidden");
-                        activateAndDeactivateCommentBtn(commentBox);
-
-                        updateCommentCount(postContainer, 1, "add");
-                        if (!noComment.classList.contains("hidden")) {
-                            noComment.classList.add("hidden");
-                        }
-                    }
-                }
-            } catch (error) {
-                loader.classList.add("hidden");
-                // alert("Something went wrong, check console for details");
-                console.error("Error:", error);
-            }
+            submitComment(form);
         });
     });
+}
+
+async function submitComment(form){
+    const submitBtn = form.querySelector("button");
+    const postId = submitBtn.getAttribute("data-post-id");
+    const commentBox = form.querySelector("textarea");
+    const comment = commentBox.value;
+    let commentList = [];
+    const postContainer = form.closest(".post");
+
+    const loader = form.querySelector(".loader");
+    loader.classList.remove("hidden");
+
+    try {
+        const response = await fetch("/add_comment", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({postId, comment}),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        let result;
+
+        if (response.headers.get("content-type")?.includes("application/json")) {
+            result = await response.json();
+        } else {
+            throw new Error("Server returned non-JSON response");
+        }
+
+        // Application-level error handling
+        if (result.status !== 201) {
+            console.error(result.message || "Something went wrong");
+        } else {
+            if (result.data) {
+                commentBox.value = "";
+                commentList.push(result.data);
+                addComment(commentList, postContainer, "prepend");
+                const noComment = postContainer.querySelector(".no-comment");
+
+                loader.classList.add("hidden");
+                activateAndDeactivateCommentBtn(commentBox);
+
+                updateCommentCount(postContainer, 1, "add");
+                if (!noComment.classList.contains("hidden")) {
+                    noComment.classList.add("hidden");
+                }
+            }
+        }
+    } catch (error) {
+        loader.classList.add("hidden");
+        // alert("Something went wrong, check console for details");
+        console.error("Error:", error);
+    }
 }
 
 function addComment(commentList, post, position) {
