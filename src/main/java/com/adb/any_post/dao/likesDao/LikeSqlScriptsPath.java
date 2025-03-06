@@ -2,7 +2,8 @@ package com.adb.any_post.dao.likesDao;
 
 public enum LikeSqlScriptsPath {
 
-    INSERT_LIKE_SCRIPT(getLikeScriptDir() + "insert_likes.sql");
+    INSERT_LIKE_SCRIPT(getLikeScriptDir() + "insert_likes.sql"),
+    GET_USER_LIKED_POSTS(getLikeScriptDir() + "get_user_liked_posts.sql");
 
     private String path;
 
