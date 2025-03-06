@@ -47,8 +47,8 @@ public class PostDao implements IPostDao{
             logger.error("Fail to connect to database: " + e.getMessage(), e);
             throw new DAOException("Fail to connect to database", e);
         } catch (IOException e){
-            logger.error("Failed to fetch update user bio sql query -- " + e.getMessage());
-            throw new DAOException("Failed to fetch get insert user pfp sql query", e);
+            logger.error("Failed to fetch get all post sql query -- " + e.getMessage());
+            throw new DAOException("Failed to fetch get all post sql query", e);
         }
 
         return allPosts;
@@ -82,8 +82,8 @@ public class PostDao implements IPostDao{
             logger.error("Fail to connect to database: " + e.getMessage(), e);
             throw new DAOException("Fail to connect to database", e);
         } catch (IOException e){
-            logger.error("Failed to fetch update user bio sql query -- " + e.getMessage());
-            throw new DAOException("Failed to fetch update user bio sql query", e);
+            logger.error("Failed to fetch insert post sql query -- " + e.getMessage());
+            throw new DAOException("Failed to fetch insert post sql query", e);
         }
 
         return updatedRow;
