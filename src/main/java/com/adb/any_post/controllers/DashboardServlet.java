@@ -1,8 +1,10 @@
 package com.adb.any_post.controllers;
 
+import com.adb.any_post.dao.likesDao.LikeDao;
 import com.adb.any_post.dao.postDao.PostDao;
 import com.adb.any_post.dao.userdao.UserDao;
 import com.adb.any_post.dto.PostDto;
+import com.adb.any_post.dto.SessionUserDTO;
 import com.adb.any_post.exceptions.DAOException;
 import com.adb.any_post.services.UserService;
 import org.slf4j.Logger;
@@ -20,54 +22,35 @@ public class DashboardServlet extends HttpServlet {
     private static final UserService userService = new UserService(new UserDao());
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            PostDao postDao = new PostDao();
-            List<PostDto> allPost;
+        PostDao postDao = new PostDao();
+        LikeDao likeDao = new LikeDao();
+        List<PostDto> allPost;
+        List<Integer> userLikedPosts;
 
-//        fetch posts
-        try {
-            allPost = postDao.getAllPost();
-            request.setAttribute("posts", allPost);
-        } catch (DAOException e) {
-            logger.error("Failed to fetch posts -- {}", e.getMessage());
+        HttpSession session = request.getSession(false);
+
+        if(session != null && session.getAttribute("sessionUser") != null){
+            SessionUserDTO sessionUser = (SessionUserDTO) session.getAttribute("sessionUser");
+
+            //  fetch posts
+            try {
+                allPost = postDao.getAllPost();
+                request.setAttribute("posts", allPost);
+                userLikedPosts = likeDao.getUserLikedPosts(sessionUser.getUserId());
+                request.setAttribute("likedPosts", userLikedPosts);
+            } catch (DAOException e) {
+                request.setAttribute("FetchPostError", true);
+                logger.error("Failed to fetch posts -- {}", e.getMessage());
+            } catch (Exception e){
+                logger.error("An unknown error occur while fetching post");
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/dashboard.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Login, session expired");
+            logger.error("Failed to load dashboard, user session expired");
         }
-
-//        temporary use only (for development)
-//        try {
-//            Response<User> serviceResponse = userService.validateUser("emma@gmail.com", "1234");
-//            if(serviceResponse.getStatus() == ResponseCode.SUCCESS.getCode()){
-//                Response<SessionUserDTO> sessionUserRes = userService.createSessionUser(serviceResponse.getData());
-//                SessionUserDTO sessionUser = sessionUserRes.getData();
-////                add pfp url
-//                if(sessionUser.isHasPfp()){
-//                    String pfpUrl = request.getContextPath() + "/fetchPfp?id=" + sessionUser.getUserID();
-//                    sessionUser.setPfpUrl(pfpUrl);
-//                    System.out.println("pfp url: " + sessionUser.getPfpUrl());
-//                }
-////                creating session
-//                HttpSession session = request.getSession();
-//                session.setAttribute("sessionUser", sessionUser);
-//
-//
-////
-//
-//                RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/dashboard.jsp");
-//                dispatcher.forward(request, response);
-//            }
-//
-//        } catch (Exception e) {
-//            GlobalErrorHandler.handleError(e);
-//            logger.error(e.getMessage(), e);
-//            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
-//        }
-
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/dashboard.jsp");
-        dispatcher.forward(request, response);
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }
