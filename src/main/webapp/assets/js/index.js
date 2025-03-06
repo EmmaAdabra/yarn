@@ -266,7 +266,7 @@ async function submitLike(postId) {
                 return { status: true, user: "user" };
 
             case 202: // Success (guest user)
-                alert("Please log in for a better experience.");
+                // alert("Please log in for a better experience.");
                 return { status: true, user: "guest" };
 
             case 404: // Post not found
