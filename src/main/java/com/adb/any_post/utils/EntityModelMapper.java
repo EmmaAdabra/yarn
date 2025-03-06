@@ -36,6 +36,7 @@ public class EntityModelMapper  {
         postDto.setLongDate(DateUtil.formatPostDate(resultSet.getTimestamp("created_at")));
         postDto.setShortDate(DateUtil.shortDateFormat(resultSet.getTimestamp("created_at")));
         postDto.setComment(resultSet.getInt("comment"));
+        postDto.setLikes(resultSet.getInt("likes"));
 
         return postDto;
     }
