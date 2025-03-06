@@ -49,7 +49,7 @@ const SESSION_USER_ID = Number.parseInt(document.querySelector("body").dataset.u
             }
 
             //  show full post
-            commentBtnParent = target.closest(".comment-btn-container")
+            const commentBtnParent = target.closest(".comment-btn-container")
             if(commentBtnParent){
                 const commentBtn = commentBtnParent.querySelector(".comment-btn")
                 showFullPost(commentBtn);
@@ -156,35 +156,33 @@ async function deleteItem(itemId, ownerId, route) {
             return false;
         }
     } catch (error) {
-        return false;
         console.error(`Error: ${error.message}`)
+        return false;
     }
 }
 
 // like post
-function likePost(likeBtn){
+async function likePost(likeBtn){
     const likeBtnContainer = likeBtn.closest(".like-btn-container")
     const postId = likeBtnContainer.dataset.likepost;
     const unlikeBtn = likeBtnContainer.querySelector(".unlike-btn");
 
-    persistGuestLike(postId);
+    submitLike(postId).then(result => {
+        if(result.status){
+            likeBtn.classList.add("hidden");
+            unlikeBtn.classList.remove("hidden")
+            handleLikeCount(likeBtnContainer, "like");
 
-    likeBtn.classList.add("hidden");
-    unlikeBtn.classList.remove("hidden")
+            if(result.user === "guest"){
+                persistGuestLike(postId);
+            }
+        } else {
+            alert("Failed to submit like, see browser log")
+        }
+    }).catch(error => {
+        console.error("Error submitting like:", error);
+    })
 
-    handleLikeCount(likeBtnContainer, "like");
-
-}
-
-function handleLikeCount(likeBtnContainer, action=""){
-    const totalLikeElem = likeBtnContainer.querySelector(".total-like");
-    const totalLike = Number.parseInt(totalLikeElem.textContent);
-
-    if(action === "like"){
-        totalLikeElem.textContent = totalLike > 0 ? totalLike + 1 : 1;
-    }else {
-        totalLikeElem.textContent = totalLike > 1 ? totalLike - 1 : "";
-    }
 }
 
 // unlike post
@@ -193,11 +191,28 @@ function unlikePost(unlikeBtn){
     const postId = likeBtnContainer.dataset.likepost;
     const likeBtn = likeBtnContainer.querySelector(".like-btn");
 
-    persistGuestLike(postId);
+
 
     unlikeBtn.classList.add("hidden");
     likeBtn.classList.remove("hidden")
     handleLikeCount(likeBtnContainer);
+    persistGuestLike(postId);
+
+    // submitLike(postId).then(result => {
+    //     if(result.status){
+    //         unlikeBtn.classList.add("hidden");
+    //         likeBtn.classList.remove("hidden")
+    //         handleLikeCount(likeBtnContainer);
+    //
+    //         if(result.user === "guest"){
+    //             persistGuestLike(postId);
+    //         }
+    //     } else {
+    //         alert("Like submission failed, see browser log")
+    //     }
+    // }).catch(error => {
+    //     console.error("Error submitting like:", error);
+    // })
 }
 
 // save guest user like post to browser storage
@@ -214,6 +229,59 @@ function persistGuestLike(postID){
     }
 
     localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
+}
+
+function handleLikeCount(likeBtnContainer, action=""){
+    const totalLikeElem = likeBtnContainer.querySelector(".total-like");
+    const totalLike = Number.parseInt(totalLikeElem.textContent);
+
+    if(action === "like"){
+        totalLikeElem.textContent = totalLike > 0 ? totalLike + 1 : 1;
+    }else {
+        totalLikeElem.textContent = totalLike > 1 ? totalLike - 1 : "";
+    }
+}
+
+// submit like
+async function submitLike(postId) {
+    try {
+        // Send the like request
+        const response = await fetch("/likePost", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `postId=${postId}`,
+        });
+
+        // Check if the response is JSON
+        if (!response.headers.get("content-type")?.includes("application/json")) {
+            throw new Error("Server returned a non-JSON response");
+        }
+
+        // Parse the JSON response
+        const result = await response.json();
+
+        // Handle different response statuses
+        switch (response.status) {
+            case 200: // Success (logged-in user)
+                return { status: true, user: "user" };
+
+            case 202: // Success (guest user)
+                alert("Please log in for a better experience.");
+                return { status: true, user: "guest" };
+
+            case 404: // Post not found
+                alert(result.message);
+                document.getElementById(`post-${postId}`)?.remove(); // Safely remove the post element
+                return { status: false, user: undefined };
+
+            default: // Other errors
+                throw new Error(result.message || "Something went wrong");
+        }
+    } catch (error) {
+        // Handle errors
+        console.error(error);
+        return { status: false, user: undefined };
+    }
 }
 
 function initializeGuestLikeBtn(){
@@ -776,7 +844,8 @@ async function fetchPostComment(postId) {
         }
 
         if (!response.headers.get("content-type")?.includes("application/json")) {
-            throw new Error("Server returned non-JSON response");
+            console.error("Server returned non-JSON response");
+            return FAILED_TO_FETCH_POST;
         }
 
         const result = await response.json();
