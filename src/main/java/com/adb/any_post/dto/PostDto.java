@@ -16,6 +16,7 @@ public class PostDto extends Post {
 
     private String shortDate;
     private int comment;
+    private int likes;
 
     public PosterDto getPosterData() {
         return posterData;
@@ -39,5 +40,13 @@ public class PostDto extends Post {
 
     public void setComment(int comment) {
         this.comment = comment;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }
