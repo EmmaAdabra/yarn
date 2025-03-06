@@ -1,4 +1,4 @@
-<div class="side-menu overflow-auto border-r border-r-borderClr mr-10 h-full" data-simplebar>
+<div class="side-menu overflow-auto  border-r-borderClr mr-10 h-full" data-simplebar>
   <ul class="list-none menu-options ps-4 pt-8">
     <li class=" option">
       <a class="flex items-center gap-2 rounded hover:bg-bg_color2 p-2 w-full">
