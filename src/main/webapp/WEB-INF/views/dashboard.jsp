@@ -1,4 +1,5 @@
 <%@taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%-- Created by IntelliJ
   IDEA. User: Viewnet
   Date: 1/23/2025
@@ -11,7 +12,8 @@
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <title>Yarn | Dashboard</title>
   </head>
-  <body class="bg-bg_color1 h-[100%] overflow-hidden overflow-y-scroll relative" data-user="${sessionScope.sessionUser.userId}">
+  <body class="bg-bg_color1 h-[100%] overflow-hidden overflow-y-scroll scroll-smooth relative"
+        data-user="${sessionScope.sessionUser.userId}">
     <!-- confirm modal -->
     <%@include file="/WEB-INF/views/fragments/deleteConfirmationModal.jsp"%>
     <!-- create post modal -->
