@@ -1,5 +1,7 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <div class="post-container flex flex-col gap-5 items-center pt-6 pb-10 text-main_text w-full">
   <c:forEach var="post" items="${posts}">
+    <C:set var="isLiked" value="${fn:contains(likedPosts, post.postId)}"></C:set>
     <div class="bg-bg_color2 w-full border border-borderClr shadow-lg rounded-md post" id="post-${post.postId}">
       <div class="" data-comment-modal="ModalContainer">
         <div data-comment-modal="postContainer">
@@ -116,22 +118,37 @@
             </div>
           </li>
           <li class="likes w-fit">
-            <div
-                    class="flex items-center gap-[2px] text-fade_text hover:text-main_text relative z-30 like-btn-container" data-likePost="${post.postId}">
-              <button class="text-[22px] relative z-10 like-btn">
-                <span>
-                  <i class="ri-heart-add-line"></i>
-                </span>
-              </button>
-              <button class="hidden text-[22px] relative z-10 unlike-btn">
-                <span class="text-[#fc036b]">
-                  <i class="ri-heart-fill" ></i>
-                </span>
-              </button>
+            <div class="flex items-center gap-[2px] text-fade_text hover:text-main_text relative z-30 like-btn-container" data-likePost="${post.postId}">
+              <C:choose>
+                <C:when test="${isLiked}">
+                  <button class="text-[22px] relative z-10 unlike-btn">
+                    <span class="text-[#fc036b]">
+                      <i class="ri-heart-fill" ></i>
+                    </span>
+                  </button>
+                  <button class=" hidden text-[22px] relative z-10 like-btn">
+                    <span>
+                      <i class="ri-heart-add-line"></i>
+                    </span>
+                  </button>
+                </C:when>
+                <C:otherwise>
+                  <button class="hidden text-[22px] relative z-10 unlike-btn">
+                    <span class="text-[#fc036b]">
+                      <i class="ri-heart-fill" ></i>
+                    </span>
+                  </button>
+                  <button class="text-[22px] relative z-10 like-btn">
+                    <span>
+                      <i class="ri-heart-add-line"></i>
+                    </span>
+                  </button>
+                </C:otherwise>
+              </C:choose>
               <c:choose>
-                <c:when test="${post.comment > 0}">
+                <c:when test="${post.likes > 0}">
                     <span class="total-like text-[12px]" data-likes="${post.comment}">
-                        ${post.comment}
+                        ${post.likes}
                     </span>
                 </c:when>
                 <c:otherwise>
