@@ -2,7 +2,7 @@ package com.adb.any_post.dto;
 
 public class LikedPost {
     private int postId;
-    private int likedId;
+    private Integer likedId;
 
     public LikedPost() {
     }
