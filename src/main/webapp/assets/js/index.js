@@ -191,30 +191,29 @@ async function likePost(likeBtn){
 function unlikePost(unlikeBtn){
     const likeBtnContainer = unlikeBtn.closest(".like-btn-container")
     const postId = likeBtnContainer.dataset.likepost;
+    const likeId = unlikeBtn.dataset.like;
     const likeBtn = likeBtnContainer.querySelector(".like-btn");
 
 
 
     unlikeBtn.classList.add("hidden");
     likeBtn.classList.remove("hidden")
-    handleLikeCount(likeBtnContainer);
-    persistGuestLike(postId);
 
-    // submitLike(postId).then(result => {
-    //     if(result.status){
-    //         unlikeBtn.classList.add("hidden");
-    //         likeBtn.classList.remove("hidden")
-    //         handleLikeCount(likeBtnContainer);
-    //
-    //         if(result.user === "guest"){
-    //             persistGuestLike(postId);
-    //         }
-    //     } else {
-    //         alert("Like submission failed, see browser log")
-    //     }
-    // }).catch(error => {
-    //     console.error("Error submitting like:", error);
-    // })
+    removeLike(likeId, postId).then(result => {
+        if(result.status){
+            unlikeBtn.classList.add("hidden");
+            likeBtn.classList.remove("hidden")
+            handleLikeCount(likeBtnContainer);
+
+            if(result.user === "guest"){
+                persistGuestLike(postId);
+            }
+        } else {
+            alert("Like submission failed, see browser log")
+        }
+    }).catch(error => {
+        console.error("Error submitting like:", error);
+    })
 }
 
 // save guest user like post to browser storage
@@ -274,10 +273,42 @@ async function submitLike(postId) {
             case 404: // Post not found
                 alert(result.message);
                 document.getElementById(`post-${postId}`)?.remove(); // Safely remove the post element
-                return { status: false, user: undefined };
 
             default: // Other errors
                 throw new Error(result.message || "Something went wrong");
+        }
+    } catch (error) {
+        // Handle errors
+        console.error(error);
+        return { status: false, user: undefined };
+    }
+}
+
+// Unlike post
+async function removeLike(likeId, postId) {
+    try {
+        // Send the like request
+        const response = await fetch("/deleteLike", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({likedId: likeId}),
+        });
+
+
+        // Handle different response statuses
+        switch (response.status) {
+            case 200: // Success (logged-in user)
+                return { status: true, user: "user"};
+
+            case 202: // Success (guest user)
+                return { status: true, user: "guest"};
+
+            case 404: // Post not found
+                alert(response.statusText);
+                document.getElementById(`post-${postId}`)?.remove(); // Safely remove the post element
+
+            default: // Other errors
+                throw new Error(response.status || "Something went wrong");
         }
     } catch (error) {
         // Handle errors
