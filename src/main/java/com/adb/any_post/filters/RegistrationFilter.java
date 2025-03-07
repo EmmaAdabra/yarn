@@ -38,7 +38,7 @@ public class RegistrationFilter implements Filter {
 
                 ValidateInputs.verifyName(request.getParameter("firstName"));
                 ValidateInputs.verifyName(request.getParameter("lastName"));
-                ValidateInputs.verifyUsername(request.getParameter("username"));
+//                ValidateInputs.verifyUsername(request.getParameter("username"));
                 password = ValidateInputs.verifyPassword(request.getParameter("password")).trim();
                 confirmPassword = request.getParameter("confirmPassword").trim();
                 ValidateInputs.verifyConfirmPassword(password, confirmPassword);

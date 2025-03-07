@@ -37,16 +37,15 @@ public class RegisterUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        String firstName, lastName, username, email, password;
+        String firstName, lastName, email, password;
 
         try{
             firstName = request.getParameter("firstName");
             lastName = request.getParameter("lastName");
-            username = request.getParameter("username");
             email = request.getParameter("email");
             password = request.getParameter("password");
 
-            User user = new User(firstName, lastName, username, email, password);
+            User user = new User(firstName, lastName, email, password);
 
             Response<Integer> serviceResponse  = userService.saveUser(user);
 
