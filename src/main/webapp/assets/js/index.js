@@ -171,10 +171,12 @@ async function likePost(likeBtn){
         if(result.status){
             likeBtn.classList.add("hidden");
             unlikeBtn.classList.remove("hidden")
+            unlikeBtn.setAttribute("data-like", result.likeId)
+            console.log(`likeID: ${unlikeBtn.dataset.like}`);
             handleLikeCount(likeBtnContainer, "like");
 
             if(result.user === "guest"){
-                persistGuestLike(postId);
+                persistGuestLike(postId, result.likeId);
             }
         } else {
             alert("Failed to submit like, see browser log")
@@ -216,14 +218,14 @@ function unlikePost(unlikeBtn){
 }
 
 // save guest user like post to browser storage
-function persistGuestLike(postID){
+function persistGuestLike(postID, likeId){
     let postId = postID;
     let likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || [];
 
     const postIndex = likedPosts.findIndex(post => post.postId === postId);
 
     if(postIndex === -1){
-        likedPosts.push({postId: postId})
+        likedPosts.push({postId: postId, likeId: likeId})
     } else {
         likedPosts.splice(postIndex, 1)
     }
@@ -263,11 +265,11 @@ async function submitLike(postId) {
         // Handle different response statuses
         switch (response.status) {
             case 200: // Success (logged-in user)
-                return { status: true, user: "user" };
+                return { status: true, user: "user", likeId: result.likeId};
 
             case 202: // Success (guest user)
                 // alert("Please log in for a better experience.");
-                return { status: true, user: "guest" };
+                return { status: true, user: "guest", likeId: result.likeId};
 
             case 404: // Post not found
                 alert(result.message);
@@ -291,14 +293,15 @@ function initializeGuestLikeBtn(){
         const allLikeBtnContainer = document.querySelectorAll(".like-btn-container");
         allLikeBtnContainer.forEach(eachContainer => {
             let postId = eachContainer.dataset.likepost;
-            const isLiked = guestLikedPost.some(post => post.postId === postId)
+            const likedPost = guestLikedPost.find(post => post.postId === postId)
 
-            if(isLiked){
+            if(likedPost){
                 const likeBtn = eachContainer.querySelector(".like-btn");
                 const unlikeBtn = eachContainer.querySelector(".unlike-btn");
 
                 likeBtn.classList.add("hidden")
                 unlikeBtn.classList.remove("hidden");
+                unlikeBtn.setAttribute("data-like", likedPost.likeId);
             }
         })
     }
