@@ -23,7 +23,8 @@
                 <p class="text-green-700 mt-2 overflow-hidden file-name"></p>
             </div>
             <div class="mt-7 flex gap-2 items-center">
-                <label class="text-[30px] text-title_text_clr flex justify-center items-center" for="postImage">
+                <label class="text-[30px] text-title_text_clr flex justify-center items-center cursor-pointer"
+                       for="postImage">
                     <i class="ri-image-add-line"></i>
                 </label>
                 <button class="yellow-btn primary-btns w-full rounded-md" id="submitPost">Post</button>

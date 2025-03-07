@@ -24,7 +24,8 @@
           </div>
           <div class="col-span-1 flex justify-end gap-7 items-center text-title_text_clr">
             <!-- profile menu icon/button -->
-            <span class="w-[35px] h-[35px] bg-bg_color2  flex justify-center items-center text-[20px] rounded-full cursor-pointer relative" id="navPfp">
+            <span
+                    class="w-[35px] h-[35px] bg-bg_color2  flex justify-center items-center text-[18px] rounded-full cursor-pointer relative" id="navPfp">
               <%@include file="/WEB-INF/views/fragments/pfpWrapper.jsp"%>
               <span class="w-[18px] h-[18px] center-icon bg-bg_color2 text-[20px] text-title_text_clr absolute bottom-[-3px] right-[-3px] border-[1.3px] border-main_text">
                 <i class="ri-arrow-drop-down-line"></i>

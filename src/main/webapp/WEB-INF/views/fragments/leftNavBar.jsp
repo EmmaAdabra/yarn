@@ -2,7 +2,8 @@
   <ul class="list-none menu-options ps-4 pt-8">
     <li class=" option">
       <a class="flex items-center gap-2 rounded hover:bg-bg_color2 p-2 w-full">
-        <span class="flex justify-center items-center w-[35px] h-[35px] text-fade_text text-[20px] uppercase rounded-full bg-bg_color3 ">
+        <span
+                class="center-icon w-[35px] h-[35px] text-fade_text text-[18px] uppercase rounded-full bg-bg_color3 ">
           <%@include file="/WEB-INF/views/fragments/pfpWrapper.jsp"%>
         </span>
         <span class="text-title_text_clr">${sessionScope.sessionUser.getUserFullName()}</span>
