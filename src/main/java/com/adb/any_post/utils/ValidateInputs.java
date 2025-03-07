@@ -56,7 +56,7 @@ public class ValidateInputs {
         var pattern = Pattern.compile(usernameRegex);
         Matcher matcher = pattern.matcher(username);
 
-        if(!matcher.matches()){
+        if(username!= null && !matcher.matches()){
             throw new InputValidationException(
                     "Username contains invalid character - valid character - [letters, numbers, or .]"
             );
@@ -137,11 +137,20 @@ public class ValidateInputs {
         }
     }
 
-    public static void validateQueryParam(String ... values) throws InputValidationException{
-        for (String value : values) {
-            if (value == null || value.isEmpty()) {
-                throw new InputValidationException("Query parameters can't be null or empty");
+    public static void validateQueryParam(Object ... values) throws InputValidationException{
+        for (Object value : values) {
+            if (value == null) {
+                throw new InputValidationException("Query parameters can't be null");
             }
+
+            // Handle String objects
+            if (value instanceof String) {
+                String strValue = (String) value;
+                if (strValue.isEmpty() || strValue.isBlank()) {
+                    throw new InputValidationException("Query parameters can't be empty or blank");
+                }
+            }
+
         }
     }
 }
