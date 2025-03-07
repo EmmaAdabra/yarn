@@ -1,9 +1,11 @@
 package com.adb.any_post.dao.likesDao;
 
+import com.adb.any_post.dto.LikedPost;
 import com.adb.any_post.exceptions.DAOException;
 import com.adb.any_post.models.Like;
 import com.adb.any_post.utils.BuildSqlStatement;
 import com.adb.any_post.utils.CreateDbConnection;
+import com.adb.any_post.utils.EntityModelMapper;
 import com.adb.any_post.utils.GetSqlStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +16,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LikeDao {
     private static final Logger logger = LoggerFactory.getLogger(LikeDao.class);
@@ -55,8 +59,8 @@ public class LikeDao {
         return likeId;
     }
 
-    public List<Integer> getUserLikedPosts(int user_id) throws DAOException{
-        List<Integer> likedPosts = new ArrayList<>();
+    public Map<Integer, LikedPost> getUserLikedPosts(int user_id) throws DAOException{
+        Map<Integer, LikedPost> likedPostMap = new HashMap<>();
 
         try(Connection connection = CreateDbConnection.getConnection()){
             String sqlScriptPath = LikeSqlScriptsPath.GET_USER_LIKED_POSTS.getPath();
@@ -69,8 +73,8 @@ public class LikeDao {
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()){
-                    int postId = resultSet.getInt("post_id");
-                    likedPosts.add(postId);
+                    LikedPost likedPost = new LikedPost(resultSet.getInt("post_id"), resultSet.getInt("id"));
+                    likedPostMap.put(likedPost.getPostId(), likedPost);
                 }
 
             } catch (SQLException e){
@@ -86,6 +90,6 @@ public class LikeDao {
             throw new DAOException("Failed to fetch,  get user liked posts sql query", e);
         }
 
-        return likedPosts;
+        return likedPostMap;
     }
 }
