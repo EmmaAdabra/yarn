@@ -36,9 +36,10 @@
                             </button>
                         </div>
                     </div>
-                    <span class="text-fade_text flex justify-center items-center w-[150px] h-[150px] mt-10 mx-auto text-[80px] uppercase rounded-full bg-bg_color3">
-                <%@include file="/WEB-INF/views/fragments/pfpWrapper.jsp"%>
-              </span>
+                    <span
+                            class="text-fade_text flex justify-center items-center w-[150px] h-[150px] mt-10 mx-auto text-[50px] uppercase rounded-full bg-bg_color3">
+                        <%@include file="/WEB-INF/views/fragments/pfpWrapper.jsp"%>
+                    </span>
                     <p class="text-red-200 error mt-2"></p>
                     <p class="text-green-700 mt-2 overflow-hidden file-name"></p>
                 </form>
@@ -80,13 +81,13 @@
                   " maxlength=50 minlength=2 readonly required
                     />
 
-                    <label class="block text-title_text_clr mb-2 p-1" for="username">Username</label>
-                    <input class="input-field text-fade_text rounded-md" type="text" id="username" name="username" placeholder="Username"
-                           pattern="[a-zA-Z][a-zA-Z0-9.]{4,50}(?<!\.)$"
-                           title="
-                    Input must start with a letter, be 5 to 50 characters long, can contain letters,
-                    digits, and dots (.), but cannot end with a dot." minlength=4 maxlength=50 readonly  value="${sessionScope.sessionUser.getUsername()}"
-                    />
+<%--                    <label class="block text-title_text_clr mb-2 p-1" for="username">Username</label>--%>
+<%--                    <input class="input-field text-fade_text rounded-md" type="text" id="username" name="username" placeholder="Username"--%>
+<%--                           pattern="[a-zA-Z][a-zA-Z0-9.]{4,50}(?<!\.)$"--%>
+<%--                           title="--%>
+<%--                    Input must start with a letter, be 5 to 50 characters long, can contain letters,--%>
+<%--                    digits, and dots (.), but cannot end with a dot." minlength=4 maxlength=50 readonly  value="${sessionScope.sessionUser.getUsername()}"--%>
+<%--                    />--%>
 
                     <label class="block text-title_text_clr mb-2 p-1" for="email">Email</label>
                     <input class="input-field text-fade_text rounded-md"  type="email" id="email" name="email" placeholder="Email" required readonly value="${sessionScope.sessionUser.getEmail()}" />

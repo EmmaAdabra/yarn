@@ -53,13 +53,13 @@
                        " maxlength="50" minlength="2"
                 />
 
-                <label for="username"></label>
-                <input class="input-field text-title_text_clr" type="text" id="username" name="username" placeholder="Username"
-                       pattern="[a-zA-Z][a-zA-Z0-9.]{4,50}(?<!\.)$"
-                       title="
-                        Input must start with a letter, be 5 to 50 characters long, can contain letters,
-                        digits, and dots (.), but cannot end with a dot." minlength=4 maxlength=50
-                />
+<%--                <label for="username"></label>--%>
+<%--                <input class="input-field text-title_text_clr" type="text" id="username" name="username" placeholder="Username"--%>
+<%--                       pattern="[a-zA-Z][a-zA-Z0-9.]{4,50}(?<!\.)$"--%>
+<%--                       title="--%>
+<%--                        Input must start with a letter, be 5 to 50 characters long, can contain letters,--%>
+<%--                        digits, and dots (.), but cannot end with a dot." minlength=4 maxlength=50--%>
+<%--                />--%>
 
                 <label for="email"></label>
                 <input class="input-field text-title_text_clr" type="email" id="email" name="email" placeholder="Email" required />
