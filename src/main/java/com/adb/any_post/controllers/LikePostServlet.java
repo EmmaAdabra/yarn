@@ -45,7 +45,7 @@ public class LikePostServlet extends HttpServlet {
 
            if(likeId != 0){
                responseJson.put("message", "Like submitted successfully");
-               responseJson.put("likedId", likeId);
+               responseJson.put("likeId", likeId);
                response.getWriter().write(responseJson.toString());
            } else {
                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
