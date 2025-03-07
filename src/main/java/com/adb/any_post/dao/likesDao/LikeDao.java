@@ -5,7 +5,6 @@ import com.adb.any_post.exceptions.DAOException;
 import com.adb.any_post.models.Like;
 import com.adb.any_post.utils.BuildSqlStatement;
 import com.adb.any_post.utils.CreateDbConnection;
-import com.adb.any_post.utils.EntityModelMapper;
 import com.adb.any_post.utils.GetSqlStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class LikeDao {
@@ -91,5 +88,34 @@ public class LikeDao {
         }
 
         return likedPostMap;
+    }
+
+    public int deleteLike(int likeId) throws DAOException{
+        int deletedRow;
+
+        try(Connection connection = CreateDbConnection.getConnection()){
+            String sqlScriptPath = LikeSqlScriptsPath.DELETE_LIKE.getPath();
+            String deleteLikeQuery = GetSqlStatement.sqlQueryBuilder(sqlScriptPath);
+
+            try(PreparedStatement preparedStatement = connection.prepareStatement(deleteLikeQuery)){
+
+                preparedStatement.setInt(1, likeId);
+
+                deletedRow = preparedStatement.executeUpdate();
+
+            } catch (SQLException e){
+                logger.error("SQL query execution error: " + e.getMessage(), e);
+                throw new DAOException("sql execution error", e);
+            }
+
+        } catch (SQLException e) {
+            logger.error("Fail to connect to database: " + e.getMessage(), e);
+            throw new DAOException("Fail to connect to database", e);
+        } catch (IOException e){
+            logger.error("Failed to fetch delete like sql query -- " + e.getMessage());
+            throw new DAOException("Failed to fetch delete like sql query", e);
+        }
+
+        return deletedRow;
     }
 }
