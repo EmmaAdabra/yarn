@@ -91,11 +91,10 @@ public class UserDao implements IUserDao{
 
                 BuildSqlStatement.setParameters(
                         preparedStatement,
-                        user.getUsername(),
-                        user.getEmail(),
-                        user.getPassword(),
                         user.getFirstName(),
-                        user.getLastName()
+                        user.getLastName(),
+                        user.getEmail(),
+                        user.getPassword()
                 );
 
                 ResultSet resultSet = preparedStatement.executeQuery();
