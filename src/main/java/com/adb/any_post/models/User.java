@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class User implements Serializable {
-    private static long serialVersionUID = 1l;
     private int id;
     private String username;
     private String email;
@@ -19,41 +18,12 @@ public class User implements Serializable {
     public User() {
     }
 
-    // constructor during new user creation
-    public User(String username, String email, String password, String firstName, String lastName) {
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.username = username;
         this.email = email;
         this.password = password;
-    }
 
-    //  constructor using data from database
-    public User(
-            int id, String username,
-            String email, String password,
-            String firstName, String lastName,
-            String profilePicture,
-            String bio, Timestamp createdAt)
-    {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.profilePicture = profilePicture;
-        this.bio = bio;
-        this.createdAt = createdAt;
-
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public static void setSerialVersionUID(long serialVersionUID) {
-        User.serialVersionUID = serialVersionUID;
     }
 
     public int getId() {
@@ -64,13 +34,6 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getEmail() {
         return email;
