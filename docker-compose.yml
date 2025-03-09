@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: emmanueladb/any_post_db:latest
+    container_name: any_post_db
+    env_file:
+      - .env  # Load environment variables from .env file
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    image: emmanueladb/any_post:latest
+    container_name: any_post_webapp
+    depends_on:
+      - db
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}?charset=UTF-8
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      UPLOAD_DIR: ${UPLOAD_DIR}
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads:/usr/local/tomcat/uploads  # Volume for uploads
+      - ./server.xml:/usr/local/tomcat/conf/server.xml  # Bind mount for server.xml
+
+volumes:
+  postgres_data:
+  uploads:
