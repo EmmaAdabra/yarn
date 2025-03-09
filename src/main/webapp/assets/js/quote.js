@@ -2,7 +2,7 @@ const proxyUrl = "https://corsproxy.io/?";
 
 const api_url ="https://zenquotes.io/api/quotes/";
 
-let quotes = [];
+let quote = [];
     let index = 0;
     let count = 0;
     let autoScroll;
@@ -11,19 +11,19 @@ let quotes = [];
         fetch(proxyUrl + api_url)
             .then(response => response.json())
             .then(data => {
-                quotes = data.slice(0, 50);
+                quote = data.slice(0, 50);
                 index = 0;
                 count = 0;
                 updateQuote();
                 startAutoScroll();
             })
-            .catch(error => console.error("Error fetching quotes:", error));
+            .catch(error => console.error("Error fetching quote:", error));
     }
 
     function updateQuote() {
-        if (quotes.length > 0) {
-            document.getElementById("quote-text").textContent = quotes[index].q;
-            document.getElementById("quote-author").textContent = quotes[index].a ? `- ${quotes[index].a}` : "- Unknown";
+        if (quote.length > 0) {
+            document.getElementById("quote-text").textContent = quote[index].q;
+            document.getElementById("quote-author").textContent = quote[index].a ? `- ${quote[index].a}` : "- Unknown";
             document.getElementById("prev").disabled = (index === 0);
             document.getElementById("next").disabled = (count >= 9);
         }
@@ -41,7 +41,7 @@ let quotes = [];
     }
 
     function nextQuote() {
-        if (index < quotes.length - 1) {
+        if (index < quote.length - 1) {
             index++;
             count++;
             updateQuote();
@@ -69,21 +69,22 @@ fetchQuotes();
 
 // show and hide quote
 function toggleQuotes() {
-    const quotePane = document.getElementById("rightPane");
-  
-    if (quotePane.classList.contains("hidden")) {
-      quotePane.classList.remove("hidden");
+    const quoteContainer = document.getElementById("quoteContainer");
+    if (quoteContainer.classList.contains("hidden")) {
+      quoteContainer.classList.remove("hidden");
     } else {
-      quotePane.classList.add("hidden");
+      quoteContainer.classList.add("hidden");
     }
   }
-  
-  // show quote btn
-  document.getElementById("getInspired")
-    .addEventListener("click", () => {
-      toggleQuotes();
-      hideProfileMenu();
-});
+
+// show quote btn
+const showQuotesBtns = document.querySelectorAll(".show-quotes");
+showQuotesBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        toggleQuotes();
+        hideProfileMenu();
+    })
+})
 
 // hide quote
 document.getElementById("closeQuote").addEventListener("click", toggleQuotes);

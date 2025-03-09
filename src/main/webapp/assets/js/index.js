@@ -238,7 +238,7 @@ function handleLikeCount(likeBtnContainer, action=""){
 
     if(action === "like"){
         totalLikeElem.textContent = totalLike > 0 ? totalLike + 1 : 1;
-    }else {
+    } else {
         totalLikeElem.textContent = totalLike > 1 ? totalLike - 1 : "";
     }
 }
@@ -348,7 +348,9 @@ profileIcon.addEventListener("click", (event) => {
 
 function hideProfileMenu() {
     const profileMenu = document.querySelector("#profileMenu");
-    profileMenu.classList.add("hidden");
+    if(!profileMenu.classList.contains("hidden")){
+        profileMenu.classList.add("hidden");
+    }
 }
 
 // document click event delegation
@@ -964,3 +966,19 @@ if(!SESSION_USER_ID){
     window.addEventListener("load", initializeGuestLikeBtn);
 }
 
+// make hideProfileMenu function global
+window.hideProfileMenu = hideProfileMenu;
+
+// JavaScript to hide loader and show content
+// JavaScript to hide loader and show content
+window.addEventListener('load', function () {
+    const pageLoader = document.getElementById('page-loader');
+    const content = document.getElementById('content');
+
+    // Hide loader
+    pageLoader.classList.add('opacity-0', 'pointer-events-none');
+
+    // Show content
+    content.classList.remove('hidden');
+    content.classList.add('block');
+});

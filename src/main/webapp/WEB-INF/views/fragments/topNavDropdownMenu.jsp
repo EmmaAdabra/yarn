@@ -10,13 +10,13 @@
         </a>
     </div>
     <ul class="flex flex-col">
-      <li class="flex items-center gap-5 md:hidden">
-        <span class="rounded hover:bg-bg_color2 p-2 w-full" id="getInspired">
-          <span class="text-fade_text text-[20px]">
-            <i class="ri-double-quotes-l"></i>
-            </span><span class="text-title_text_clr">Get Inspired</span>
-        </span>
-    </li>
+        <li class="flex items-center gap-5 cursor-pointer">
+            <span class="rounded hover:bg-bg_color2 p-2 w-full show-quotes" id="getInspired">
+              <span class="text-fade_text text-[20px]">
+                <i class="ri-double-quotes-l"></i>
+                </span><span class="text-title_text_clr">Quotes</span>
+            </span>
+        </li>
         <li class="flex items-center gap-5">
             <a class="rounded hover:bg-bg_color2 p-2 w-full" id="profileSettings"  href="<c:url value="/edit_profile" />">
               <span class="text-fade_text text-[20px]">

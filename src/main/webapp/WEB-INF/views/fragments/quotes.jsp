@@ -1,5 +1,5 @@
-<div class="quotes pt-10 md:w-[90%] w-full border border-borderClr rounded-2xl shadow-lg relative md:bg-transparent bg-bg_color1">
-  <span class="md:hidden block center-icon w-[30px] h-[30px] bg-bg_color3 text-fade_text hover:text-main_text text-[16.5px] border border-borderClr shadow-lg absolute top-2 right-2 cursor-pointer" id="closeQuote">
+<div class="quotes pt-10 w-full border border-borderClr rounded-2xl shadow-lg relative md:bg-transparent bg-bg_color1">
+  <span class="center-icon w-[30px] h-[30px] bg-bg_color3 text-fade_text hover:text-main_text text-[16.5px] border border-borderClr shadow-lg absolute top-2 right-2 cursor-pointer" id="closeQuote">
     <i class="ri-close-large-fill"></i>
   </span>
   <h3 class="text-title_text_clr text-center sm:text-xl text-[18px] font-semibold tracking-wide mb-10 relative 

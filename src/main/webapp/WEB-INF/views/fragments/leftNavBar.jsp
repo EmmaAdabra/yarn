@@ -17,12 +17,19 @@
       </a>
     </li>
     <li class="flex items-center gap-5">
-        <a class="rounded hover:bg-bg_color2 p-2 w-full"  href="<c:url value="/logout" />">
-          <span class="text-fade_text text-[20px]">
-            <i class="ri-logout-box-r-line"></i>
-          </span>
-            <span class="text-title_text_clr">Logout</span>
-        </a>
+      <span class="rounded hover:bg-bg_color2 p-2 w-full cursor-pointer show-quotes" id="getInspired">
+        <span class="text-fade_text text-[20px]">
+          <i class="ri-double-quotes-l"></i>
+          </span><span class="text-title_text_clr">Quotes</span>
+      </span>
+    </li>
+    <li class="flex items-center gap-5">
+      <a class="rounded hover:bg-bg_color2 p-2 w-full"  href="<c:url value="/logout" />">
+        <span class="text-fade_text text-[20px]">
+          <i class="ri-logout-box-r-line"></i>
+        </span>
+        <span class="text-title_text_clr">Logout</span>
+      </a>
     </li>
   </ul>
 </div>

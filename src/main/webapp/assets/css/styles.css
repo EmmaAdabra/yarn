@@ -660,12 +660,12 @@ video {
   right: 0.5rem;
 }
 
-.right-4 {
-  right: 1rem;
+.right-3 {
+  right: 0.75rem;
 }
 
-.right-5 {
-  right: 1.25rem;
+.right-4 {
+  right: 1rem;
 }
 
 .right-\[-3px\] {
@@ -826,6 +826,10 @@ video {
   display: none;
 }
 
+.h-24 {
+  height: 6rem;
+}
+
 .h-6 {
   height: 1.5rem;
 }
@@ -914,6 +918,10 @@ video {
 
 .w-1\/2 {
   width: 50%;
+}
+
+.w-24 {
+  width: 6rem;
 }
 
 .w-6 {
@@ -1443,6 +1451,10 @@ video {
   padding-bottom: 2.75rem;
 }
 
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+
 .pb-7 {
   padding-bottom: 1.75rem;
 }
@@ -1453,6 +1465,14 @@ video {
 
 .pb-\[25px\] {
   padding-bottom: 25px;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
+}
+
+.pl-3 {
+  padding-left: 0.75rem;
 }
 
 .pr-2 {
@@ -1679,6 +1699,10 @@ video {
   color: rgb(226 226 217 / var(--tw-text-opacity, 1));
 }
 
+.opacity-0 {
+  opacity: 0;
+}
+
 .opacity-90 {
   opacity: 0.9;
 }
@@ -1736,12 +1760,22 @@ video {
   transition-duration: 150ms;
 }
 
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 .duration-300 {
   transition-duration: 300ms;
 }
 
 .duration-500 {
   transition-duration: 500ms;
+}
+
+.ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* base style */
@@ -2007,6 +2041,25 @@ body::-webkit-scrollbar-track,
   padding-bottom: 100px;
 }
 
+.ads-card {
+  display: flex;
+  height: 150px;
+  width: 95%;
+  max-width: 280px;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 1rem;
+  border-width: 1px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(50 50 52 / var(--tw-bg-opacity, 1));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* .comment-icon:hover {
   color: theme("colors.gray.200") !important;
 } */
@@ -2130,6 +2183,28 @@ textarea::-webkit-scrollbar
   bottom: 0;
 }
 
+/* override tiny slider style */
+
+div.tns-item {
+  padding-right: 0 !important;
+}
+
+/* Custom animation for pulsating effect */
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.pulse-logo {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
 .before\:absolute::before {
   content: var(--tw-content);
   position: absolute;
@@ -2227,6 +2302,11 @@ textarea::-webkit-scrollbar
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:text-logo_clr:hover {
+  --tw-text-opacity: 1;
+  color: rgb(253 191 7 / var(--tw-text-opacity, 1));
+}
+
 .hover\:text-main_text:hover {
   --tw-text-opacity: 1;
   color: rgb(194 194 191 / var(--tw-text-opacity, 1));
@@ -2287,18 +2367,6 @@ textarea::-webkit-scrollbar
 }
 
 @media (min-width: 768px) {
-  .md\:relative {
-    position: relative;
-  }
-
-  .md\:right-0 {
-    right: 0px;
-  }
-
-  .md\:top-0 {
-    top: 0px;
-  }
-
   .md\:col-span-1 {
     grid-column: span 1 / span 1;
   }
@@ -2319,16 +2387,8 @@ textarea::-webkit-scrollbar
     display: flex;
   }
 
-  .md\:hidden {
-    display: none;
-  }
-
-  .md\:w-\[90\%\] {
-    width: 90%;
-  }
-
-  .md\:w-full {
-    width: 100%;
+  .md\:w-\[280px\] {
+    width: 280px;
   }
 
   .md\:grid-cols-3 {
@@ -2376,16 +2436,18 @@ textarea::-webkit-scrollbar
     display: flex;
   }
 
-  .lg\:hidden {
-    display: none;
-  }
-
   .lg\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .lg\:pl-7 {
-    padding-left: 1.75rem;
+  .lg\:pl-5 {
+    padding-left: 1.25rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:items-center {
+    align-items: center;
   }
 }
 
