@@ -77,7 +77,6 @@ public class UserService {
         sessionUser.setfName(user.getFirstName());
         sessionUser.setlName(user.getLastName());
         sessionUser.setEmail(user.getEmail());
-        sessionUser.setUsername(user.getUsername());
         sessionUser.setUserFullName(StringUtil.getUSerFullName(user.getFirstName(), user.getLastName()));
 
         if(user.getBio() != null){
