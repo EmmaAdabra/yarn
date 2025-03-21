@@ -1,3 +1,6 @@
+/**
+ * The `DashboardServlet` class handles requests to display the dashboard page, fetching posts and user.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.likesDao.LikeDao;

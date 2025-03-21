@@ -1,3 +1,8 @@
+/**
+ * This Java servlet class `DeleteCommentServlet` handles the deletion of a comment based on the
+ * comment ID and owner ID with input validation and error handling.
+ */
+
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.commentDao.CommentDao;

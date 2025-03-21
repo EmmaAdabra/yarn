@@ -1,3 +1,7 @@
+/**
+ * The `UploadPfpServlet` class in a Java web application handles the uploading of user profile
+ * pictures with validation and error handling.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.userdao.UserDao;

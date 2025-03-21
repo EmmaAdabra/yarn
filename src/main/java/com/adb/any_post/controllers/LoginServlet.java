@@ -1,3 +1,6 @@
+/**
+ * The `LoginServlet` class handles user login functionality.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.userdao.UserDao;
@@ -43,7 +46,6 @@ public class LoginServlet extends HttpServlet {
                 if(sessionUser.isHasPfp()){
                     String pfpUrl = UserUtil.getUserPfpUrl(sessionUser.getUserId());
                     System.out.println("servletContextPath: " + GetContextPath.getContextPath());
-//                    String pfpUrl = StringUtils.randomAvatarUrl();
                     sessionUser.setPfpUrl(pfpUrl);
                 }
 

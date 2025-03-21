@@ -1,3 +1,7 @@
+/**
+ * The `EditProfileServlet` class in the `com.adb.any_post.controllers` package handles GET requests to
+ * display the user profile editing page.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.utils.WebPagePaths;

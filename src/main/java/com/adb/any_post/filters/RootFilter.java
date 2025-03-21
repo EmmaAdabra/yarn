@@ -1,3 +1,8 @@
+/**
+ * The `RootFilter` class in a Java web application filters incoming requests, handles root routes,
+ * skips static resources and API endpoints, and finds the nearest valid route based on the requested
+ * path.
+ */
 package com.adb.any_post.filters;
 
 import javax.servlet.*;
@@ -20,18 +25,6 @@ public class RootFilter implements Filter {
             "/edit_profile",
             "/authenticateUser"
     );
-//    @Override
-//    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-//        HttpServletRequest request = (HttpServletRequest) servletRequest;
-////        String path = request.getRequestURI().replaceAll("/+$", "");
-//        String path = request.getRequestURI().replaceAll("[/]+$", "");
-//
-//        if(path.equals("") || path.equals(request.getContextPath())){
-//            request.getRequestDispatcher("/home").forward(request, servletResponse);
-//        } else {
-//            filterChain.doFilter(request, servletResponse);
-//        }
-//    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

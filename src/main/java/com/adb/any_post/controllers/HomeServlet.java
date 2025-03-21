@@ -1,3 +1,7 @@
+/**
+ * The `HomeServlet` class in a Java web application fetches posts from a database using `PostDao` and
+ * forwards the data to a JSP file for display.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.postDao.PostDao;

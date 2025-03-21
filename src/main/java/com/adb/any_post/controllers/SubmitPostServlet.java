@@ -1,3 +1,6 @@
+/**
+ * The `SubmitPostServlet` class handles the submission of posts with image
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.postDao.PostDao;

@@ -1,3 +1,7 @@
+/**
+ * The `RegistrationFilter` class is a servlet filter in Java that validates user registration inputs
+ * before allowing the request to proceed.
+ */
 package com.adb.any_post.filters;
 
 import com.adb.any_post.exceptions.InputValidationException;

@@ -1,3 +1,7 @@
+/**
+ * The `LikePostServlet` class handles the liking of posts, validating inputs and saving likes to the
+ * database with appropriate error handling.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.likesDao.LikeDao;
@@ -14,8 +18,6 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.util.LinkedList;
-
 @WebServlet(name = "LikePostServlet", value = "/likePost")
 public class LikePostServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(LikePostServlet.class);

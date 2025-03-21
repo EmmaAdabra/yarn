@@ -1,3 +1,7 @@
+/**
+ * The `AuthenticationFilter` class is a Java servlet filter that checks if a user is authenticated
+ * before allowing access to specific URLs.
+ */
 package com.adb.any_post.filters;
 
 import javax.servlet.*;

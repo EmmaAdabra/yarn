@@ -1,3 +1,7 @@
+/**
+ * The UpdateUserBioServlet class in a Java web application handles updating user bio message
+ * validation and error handling.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.userdao.UserDao;

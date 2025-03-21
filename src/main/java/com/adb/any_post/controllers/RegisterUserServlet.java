@@ -1,3 +1,7 @@
+/**
+ * The `RegisterUserServlet` class in Java handles user registration requests by saving user data and
+ * displaying appropriate responses.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.userdao.UserDao;

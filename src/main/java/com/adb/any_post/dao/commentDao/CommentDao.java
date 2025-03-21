@@ -1,3 +1,6 @@
+/**
+ * The CommentDao class in Java handles database operations related to comments for a post.
+ */
 package com.adb.any_post.dao.commentDao;
 
 import com.adb.any_post.dto.CommentDto;

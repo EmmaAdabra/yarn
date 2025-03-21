@@ -1,3 +1,7 @@
+/**
+ * The `LogoutServlet` class in the `com.adb.any_post.controllers` package handles user logout by
+ * invalidating the session and redirecting to the home page.
+ */
 package com.adb.any_post.controllers;
 
 import javax.servlet.*;

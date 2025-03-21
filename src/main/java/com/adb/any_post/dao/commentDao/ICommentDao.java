@@ -1,3 +1,6 @@
+// This code snippet is defining an interface named `ICommentDao` in the package
+// `com.adb.any_post.dao.commentDao`. The interface declares three methods related to handling
+// comments:
 package com.adb.any_post.dao.commentDao;
 
 import com.adb.any_post.dto.CommentDto;

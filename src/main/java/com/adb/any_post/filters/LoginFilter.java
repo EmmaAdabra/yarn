@@ -1,3 +1,7 @@
+/**
+ * The `LoginFilter` class is a Java servlet filter that validates user input during a login request
+ * and handles exceptions accordingly.
+ */
 package com.adb.any_post.filters;
 
 import com.adb.any_post.exceptions.InputValidationException;

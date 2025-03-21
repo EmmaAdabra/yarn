@@ -1,3 +1,7 @@
+/**
+ * The `AuthenticationServlet` class is a servlet in a Java web application that forwards requests to
+ * the "/home" page when handling a GET request.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.utils.WebPagePaths;

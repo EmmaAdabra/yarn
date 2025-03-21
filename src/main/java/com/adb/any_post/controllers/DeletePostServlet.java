@@ -1,3 +1,7 @@
+/**
+ * This Java class `DeletePostServlet` handles the deletion of a post based on the post ID and owner
+ * ID, with input validation and error handling.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.postDao.PostDao;

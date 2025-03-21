@@ -1,3 +1,7 @@
+/**
+ * This Java servlet class fetches comments for a specific post based on the postId provided in the
+ * request.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.commentDao.CommentDao;

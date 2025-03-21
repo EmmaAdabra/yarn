@@ -1,3 +1,7 @@
+/**
+ * This Java servlet class handles the deletion of a like associated with a post, including input
+ * validation and error handling.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.likesDao.LikeDao;

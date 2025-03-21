@@ -1,3 +1,7 @@
+/**
+ * This Java servlet class `FetchProfilePictureServlet` fetches and serves a user's profile picture
+ * based on the provided user ID.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.userdao.UserDao;

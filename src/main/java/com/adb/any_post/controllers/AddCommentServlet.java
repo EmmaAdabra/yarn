@@ -1,3 +1,7 @@
+/**
+ * The `AddCommentServlet` class in Java handles the addition of comments to a post, including input
+ * validation and error handling.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.commentDao.CommentDao;
@@ -22,6 +26,7 @@ public class AddCommentServlet extends HttpServlet {
     private final CommentService commentService = new CommentService(new CommentDao());
 
 
+    @SuppressWarnings("unused")
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");

@@ -1,3 +1,9 @@
+/* The above JavaScript code is validating an uploaded profile picture (pfp) by checking its file size.
+It listens for a change event on the pfp input field, retrieves the selected file, sets a maximum
+file size limit of 500KB, and then checks if the selected file exceeds this limit. If the file size
+is greater than 500KB, it displays an error message and hides the save button. If the file size is
+within the limit, it updates the displayed file name, shows the save button, and removes the hidden
+class from it. */
 // validate uploaded pfp
 {
   const pfp = document.querySelector("#pfp");
@@ -33,6 +39,12 @@ function displayEditProfileError(currentEvent, errorMsg){
  }
 
 
+ /**
+  * The function deactivates editing for a profile picture and bio form by setting the input field to
+  * read-only and updating the classes of certain elements.
+  * @param form - The `form` parameter is a reference to the HTML form element that contains the input
+  * field for editing a user's profile picture and bio.
+  */
  function deactivateEditForPfpAndBio(form){
   const input = form.querySelector("input");
    if(form.querySelector(".edit-bio").classList.contains("hidden")) {
@@ -44,6 +56,10 @@ function displayEditProfileError(currentEvent, errorMsg){
  }
 
 //  upload pfp
+/* The above JavaScript code is handling the submission of a form for uploading a profile picture. It
+listens for the form submission event, prevents the default form submission behavior, retrieves the
+selected file from the input field, checks if a file is selected, and if so, sends a POST request to
+the server with the file data using FormData. */
 {
   document.querySelector("#uploadPfpForm").addEventListener("submit", async function(event){
     event.preventDefault();

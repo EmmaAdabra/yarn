@@ -1,3 +1,7 @@
+/**
+ * The UpdatePersonalDataServlet class handles updating user personal data (name and email),
+ * including input validation and error handling.
+ */
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.userdao.UserDao;

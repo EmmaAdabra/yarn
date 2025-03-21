@@ -1,3 +1,5 @@
+// This Java code snippet defines an enum called `CommentSqlScriptsPath` within the package
+// `com.adb.any_post.dao.commentDao`.
 package com.adb.any_post.dao.commentDao;
 
 public enum CommentSqlScriptsPath {
