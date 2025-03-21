@@ -1,11 +1,12 @@
-<div class="quotes pt-10 w-full border border-borderClr rounded-2xl shadow-lg relative md:bg-transparent bg-bg_color1">
+<div
+        class="quotes pt-10 w-full border border-borderClr rounded-2xl shadow-lg relative z-50 md:bg-transparent bg-bg_color1">
   <span class="center-icon w-[30px] h-[30px] bg-bg_color3 text-fade_text hover:text-main_text text-[16.5px] border border-borderClr shadow-lg absolute top-2 right-2 cursor-pointer" id="closeQuote">
     <i class="ri-close-large-fill"></i>
   </span>
   <h3 class="text-title_text_clr text-center sm:text-xl text-[18px] font-semibold tracking-wide mb-10 relative 
   before:absolute before:w-full before:h-full before:left-0 before:top-0 before:blur-md 
-  before:content-['Get\20Inspired'] before:text-extra1_clr1/80 before:-z-10 before:animate-pulse">
-  Get Inspired
+  before:content-['Quotes'] before:text-extra1_clr1/80 before:-z-10 before:animate-pulse">
+  Quotes
   </h3>
 
   <div class="p-3 bg-bg_color2/90 border border-borderClr rounded-2xl shadow-lg text-center relative">

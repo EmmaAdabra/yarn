@@ -35,7 +35,7 @@ public class AddCommentServlet extends HttpServlet {
             ObjectMapper commentMapper = new ObjectMapper();
             Comment comment = commentMapper.readValue(request.getReader(), Comment.class);
             Integer postId = comment.getPostId();
-            String commentText = comment.getComment();
+            String commentText = SanitizeUserContent.sanitize(comment.getComment());
 
             if(postId != null ){
                 ValidateInputs.validateComment(commentText);

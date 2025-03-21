@@ -15,8 +15,10 @@
 <body class="bg-bg_color1 h-[100%] overflow-hidden overflow-y-scroll relative">
     <%--page loader--%>
     <%@include file="WEB-INF/views/fragments/pageLoader.jsp"%>
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-[100] space-y-2"></div>
 
-    <div class="hidden" id="content">
+    <div class="" id="content">
         <!-- create post modal -->
         <%@include file="/WEB-INF/views/fragments/createPost.jsp"%>
         <%@include file="/WEB-INF/views/fragments/indexCreatePostNotice.jsp"%>
@@ -28,13 +30,16 @@
             <section class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 mt-[60px] w-[100vw] h-[calc(100vh-60px)] main-content relative">
 
                 <!-- left pane -->
-                <div class="md:col-span-3 col-span-full grid md:grid-cols-3 grid-cols-1 md:px-0 px-10 max-h-[calc(100vh-60px)] md:overflow-hidden overflow-auto" id="heroAndPostContainer">
-                    <div class="flex flex-col md:px-3 sm:px-10 justify-center items-center md:col-span-1 col-span-full left-sidebar" >
-                        <div class="w-full relative flex flex-col items-center gap-3 p-5 bg-[#1e1e20]  text-center md:overflow-hidden ">
+                <div
+                        class="md:col-span-3 col-span-full grid md:grid-cols-3 grid-cols-1 md:px-0 px-[10px] max-h-[calc(100vh-60px)] md:overflow-hidden overflow-auto" id="heroAndPostContainer">
+                    <div
+                            class="flex flex-col md:px-3 xl:max-w-[300px] xl:mx-auto sm:px-10 justify-center items-center md:col-span-1 col-span-full left-sidebar" >
+                        <div class="w-full relative flex flex-col items-center gap-3 p-5 text-center md:overflow-hidden ">
                             <!-- Content -->
                             <div>
-                                <h1 class="text-[5.5vmin] font-semibold text-title_text_clr hover:text-glow transition-colors duration-500">
-                                    <span class="block line mx-auto">Join</span>
+                                <h1
+                                        class="lg:text-[5.5vmin] md:text-[4.5vmin] text-[5.5vmin] font-semibold text-title_text_clr hover:text-glow transition-colors duration-500">
+                                     <span class="block line mx-auto">Join</span>
                                     Interesting Conversations
                                 </h1>
                                 <p class="text-lg text-[#c2c2bf] font-light opacity-90 mt-3">
@@ -57,10 +62,13 @@
                         </div>
                     </div>
                     <!-- center pane -->
-                    <div class="md:col-span-2 col-span-full sm:mx-10 md:overflow-auto center-content" id="scrollContainer">
-                        <div class="flex flex-col gap-5 items-center pt-6 text-main_text">
-                            <div class="flex items-center">
-                                <h2 class="font-semibold text-[4vmin] line">Recent Posts</h2>
+                    <div
+                            class="md:col-span-2 col-span-full sm:mx-10 md:overflow-auto center-content" id="scrollContainer">
+                        <div
+                                class="flex flex-col gap-3 items-center pt-6 text-main_text max-w-[700px] mx-auto">
+                            <div class="text-center relative">
+                                <h2
+                                        class="font-semibold text-[4vmin] line">Recent Posts</h2>
                             </div>
                             <!-- display post -->
                             <%@include file="/WEB-INF/views/fragments/displayPosts.jsp"%>
@@ -69,18 +77,9 @@
                 </div>
                 <!-- right pane -->
                 <div
-                        class="hidden lg:block col-span-1 right-sidebar lg:pl-5  md:pt-5 index-right-pane"
+                        class="hidden lg:block col-span-1 right-sidebar xl:pl-0 lg:pl-5  md:pt-5 index-right-pane"
                         id="rightPane">
                     <div class="mt-[60px] flex flex-col xl:items-center">
-                        <div class="w-full">
-                            <h3
-                                    class="text-title_text_clr  sm:text-xl text-[16px] pl-3 pb-2 tracking-wide relative
-                         before:absolute before:w-full before:h-full before:left-0 before:top-0 before:blur-md
-                        before:content-['Get\20Inspired'] before:text-extra1_clr1/80 before:-z-10 before:animate-pulse">
-                                Sponsored
-                            </h3>
-                        </div>
-
                         <%@include file="/WEB-INF/views/fragments/sponsoredAds.jsp"%>
                     </div>
                 </div>
@@ -105,12 +104,11 @@
         </main>
     </div>
 
-
-    <script src="<c:url value='/assets/js/index.js'/>?v=<%= System.currentTimeMillis() %>"></script>
-    <script src="<c:url value='/assets/js/quote.js'/>?v=<%= System.currentTimeMillis() %>"></script>
-
-    <%--  Initialize sponsored ads slider  --%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js" integrity="sha512-j+F4W//4Pu39at5I8HC8q2l1BNz4OF3ju39HyWeqKQagW6ww3ZF9gFcu8rzUbyTDY7gEo/vqqzGte0UPpo65QQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="<c:url value='/assets/js/toast.js'/>"></script>
+    <script src="<c:url value='/assets/js/index.js'/>"></script>
+    <script src="<c:url value='/assets/js/quote.js'/>"></script>
+    <%--  Initialize sponsored ads slider  --%>
     <script>
         var slide = tns({
             container: '.food-carousel',

@@ -18,7 +18,9 @@
     <%--page loader--%>
     <%@include file="/WEB-INF/views/fragments/pageLoader.jsp"%>
 
-    <div class="hidden" id="content">
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-[100] space-y-2"></div>
+    <div id="content">
       <!-- confirm modal -->
       <%@include file="/WEB-INF/views/fragments/deleteConfirmationModal.jsp"%>
       <!-- create post modal -->
@@ -37,24 +39,14 @@
 
           <!-- center pane -->
           <div
-                  class="md:col-span-2 md:px-0 px-10 overflow-auto sm:mx-10 col-span-full center-content scroll-container" id="scrollContainer">
+                  class="md:col-span-2 md:px-0 px-[10px] overflow-auto sm:mx-10 col-span-full dashboard-center-pane center-content scroll-container" id="scrollContainer">
             <%@include file="/WEB-INF/views/fragments/centerPane.jsp" %>
           </div>
 
           <!-- right pane -->
-          <div
-                  class="hidden md:block col-span-1 right-sidebar lg:pl-5  md:pt-5"
-                  id="rightPane">
+          <div class="hidden md:block col-span-1 right-sidebar xl:lg-0 lg:pl-5  md:pt-5"
+               id="rightPane">
             <div class="mt-[60px] flex flex-col xl:items-center">
-              <div class="w-full">
-                <h3
-                        class="text-title_text_clr  sm:text-xl text-[16px] pl-2 pb-2 tracking-wide relative
-                     before:absolute before:w-full before:h-full before:left-0 before:top-0 before:blur-md
-                    before:content-['Get\20Inspired'] before:text-extra1_clr1/80 before:-z-10 before:animate-pulse">
-                  Sponsored
-                </h3>
-              </div>
-
               <%@include file="/WEB-INF/views/fragments/sponsoredAds.jsp"%>
             </div>
           </div>
@@ -72,16 +64,17 @@
 
         <!-- Scroll to Top Button (Appears on Scroll) -->
         <button id="scrollToTopBtn"
-                class="hidden fixed w-[40px] h-[40px] justify-center bottom-5 right-16 p-2 rounded-full bg-[#26a5f1] text-bg_color2 shadow-lg
-            hover:bg-[#fdbf07] hover:scale-105 transition-all duration-300">
+                class="hidden fixed w-[40px] h-[40px] justify-center bottom-5 right-16 p-2 rounded-full bg-[#26a5f1] text-bg_color2 text-[20px] font-semibold shadow-lg
+                hover:bg-[#fdbf07] hover:scale-105 transition-all duration-300">
           <i class="ri-arrow-up-line"></i>
         </button>
       </main>
     </div>
-    <script src="<c:url value='/assets/js/index.js'/>?v=<%= System.currentTimeMillis() %>"></script>
-    <script src="<c:url value='/assets/js/quote.js'/>?v=<%= System.currentTimeMillis() %>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js" integrity="sha512-j+F4W//4Pu39at5I8HC8q2l1BNz4OF3ju39HyWeqKQagW6ww3ZF9gFcu8rzUbyTDY7gEo/vqqzGte0UPpo65QQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js" integrity="sha512-j+F4W//4Pu39at5I8HC8q2l1BNz4OF3ju39HyWeqKQagW6ww3ZF9gFcu8rzUbyTDY7gEo/vqqzGte0UPpo65QQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="<c:url value='/assets/js/index.js'/>"></script>
+    <script src="<c:url value='/assets/js/quote.js'/>"></script>
+    <script src="<c:url value='/assets/js/toast.js'/>"></script>
     <%--  Initialize sponsored ads slider  --%>
     <script>
       var slide = tns({

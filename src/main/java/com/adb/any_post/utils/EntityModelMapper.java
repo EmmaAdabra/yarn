@@ -47,13 +47,13 @@ public class EntityModelMapper  {
         posterDto.setId(posterId);
         posterDto.setFirstName(resultSet.getString("first_name"));
         posterDto.setName(
-                StringUtil.getUSerFullName(
+                StringUtils.getUSerFullName(
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name")
                 )
         );
         posterDto.setInitial(
-                StringUtil.getUserInitial(
+                StringUtils.getUserInitial(
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name")
                 )
@@ -86,11 +86,11 @@ public class EntityModelMapper  {
                 commentDto.setPfp(UserUtil.getUserPfpUrl(userId));
             } else{
                 commentDto.setInitial(
-                        StringUtil.getUserInitial(names[0], names[1])
+                        StringUtils.getUserInitial(names[0], names[1])
                 );
             }
         } else{
-            commentDto.setPfp(StringUtil.randomAvatarUrl());
+            commentDto.setPfp(StringUtils.randomAvatarUrl());
         }
 
         return commentDto;

@@ -1,6 +1,7 @@
 package com.adb.any_post.services;
 
 import com.adb.any_post.dao.commentDao.CommentDao;
+import com.adb.any_post.dao.postDao.PostDao;
 import com.adb.any_post.dto.CommentDto;
 import com.adb.any_post.exceptions.DAOException;
 import com.adb.any_post.exceptions.UnknownException;
@@ -21,25 +22,29 @@ public class CommentService {
 
     private static final Logger logger = LoggerFactory.getLogger(CommentService.class);
     private CommentDao commentDao;
+    private final PostDao postDao = new PostDao();
 
     public Response<CommentDto> addComment(Comment comment) throws UnknownException {
-        Response<CommentDto> serviceResponse;
+        Response<CommentDto> serviceResponse = new Response<>();
 
-        try {
-            Optional<CommentDto> optionalCommentDto = commentDao.saveComment(comment);
+        if(postDao.doesPostExist(comment.getPostId())){
+            try {
+                Optional<CommentDto> optionalCommentDto = commentDao.saveComment(comment);
 
-            if(optionalCommentDto.isPresent()){
-                CommentDto commentDto = optionalCommentDto.get();
+                if(optionalCommentDto.isPresent()){
+                    CommentDto commentDto = optionalCommentDto.get();
 
-                serviceResponse = new Response<>(ResponseCode.RESOURCE_CREATED.getCode(), "comment added", commentDto);
-                logger.info("Comment with ID: {} added to post with ID {}", commentDto.getCommentId(), comment.getPostId());
-            } else {
-                serviceResponse = new Response<>(HttpServletResponse.SC_NOT_FOUND,
-                        "This have been deleted or do no longer exist");
+                    serviceResponse = new Response<>(ResponseCode.RESOURCE_CREATED.getCode(), "comment added", commentDto);
+                    logger.info("Comment with ID: {} added to post with ID {}", commentDto.getCommentId(), comment.getPostId());
+                }
+            } catch (DAOException e) {
+                serviceResponse = new Response<>(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error, fail to add comment");
             }
-        } catch (DAOException e) {
-            serviceResponse = new Response<>(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error, fail to add comment");
+        } else {
+            serviceResponse = new Response<>(HttpServletResponse.SC_NOT_FOUND,
+                    "Post no longer exist");
         }
+
 
         return serviceResponse;
     }

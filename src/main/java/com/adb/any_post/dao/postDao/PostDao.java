@@ -118,4 +118,25 @@ public class PostDao implements IPostDao{
 
         return deletedRow;
     }
+
+    public boolean doesPostExist(int postId) {
+        String sql = "SELECT COUNT(*) FROM posts WHERE id = ?";
+
+        try (Connection conn = CreateDbConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, postId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Returns true if the post exists
+                }
+            }
+
+        } catch (SQLException e) {
+            logger.error("An error occurred while checking if the post exists -- {}", e.getMessage(), e);
+            throw new RuntimeException("An error occurred while checking the post.", e);
+        }
+
+        return false; // Post does not exist
+    }
 }

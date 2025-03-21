@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: emmanueladb/any_post_db:latest
@@ -12,8 +10,9 @@ services:
       - "5432:5432"
 
   web:
-    image: emmanueladb/any_post:latest
-    container_name: any_post_webapp
+    build: .
+#    image: emmanueladb/any_post:latest
+    container_name: any_post_app
     depends_on:
       - db
     environment:

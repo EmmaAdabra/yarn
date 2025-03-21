@@ -4,9 +4,7 @@ import com.adb.any_post.dao.postDao.PostDao;
 import com.adb.any_post.dto.SessionUserDTO;
 import com.adb.any_post.exceptions.InputValidationException;
 import com.adb.any_post.models.Post;
-import com.adb.any_post.utils.PostUtils;
-import com.adb.any_post.utils.ResponseCode;
-import com.adb.any_post.utils.ValidateInputs;
+import com.adb.any_post.utils.*;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +23,6 @@ import java.io.IOException;
 )
 public class SubmitPostServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(SubmitPostServlet.class);
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,9 +37,11 @@ public class SubmitPostServlet extends HttpServlet {
                 SessionUserDTO sessionUser = (SessionUserDTO) session.getAttribute("sessionUser");
                 int userId = sessionUser.getUserId();
 
-                String unformattedPostContent = request.getParameter("postContent");
-                String postContent = unformattedPostContent.replace("\n", "<br>");
-                String postTitle = request.getParameter("postTitle");
+                String unsanitizedPostContent = StringUtils.trimToNull(request.getParameter("postContent"));
+                String sanitizePostContent = SanitizeUserContent.sanitize(unsanitizedPostContent);
+                String postContent = sanitizePostContent.replace("\n", "<br>");
+                String postTitle =
+                        SanitizeUserContent.sanitize( StringUtils.trimToNull(request.getParameter("postTitle")));
                 Part imagePart = request.getPart("postImage");
                 String imagePath = null;
 
@@ -53,6 +50,7 @@ public class SubmitPostServlet extends HttpServlet {
 
                     String uploadDir = System.getenv("UPLOAD_DIR");
                     if (uploadDir == null || uploadDir.isEmpty()) {
+                        System.out.println("I got in here no env found");
                         uploadDir = getServletContext().getRealPath("/uploads");
                     }
                     logger.info("Post upload dir: {}", uploadDir);

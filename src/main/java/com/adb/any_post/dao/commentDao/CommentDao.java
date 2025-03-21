@@ -66,7 +66,7 @@ public class CommentDao implements ICommentDao{
                 BuildSqlStatement.setParameters(
                         preparedStatement,
                         comment.getPostId(),
-                        comment.getComment(),
+                        comment.getComment().trim(),
                         userId
                 );
 

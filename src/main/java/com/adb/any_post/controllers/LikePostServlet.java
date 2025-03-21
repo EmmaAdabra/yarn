@@ -1,6 +1,7 @@
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.likesDao.LikeDao;
+import com.adb.any_post.dao.postDao.PostDao;
 import com.adb.any_post.dto.SessionUserDTO;
 import com.adb.any_post.exceptions.InputValidationException;
 import com.adb.any_post.models.Like;
@@ -27,34 +28,35 @@ public class LikePostServlet extends HttpServlet {
        try{
            ValidateInputs.validateQueryParam(request.getParameter("postId"));
            int postId = Integer.parseInt(request.getParameter("postId"));
-           Like like;
-           HttpSession session = request.getSession(false);
+           PostDao postDao = new PostDao();
+           if(postDao.doesPostExist(postId)){
+               Like like;
+               HttpSession session = request.getSession(false);
 
-           boolean isGuest = (session == null || session.getAttribute("sessionUser") == null);
+               boolean isGuest = (session == null || session.getAttribute("sessionUser") == null);
 
-           if(isGuest){
-               like = new Like(postId, null);
-               response.setStatus(HttpServletResponse.SC_ACCEPTED);
-           } else {
-               SessionUserDTO sessionUser = (SessionUserDTO) session.getAttribute("sessionUser");
-               like = new Like(postId, sessionUser.getUserId());
-               response.setStatus(HttpServletResponse.SC_OK);
-           }
+               if(isGuest){
+                   like = new Like(postId, null);
+                   response.setStatus(HttpServletResponse.SC_ACCEPTED);
+               } else {
+                   SessionUserDTO sessionUser = (SessionUserDTO) session.getAttribute("sessionUser");
+                   like = new Like(postId, sessionUser.getUserId());
+                   response.setStatus(HttpServletResponse.SC_OK);
+               }
 
-           int likeId = likeDao.saveLike(like);
+               int likeId = likeDao.saveLike(like);
 
-           if(likeId != 0){
-               responseJson.put("message", "Like submitted successfully");
-               responseJson.put("likeId", likeId);
-               response.getWriter().write(responseJson.toString());
+               if(likeId != 0){
+                   responseJson.put("message", "Like submitted successfully");
+                   responseJson.put("likeId", likeId);
+                   response.getWriter().write(responseJson.toString());
+               }
            } else {
                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-               responseJson.put("message", "Post do not exist or have been deleted");
+               responseJson.put("message", "Post have been deleted");
 
                response.getWriter().write(responseJson.toString());
            }
-
-
        } catch (InputValidationException e){
            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
            response.getWriter().write(responseJson.put("message", "postId should not be null or " +

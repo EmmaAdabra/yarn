@@ -183,7 +183,8 @@ public class UserDao implements IUserDao{
                 if(rowInserted > 0){
                     return true;
                 } else {
-                    logger.warn("Failed to save profile picture");
+                    logger.warn("User with ID: {} not found pfp not save", userId);
+                    return false;
                 }
             } catch (SQLException e){
                 logger.error("SQL execution error: " + e.getMessage(), e);
@@ -198,7 +199,6 @@ public class UserDao implements IUserDao{
             logger.error("Failed to fetch get insert user pfp sql query -- " + e.getMessage());
             throw new DAOException("Failed to fetch get insert user pfp sql query", e);
         }
-        return false;
     }
 
     @Override
@@ -282,6 +282,49 @@ public class UserDao implements IUserDao{
         } catch (IOException e){
             logger.error("Failed to fetch update user bio sql query -- " + e.getMessage());
             throw new DAOException("Failed to fetch get insert user pfp sql query", e);
+        }
+
+        return updatedRow;
+    }
+
+    public int updatePersonalData(String firstName, String lastName, String email, int userId) throws DAOException {
+        int updatedRow = 0;
+
+        logger.info("connecting to database");
+
+        try(Connection connection = CreateDbConnection.getConnection())
+        {
+            logger.info("Database connected successfully");
+
+            String updateUserPersonalDataQuery;
+            String sqlScriptPath = UserSqlScriptsPath.UPDATE_USER_PERSONAL_DATA.getPath();
+
+            updateUserPersonalDataQuery = GetSqlStatement.sqlQueryBuilder(sqlScriptPath);
+
+            try(PreparedStatement preparedStatement = connection.prepareStatement(updateUserPersonalDataQuery))
+            {
+
+                BuildSqlStatement.setParameters(
+                        preparedStatement,
+                        firstName,
+                        lastName,
+                        email,
+                        userId
+                );
+
+               updatedRow = preparedStatement.executeUpdate();
+
+            } catch (SQLException e){
+                logger.error("SQL execution error: " + e.getMessage(), e);
+                throw new DAOException("sql execution error", e);
+            }
+
+        } catch (IOException e) {
+            logger.error("Failed to fetch update user personal data sql query from", e);
+            throw new DAOException("Failed to fetch update user personal data sql query from", e);
+        } catch (SQLException e) {
+            logger.error("Fail to connect to database: " + e.getMessage(), e);
+            throw new DAOException("Fail to connect to database", e);
         }
 
         return updatedRow;

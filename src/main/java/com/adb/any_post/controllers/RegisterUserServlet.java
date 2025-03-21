@@ -40,9 +40,9 @@ public class RegisterUserServlet extends HttpServlet {
         String firstName, lastName, email, password;
 
         try{
-            firstName = request.getParameter("firstName");
-            lastName = request.getParameter("lastName");
-            email = request.getParameter("email");
+            firstName = request.getParameter("firstName").trim();
+            lastName = request.getParameter("lastName").trim();
+            email = request.getParameter("email").trim();
             password = request.getParameter("password");
 
             User user = new User(firstName, lastName, email, password);

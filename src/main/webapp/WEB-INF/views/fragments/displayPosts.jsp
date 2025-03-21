@@ -1,8 +1,11 @@
-<div class="post-container flex flex-col gap-5 items-center pt-6 pb-10 text-main_text w-full">
+<%@page import="com.adb.any_post.utils.StringUtils" %>
+<div class="post-container flex flex-col gap-5 items-center pt-2 pb-10 text-main_text w-full">
   <c:forEach var="post" items="${posts}">
     <C:set var="likedPost" value="${likedPostsMap[post.postId]}" />
     <C:set var="isLiked" value="${not empty likedPost}" />
-    <div class="bg-bg_color2 w-full border border-borderClr shadow-lg rounded-md post" id="post-${post.postId}">
+    <div
+            class="bg-bg_color2 w-full border border-borderClr shadow-lg rounded-md post"
+         id="post-${post.postId}">
       <div class="" data-comment-modal="ModalContainer">
         <div data-comment-modal="postContainer">
           <header class="hidden comment-modal-header border-b-borderClr bg-bg_color2" data-comment-modal="modalHeader">
@@ -15,7 +18,8 @@
           <div class="px-3 scroll-container" data-comment-modal="postTextComment">
             <div class="flex items-center justify-start gap-3 post-header pt-3 pb-1.5 relative overflow-hidden">
               <!-- post more icon -->
-              <c:if test="${not empty sessionScope.sessionUser and post.posterData.id == sessionScope.sessionUser.userId}">
+              <c:if test="${not empty sessionScope.sessionUser and (post.posterData.id ==
+              sessionScope.sessionUser.userId)}">
                 <div class="absolute top-2 right-0 more-menu-container">
                   <div class="center-icon w-[35px] h-[35px] bg-bg_color3 text-[20px] text-fade_text cursor-pointer  hover:border hover:border-borderClr post-see-more">
                     <i class="ri-more-2-line"></i>
@@ -53,11 +57,9 @@
               </div>
             </div>
             <div class="text-container">
-              <p class="post-text ellipsis">
-                ${post.content}
+              <p class="post-text  ellipsis">
+                <C:out value="${StringUtils.linkify(post.content)}" escapeXml="false"/>
               </p>
-            </div>
-            <div class="">
               <button class="see-more-btn cursor-pointer  text-logo_clr1 hidden"> See more</button>
             </div>
             <c:if test="${not empty post.media}">
@@ -70,7 +72,8 @@
               <div class="loader hidden mb-5 bg-bg_color3 py-3 rounded-md">
                 <%@include file="/WEB-INF/views/fragments/loader.jsp"%>
               </div>
-              <p class="bg-bg_color3 rounded-lg py-2 px-7 text-fade_text text-center w-1/2 mx-auto mb-5 no-comment hidden">No comment</p>
+              <p
+                      class="bg-bg_color3 rounded-lg py-2 px-7 text-fade_text text-center w-fit mx-auto mb-5 whitespace-nowrap no-comment hidden">No comment</p>
               <div class="all-comment"></div>
             </div> 
           </div>
@@ -80,7 +83,8 @@
             </span>
             <form class="w-full comment-form" action="" >
               <div class="relative">
-                <textarea class="p-3 border-none outline-none resize-none w-full overflow-auto bg-bg_color1 text-main_text rounded-md min-h-[60px] max-h-[320px]" placeholder="Let's have it !!" name="comment" maxlength="1001"></textarea>
+                <textarea
+                        class="p-3 border-none outline-none resize-none w-full overflow-auto bg-bg_color1 [overflow-wrap:break-word] text-main_text rounded-md h-[60px] max-h-[110px]" placeholder="Let's have it !!" name="comment" maxlength="901"></textarea>
                 <button class="absolute top-[50%] translate-y-[-50%] right-4 text-[25px] text-fade_text cursor-not-allowed" data-post-id="${post.getPostId()}" disabled>
                   <span class="w-[40px] h-[40px] center-icon p-2 hover:bg-bg_color2">
                     <i class="ri-send-plane-2-fill"></i>
@@ -94,11 +98,11 @@
           </div>
         </div>
       </div>
-      <div class="post-props px-3 py-2 mt-3 bg-bg_color3">
+      <div class="post-props px-3 py-2 mt-3 bg-bg_color3 relative">
         <ul class="flex gap-5 items-center">
           <li class="comments w-fit">
-            <div class="text-fade_text hover:text-main_text relative z-30 comment-btn-container">
-              <button class="flex gap-2 items-center text-[22px] relative z-10 comment-btn"
+            <div class="text-fade_text hover:text-main_text comment-btn-container">
+              <button class="flex gap-2 items-center text-[22px] comment-btn"
                       id="${post.postId}">
                 <span class="flex items-center gap-[2px]">
                   <i class="ri-chat-1-line"></i>
@@ -118,27 +122,28 @@
             </div>
           </li>
           <li class="likes w-fit">
-            <div class="flex items-center gap-[2px] text-fade_text hover:text-main_text relative z-30 like-btn-container" data-likePost="${post.postId}">
+            <div
+                    class="flex items-center gap-[2px] text-fade_text hover:text-main_text like-btn-container" data-likePost="${post.postId}">
               <C:choose>
                 <C:when test="${isLiked}">
-                  <button class="text-[22px] relative z-10 unlike-btn" data-like="${likedPost.likedId}">
+                  <button class="text-[22px] unlike-btn" data-like="${likedPost.likedId}">
                     <span class="text-[#fc036b]">
                       <i class="ri-heart-fill" ></i>
                     </span>
                   </button>
-                  <button class=" hidden text-[22px] relative z-10 like-btn">
+                  <button class=" hidden text-[22px] like-btn">
                     <span>
                       <i class="ri-heart-add-line"></i>
                     </span>
                   </button>
                 </C:when>
                 <C:otherwise>
-                  <button class="hidden text-[22px] relative z-10 unlike-btn">
+                  <button class="hidden text-[22px] unlike-btn">
                     <span class="text-[#fc036b]">
                       <i class="ri-heart-fill" ></i>
                     </span>
                   </button>
-                  <button class="text-[22px] relative z-10 like-btn">
+                  <button class="text-[22px] like-btn">
                     <span>
                       <i class="ri-heart-add-line"></i>
                     </span>

@@ -1,4 +1,4 @@
-<div class="hidden p-3 bg-bg_color1 w-[350px] h-fit shadow shadow-fade_text rounded-xl absolute top-[58px] right-[10px] z-40" id="profileMenu">
+<div class="hidden p-3 bg-bg_color1 w-[80%] max-w-[350px] h-fit shadow shadow-fade_text rounded-xl absolute top-[58px] right-[10px] z-40" id="profileMenu">
   <div class="p-2 mb-5 rounded shadow shadow-fade_text">
       <a class="flex items-center p-2 gap-5 option hover:bg-bg_color2 rounded" href="">
           <span class="text-fade_text flex justify-center items-center w-[40px] h-[40px] uppercase rounded-full bg-bg_color3">

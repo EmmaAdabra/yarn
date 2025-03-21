@@ -1,5 +1,5 @@
 <div class="modal-container hidden bg-[#1e1e20e7]" id="createPostModal">
-    <div class="modal-content pb-8 max-w-[550px] max-h-[90vh]">
+    <div class="modal-content pb-8 max-w-[600px] max-h-[90vh]">
         <header class="modal-header">
             <h1 class="text-[18px]">Create post</h1>
             <a class="modal-close-icon " href="">
@@ -12,7 +12,7 @@
           </span>
             <a class="text-title_text_clr text-[16px]" href="">${sessionScope.sessionUser.getUserFullName()}</a>
         </div>
-        <form class="mt-3 px-4" enctype="multipart/form-data" id="postForm">
+        <form class="mt-3 sm:px-4 px-0" enctype="multipart/form-data" id="postForm">
             <div>
                 <textarea class="p-3 border-none outline-none resize-none w-full overflow-auto bg-bg_color1 text-main_text rounded-md min-h-[100px] max-h-[320px]" placeholder="Let's have it !!" name="post" id="postTextArea" maxlength="10001"></textarea>
                 <p class="count-bar hidden mt-[3px] text-error text-right text-[12px] pr-2 font-mono"></p>
@@ -22,12 +22,13 @@
                 <p class="text-red-200 error mt-2"></p>
                 <p class="text-green-700 mt-2 overflow-hidden file-name"></p>
             </div>
-            <div class="mt-7 flex gap-2 items-center">
+            <div class="mt-7 flex gap-2 items-center justify-center">
                 <label class="text-[30px] text-title_text_clr flex justify-center items-center cursor-pointer"
                        for="postImage">
                     <i class="ri-image-add-line"></i>
                 </label>
-                <button class="yellow-btn primary-btns w-full rounded-md" id="submitPost">Post</button>
+                <button class="yellow-btn quick-btn w-full rounded-md max-w-[80%]"
+                        id="submitPost">Post</button>
             </div>
         </form>
     </div>

@@ -7,7 +7,7 @@ import com.adb.any_post.exceptions.UnknownException;
 import com.adb.any_post.models.User;
 import com.adb.any_post.utils.Response;
 import com.adb.any_post.utils.ResponseCode;
-import com.adb.any_post.utils.StringUtil;
+import com.adb.any_post.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +77,7 @@ public class UserService {
         sessionUser.setfName(user.getFirstName());
         sessionUser.setlName(user.getLastName());
         sessionUser.setEmail(user.getEmail());
-        sessionUser.setUserFullName(StringUtil.getUSerFullName(user.getFirstName(), user.getLastName()));
+        sessionUser.setUserFullName(StringUtils.getUSerFullName(user.getFirstName(), user.getLastName()));
 
         if(user.getBio() != null){
             sessionUser.setBio(user.getBio());
@@ -87,7 +87,7 @@ public class UserService {
         if(hasPfp(user.getId())) {
             sessionUser.setHasPfp(true);
         } else {
-            sessionUser.setUserInitial(StringUtil.getUserInitial(user.getFirstName(), user.getLastName()));
+            sessionUser.setUserInitial(StringUtils.getUserInitial(user.getFirstName(), user.getLastName()));
         }
 
 
@@ -96,15 +96,23 @@ public class UserService {
     }
 
     public Response<Object> uploadUserPfp(long userId, Part imagePart) throws UnknownException{
-
+        Response<Object> response;
         try{
             if(userDao.saveUserPfp(userId, imagePart)){
-                return new Response<>(ResponseCode.RESOURCE_CREATED.getCode(), "User profile picture uploaded");
+                response = new Response<>(ResponseCode.RESOURCE_CREATED.getCode(), "User profile" +
+                        " picture " +
+                        "uploaded");
+            } else{
+                response = new Response<>(ResponseCode.RESOURCE_NOT_FOUND.getCode(), "User not " +
+                        "found");
             }
         } catch (DAOException e){
-            return new Response<>(ResponseCode.INTERNAL_SERVER_ERROR.getCode(), "Could not upload image, internal server error");
+           response = new Response<>(ResponseCode.INTERNAL_SERVER_ERROR.getCode(), "Could not " +
+                   "upload " +
+                   "image, internal " +
+                   "server error");
         }
-        return new Response<>(101, "Profile picture not uploaded due to an unknown or silent error");
+        return response;
     }
 
     private boolean hasPfp(long userId) throws UnknownException{
@@ -141,7 +149,7 @@ public class UserService {
             logger.error("Failed to fetch user profile picture -- {}", e.getMessage(), e);
             return new Response<>(ResponseCode.INTERNAL_SERVER_ERROR.getCode(), "Failed to update user bio, an internal error occur");
         } catch (Exception e){
-            return new Response<>(ResponseCode.INTERNAL_SERVER_ERROR.getCode(), "Unknown error while trying to update user bio");
+            throw new UnknownException("An unknown error -- " + e.getMessage(), e);
         }
 
         return new Response<>(ResponseCode.RESOURCE_NOT_FOUND.getCode(), "User not found");

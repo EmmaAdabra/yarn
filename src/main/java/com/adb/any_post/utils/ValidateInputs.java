@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 public class ValidateInputs {
     public static String verifyEmail(String email) throws InputValidationException {
+        email = email.trim();
 
         if(email == null || email.isEmpty()){
             throw new InputValidationException("Email can't be empty");
@@ -26,6 +27,7 @@ public class ValidateInputs {
     }
 
     public static void verifyName(String name) throws InputValidationException {
+        name = name.trim();
         String label = "Firstname or Lastname";
 
         if(name == null || name.isEmpty()){
@@ -35,7 +37,7 @@ public class ValidateInputs {
 
         verifyNameLength(name, label);
 
-        final String nameRegex = "^[a-zA-Z]{2,50}([ '-][a-zA-Z]{2,50})*$";
+        final String nameRegex = "^[a-zA-Z]{1,50}([ '-][a-zA-Z]{1,50})*$";
         var pattern = Pattern.compile(nameRegex);
         Matcher matcher = pattern.matcher(name);
 
@@ -49,6 +51,7 @@ public class ValidateInputs {
     public static void  verifyUsername(String username) throws InputValidationException{
 
         String label = "UserName";
+        username = username.trim();
 
         verifyNameLength(username, label);
 

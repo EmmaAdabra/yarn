@@ -8,6 +8,7 @@ import com.adb.any_post.services.UserService;
 import com.adb.any_post.utils.Response;
 import com.adb.any_post.utils.ResponseCode;
 import com.adb.any_post.utils.ValidateInputs;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,8 @@ public class UpdateUserBioServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        response.setContentType("application/json");
+        JSONObject jsonResponse = new JSONObject();
 
         if(session != null && session.getAttribute("sessionUser") != null){
             SessionUserDTO sessionUser = (SessionUserDTO) session.getAttribute("sessionUser");
@@ -42,22 +45,32 @@ public class UpdateUserBioServlet extends HttpServlet {
                 }
                 serviceResponse = userService.addBio(userBio, sessionUser.getUserId());
                 if(serviceResponse.getStatus() == ResponseCode.RESOURCE_CREATED.getCode()){
-                    response.getWriter().write(serviceResponse.getMessage());
                     sessionUser.setBio(userBio);
                     session.setAttribute("sessionUser", sessionUser);
-                } else {
-                    response.getWriter().write(serviceResponse.getMessage());
                 }
+
+                jsonResponse.put("status", serviceResponse.getStatus());
+                jsonResponse.put("message", serviceResponse.getMessage());
+                response.getWriter().write(jsonResponse.toString());
+
             } catch (UnknownException e) {
                 response.getWriter().write(e.getMessage());
                 logger.error("An unknown error -- {}",e.getMessage(), e);
             } catch (InputValidationException e) {
-                response.getWriter().write(e.getMessage());
+                jsonResponse.put("status", ResponseCode.VALIDATION_ERROR.getCode());
+                jsonResponse.put("message", e.getMessage());
+                response.getWriter().write(jsonResponse.toString());
+                logger.error(e.getMessage());
             } catch (Exception e){
+                jsonResponse.put("status", ResponseCode.INTERNAL_SERVER_ERROR.getCode());
+                jsonResponse.put("message", "Internal server error");
+                response.getWriter().write(jsonResponse.toString());
                 logger.error(e.getMessage(), e);
             }
         } else {
-            response.getWriter().write("Session expired, refresh and login");
+            jsonResponse.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+            jsonResponse.put("message", "Session Expired, refresh and login");
+            response.getWriter().write(jsonResponse.toString());
         }
     }
 }

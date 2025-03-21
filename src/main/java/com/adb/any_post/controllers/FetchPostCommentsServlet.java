@@ -1,6 +1,7 @@
 package com.adb.any_post.controllers;
 
 import com.adb.any_post.dao.commentDao.CommentDao;
+import com.adb.any_post.dao.postDao.PostDao;
 import com.adb.any_post.dto.CommentDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -32,14 +33,20 @@ public class FetchPostCommentsServlet extends HttpServlet {
 
         try {
             postId = request.getParameter("postId");
-
             if(postId != null){
                 int id = Integer.parseInt(postId);
-                comments = commentDao.getPostComments(id);
-                jsonResponse.put("message", "comments fetch successfully");
-                jsonResponse.put("data", comments);
-                response.getWriter().write(responseMapper.writeValueAsString(jsonResponse));
+                PostDao postDao = new PostDao();
 
+                if(postDao.doesPostExist(id)){
+                    comments = commentDao.getPostComments(id);
+                    jsonResponse.put("message", "comments fetch successfully");
+                    jsonResponse.put("data", comments);
+                    response.getWriter().write(responseMapper.writeValueAsString(jsonResponse));
+                } else {
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    jsonResponse.put("message", "This post have been deleted");
+                    response.getWriter().write(responseMapper.writeValueAsString(jsonResponse));
+                }
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 jsonResponse.put("message", "postId is missing");
@@ -52,10 +59,5 @@ public class FetchPostCommentsServlet extends HttpServlet {
             response.getWriter().write(responseMapper.writeValueAsString(jsonResponse));
             logger.error("An internal error occur while fetching comments for post with id {}\n{}", postId, e.getMessage(), e);
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

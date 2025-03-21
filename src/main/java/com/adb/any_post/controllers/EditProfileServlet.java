@@ -14,9 +14,4 @@ public class EditProfileServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher(WebPagePaths.EDIT_USER_PROFILE.getPagePath());
         dispatcher.forward(request, response);
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
 }

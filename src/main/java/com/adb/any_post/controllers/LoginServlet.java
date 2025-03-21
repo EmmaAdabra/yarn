@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String password = request.getParameter("password");
-        String email = request.getParameter("email");
+        String email = StringUtils.trimToNull(request.getParameter("email"));
 
 
 
@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
                 if(sessionUser.isHasPfp()){
                     String pfpUrl = UserUtil.getUserPfpUrl(sessionUser.getUserId());
                     System.out.println("servletContextPath: " + GetContextPath.getContextPath());
-//                    String pfpUrl = StringUtil.randomAvatarUrl();
+//                    String pfpUrl = StringUtils.randomAvatarUrl();
                     sessionUser.setPfpUrl(pfpUrl);
                 }
 

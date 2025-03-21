@@ -1,4 +1,8 @@
 <div class="carousel-wrapper w-fit overflow-hidden">
+    <h3
+            class="text-title_text_clr  sm:text-xl text-[16px] pl-3 pb-2">
+        Sponsored
+    </h3>
     <div class="hidden food-nav" id="food-nav">
           <span class="prev">
           </span>

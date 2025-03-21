@@ -73,19 +73,6 @@ const SESSION_USER_ID = Number.parseInt(document.querySelector("body").dataset.u
                 unlikePost(unlikeBtn)
             }
         })
-
-        // keydown event delegation
-        centerPaneContent.addEventListener("keydown", function (event){
-            const target = event.target;
-            const key = event.key
-            let targetName = target.getAttribute("name");
-
-            if(key === "Enter" && targetName === "comment"){
-                event.preventDefault()
-                const commentForm = target.closest("form");
-                submitComment(commentForm);
-            }
-        })
     }
 
 
@@ -147,16 +134,27 @@ async function deleteItem(itemId, ownerId, route) {
         })
 
         if (response.ok) {
-            console.log(`Post with ID: ${itemId} deleted successfully`)
+            showToast("success", "Deleted successfully")
             return true;
-        } else if (response.status === 404) {
-            console.log(`Post with ID: ${itemId}, was not found`);
-            return true;
-        } else {
-            return false;
+        }
+
+        switch (response.status){
+            case 404:
+                showToast("error", "Can't find this comment or post")
+                return true;
+            case 401:
+                window.location.href = "/home";
+                return false
+            case 500:
+                showToast("error", "Internal server error");
+                return false
+            default:
+                showToast("error", "Something went wrong")
+                return false;
         }
     } catch (error) {
-        console.error(`Error: ${error.message}`)
+        showToast("error", "Couldn't connect to server")
+        console.error("Fetch Error:", error);
         return false;
     }
 }
@@ -178,11 +176,9 @@ async function likePost(likeBtn){
             if(result.user === "guest"){
                 persistGuestLike(postId, result.likeId);
             }
-        } else {
-            alert("Failed to submit like, see browser log")
         }
     }).catch(error => {
-        console.error("Error submitting like:", error);
+        showToast("error", "Something went wrong")
     })
 
 }
@@ -194,11 +190,6 @@ function unlikePost(unlikeBtn){
     const likeId = unlikeBtn.dataset.like;
     const likeBtn = likeBtnContainer.querySelector(".like-btn");
 
-
-
-    unlikeBtn.classList.add("hidden");
-    likeBtn.classList.remove("hidden")
-
     removeLike(likeId, postId).then(result => {
         if(result.status){
             unlikeBtn.classList.add("hidden");
@@ -208,8 +199,6 @@ function unlikePost(unlikeBtn){
             if(result.user === "guest"){
                 persistGuestLike(postId);
             }
-        } else {
-            alert("Like submission failed, see browser log")
         }
     }).catch(error => {
         console.error("Error submitting like:", error);
@@ -217,15 +206,18 @@ function unlikePost(unlikeBtn){
 }
 
 // save guest user like post to browser storage
-function persistGuestLike(postID, likeId){
+function persistGuestLike(postID, likeId, isDeletedPost=false){
     let postId = postID;
     let likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || [];
 
     const postIndex = likedPosts.findIndex(post => post.postId === postId);
 
-    if(postIndex === -1){
+    if(postIndex === -1 && !isDeletedPost){
         likedPosts.push({postId: postId, likeId: likeId})
-    } else {
+    } else if (postIndex !== -1 && isDeletedPost) {
+        likedPosts.splice(postIndex, 1)
+    }
+    else {
         likedPosts.splice(postIndex, 1)
     }
 
@@ -255,6 +247,7 @@ async function submitLike(postId) {
 
         // Check if the response is JSON
         if (!response.headers.get("content-type")?.includes("application/json")) {
+            showToast("error", "Something went wrong")
             throw new Error("Server returned a non-JSON response");
         }
 
@@ -268,18 +261,24 @@ async function submitLike(postId) {
 
             case 202: // Success (guest user)
                 // alert("Please log in for a better experience.");
+                showToast("success", "Login or sign up for better experience")
                 return { status: true, user: "guest", likeId: result.likeId};
 
             case 404: // Post not found
-                alert(result.message);
-                document.getElementById(`post-${postId}`)?.remove(); // Safely remove the post element
-
+                showToast("error", result.message);
+                document.getElementById(`post-${postId}`)?.remove();
+                persistGuestLike(postId, 0, true);
+                return {status: false}
+            case 500:
+                showToast("error", "Internal server error");
+                return { status: false};
             default: // Other errors
-                throw new Error(result.message || "Something went wrong");
+                showToast("error", "Something went wrong");
+                return {status: false};
         }
     } catch (error) {
-        // Handle errors
-        console.error(error);
+        showToast("error", "couldn't not connect to server");
+        console.error("fetch error:", error);
         return { status: false, user: undefined };
     }
 }
@@ -304,15 +303,19 @@ async function removeLike(likeId, postId) {
                 return { status: true, user: "guest"};
 
             case 404: // Post not found
-                alert(response.statusText);
+                showToast("error", response.statusText)
                 document.getElementById(`post-${postId}`)?.remove(); // Safely remove the post element
-
+                return {status: false};
+            case 500:
+                showToast("error", "Internal server error");
+                return { status: false};
             default: // Other errors
-                throw new Error(response.status || "Something went wrong");
+                showToast("error", "Something went wrong")
         }
     } catch (error) {
         // Handle errors
-        console.error(error);
+        showToast("error", "couldn't not connect to server")
+        console.error("fetch error", error);
         return { status: false, user: undefined };
     }
 }
@@ -444,12 +447,30 @@ function createPost() {
 // auto resize textarea height on create post modal
 {
     const postTextArea = document.querySelector("#postTextArea");
-    postTextArea.addEventListener("input", function () {
-        this.style.height = "auto";
-
-        this.style.height = Math.min(this.scrollHeight, 320) + "px";
-    });
+    postTextArea.addEventListener("input", resizeTextBox);
 }
+
+// auto resize textarea height on commnet box
+{
+    const commentBoxes = document.querySelectorAll(".comment-form textarea");
+    commentBoxes.forEach(commentBox => {
+        commentBox.addEventListener("input", resizeTextBox);
+    })
+}
+
+// Resize comment and post text box height during typing
+function resizeTextBox(event) {
+    const target = event.target;
+    target.style.height = "auto";
+
+    // Adjust height based on content
+    if (target.name === "comment") {
+        target.style.height = Math.min(target.scrollHeight, 110) + "px";
+    } else {
+        target.style.height = Math.min(target.scrollHeight, 320) + "px";
+    }
+}
+
 
 // activate character count on element with attribute maxlength
 {
@@ -502,22 +523,30 @@ function createPost() {
                     });
 
                     const result = await response.json();
+                    let resultStatus = Number.parseInt(result.status);
 
-                    if (result.status !== 201) {
-                        throw new Error(result.message || "Something went wrong.");
+                    switch (resultStatus) {
+                        case 201:
+                            showToast("success", "Post created successfully!");
+                            location.reload();
+                            break;
+                        case 401:
+                            window.location.href = "/home";
+                            break;
+                        default:
+                            showToast("error", result.message);
+                            console.error(`Error: ${result.message}`)
                     }
 
-                    // add a notification
-                    console.log(result.message);
-                    location.reload();
+
                 } catch (error) {
                     // add a notification
-                    alert(error.message)
-                    console.error(`Error: ${error.message}`);
+                    showToast("error", "Something went wrong")
+                    console.error(`Error: ${error.message? error.message : "Something went wrong"}: ${e}`);
                 }
             } else {
                 // add a notification
-                alert("Can't submit a empty post (Test)");
+                showToast("error", "Can't submit an empty post")
             }
         });
     }
@@ -547,31 +576,6 @@ function displayEditProfileError(currentEvent, errorMsg) {
     error.textContent = errorMsg;
 }
 
-// add see more button to post text with more than 6 lines
-{
-    const allPostText = document.querySelectorAll(".post-text");
-    let updates = [];
-
-    // Batch read operations
-    allPostText.forEach((postText) => {
-        const seeMoreBtn = postText.closest(".post").querySelector(".see-more-btn");
-
-        // Read layout properties (forces reflow if done later with DOM updates)
-        if (postText.scrollHeight > postText.clientHeight) {
-            updates.push({postText, seeMoreBtn});
-        }
-    });
-
-    // Batch DOM updates in requestAnimationFrame
-    if (updates.length) {
-        requestAnimationFrame(() => {
-            updates.forEach(({postText, seeMoreBtn}) => {
-                postText.setAttribute("data-big-text", "true");
-                seeMoreBtn.classList.remove("hidden");
-            });
-        });
-    }
-}
 
 // all see more buttons
 {
@@ -642,12 +646,13 @@ async function showFullPost(commentBtn){
         addComment(comments, commentModal);
         updateCommentCount(modalElement, comments.length);
     } else if (comments === POST_NOT_EXIST) {
-        alert("This do no longer exist")
-        document.getElementById(`post-${postId}`).remove();
+        showToast("error", "This post have been deleted")
+        document.getElementById(`post-${postId}`)?.remove();
     } else if (comments === FAILED_TO_FETCH_POST) {
+        showToast("error", "Failed to load post comment")
         noComment.classList.remove("hidden");
         noComment.classList.add("error");
-        noComment.textContent = "Error occur loading comment"
+        noComment.textContent = "Failed to load comment";
     } else {
         noComment.classList.remove("error");
         noComment.textContent = "No comment"
@@ -727,7 +732,7 @@ function activateAndDeactivateCommentBtn(event) {
 
     const commentBtn = commentBox.parentElement.querySelector("button");
 
-    if (commentBox.value.length > 0) {
+    if (commentBox.value.trim().length > 0) {
         commentBtn.disabled = false;
         commentBtn.classList.remove("cursor-not-allowed");
         commentBtn.classList.add("text-logo_clr1");
@@ -781,30 +786,76 @@ async function submitComment(form){
             throw new Error("Server returned non-JSON response");
         }
 
+        let resultStatus = Number.parseInt(result.status);
         // Application-level error handling
-        if (result.status !== 201) {
-            console.error(result.message || "Something went wrong");
-        } else {
-            if (result.data) {
-                commentBox.value = "";
-                commentList.push(result.data);
-                addComment(commentList, postContainer, "prepend");
-                const noComment = postContainer.querySelector(".no-comment");
 
-                loader.classList.add("hidden");
-                activateAndDeactivateCommentBtn(commentBox);
+        // Handle different response statuses
+        if(resultStatus === 201){
+            commentBox.value = "";
+            commentBox.style.height = "60px";
+            commentList.push(result.data);
+            addComment(commentList, postContainer, "prepend");
+            const noComment = postContainer.querySelector(".no-comment");
 
-                updateCommentCount(postContainer, 1, "add");
-                if (!noComment.classList.contains("hidden")) {
-                    noComment.classList.add("hidden");
-                }
+            loader.classList.add("hidden");
+            activateAndDeactivateCommentBtn(commentBox);
+
+            updateCommentCount(postContainer, 1, "add");
+            if (!noComment.classList.contains("hidden")) {
+                noComment.classList.add("hidden");
             }
+        } else if(resultStatus === 404){
+            showToast("error", result.message)
+            document.getElementById(`post-${postId}`)?.remove();
+        } else if(resultStatus === 500){
+            showToast("error", result.message);
+            loader.classList.add("hidden");
+        } else{
+            showToast("error", "Something went wrong");
+            loader.classList.add("hidden");
         }
+
     } catch (error) {
         loader.classList.add("hidden");
-        // alert("Something went wrong, check console for details");
-        console.error("Error:", error);
+        showToast("error", "Couldn't connect to server")
+        console.error("fetch error:", error);
     }
+}
+
+// prevent uwanted character in user comment
+function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.innerText = text; // Automatically escapes HTML
+    return div.innerHTML; // Returns the escaped content
+}
+
+// escape '"' in links to avoid XSS
+function escapeHtmlAttribute(value) {
+    return value.replace(/"/g, '&quot;');
+}
+
+// replace link with anchor tags
+function linkify(text) {
+    // Regex to match URLs with or without protocol
+    const urlRegex = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|]|\bwww\.[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi;
+
+    return text.replace(urlRegex, (url) => {
+        // Add https:// to URLs that start with www
+        const href = url.startsWith('http') || url.startsWith('ftp') ? url : `https://${url}`;
+        // Escape the href attribute to prevent XSS
+        const safeHref = escapeHtmlAttribute(href);
+        // Return the link
+        return `<a href="${safeHref}" target="_blank">${url}</a>`;
+    });
+}
+
+// normalized user comment
+function sanitizeAndLinkify(text) {
+    const escapedText = escapeHtml(text);
+
+    const linkifiedText = linkify(escapedText);
+
+    return linkifiedText;
 }
 
 function addComment(commentList, post, position) {
@@ -848,11 +899,11 @@ function addComment(commentList, post, position) {
           <span class="center-icon w-[35px] h-[35px] text-fade_text text-[20px] bg-bg_color3">
             ${pfp}
           </span>
-          <div class="bg-bg_color3 w-fit text-main_text p-2 rounded-lg">
+          <div class="bg-bg_color3 w-fit max-w-full text-main_text p-2 rounded-lg">
             <h3 class="text-title_text_clr mb-1 text-[12px]">${comment.name}
               <span class="text-fade_text text-[12px] ps-[3px]"> ${comment.time}</span>
             </h3>
-            <p>${comment.comment}</p>
+            <p class="comment-text">${sanitizeAndLinkify(comment.comment)}</p>
           </div>
         </div>`;
 
@@ -917,6 +968,33 @@ function checkIfCommentIsEmpty(post) {
     }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const allPostText = document.querySelectorAll(".post-text");
+    let updates = [];
+
+    // Batch read operations
+    allPostText.forEach((postText) => {
+        const seeMoreBtn = postText.closest(".text-container").querySelector(".see-more-btn");
+
+        // Force a reflow to ensure dimensions are calculated
+        // postText.offsetHeight;
+        // Check if the element is rendered and has content
+        if (postText.scrollHeight > postText.clientHeight) {
+            updates.push({ postText, seeMoreBtn });
+        }
+    });
+
+    // Batch DOM updates in requestAnimationFrame
+    if (updates.length) {
+        requestAnimationFrame(() => {
+            updates.forEach(({ postText, seeMoreBtn }) => {
+                postText.setAttribute("data-big-text", "true");
+                seeMoreBtn.classList.remove("hidden");
+            });
+        });
+    }
+});
+
 // scroll to top
 // Show or hide the button on scroll
 // Show button when user scrolls inside the container
@@ -929,7 +1007,6 @@ function gotoTop() {
             scrollContainer = document.getElementById("heroAndPostContainer");
         }
     }
-
 
     scrollContainer.addEventListener("scroll", () => {
         if (scrollContainer.scrollTop > 200) {
@@ -970,15 +1047,9 @@ if(!SESSION_USER_ID){
 window.hideProfileMenu = hideProfileMenu;
 
 // JavaScript to hide loader and show content
-// JavaScript to hide loader and show content
 window.addEventListener('load', function () {
     const pageLoader = document.getElementById('page-loader');
-    const content = document.getElementById('content');
 
     // Hide loader
     pageLoader.classList.add('opacity-0', 'pointer-events-none');
-
-    // Show content
-    content.classList.remove('hidden');
-    content.classList.add('block');
 });

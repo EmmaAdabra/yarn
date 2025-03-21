@@ -20,11 +20,6 @@ public class UploadPfpServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(UploadPfpServlet.class);
     private static final UserService userService = new UserService(new UserDao());
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
@@ -43,10 +38,12 @@ public class UploadPfpServlet extends HttpServlet {
                 ValidateInputs.validatePfpUpload(filePart);
 
                 Response<Object> serviceResponse = userService.uploadUserPfp(sessionUser.getUserId(), filePart);
-                sessionUser.setHasPfp(true);
-                sessionUser.setPfpUrl(UserUtil.getUserPfpUrl(sessionUser.getUserId()));
+                if(serviceResponse.getStatus() == ResponseCode.RESOURCE_CREATED.getCode()){
+                    sessionUser.setHasPfp(true);
+                    sessionUser.setPfpUrl(UserUtil.getUserPfpUrl(sessionUser.getUserId()));
+                    session.setAttribute("sessionUser", sessionUser);
+                }
 
-                session.setAttribute("sessionUser", sessionUser);
                 jsonResponse.put("status", String.valueOf(serviceResponse.getStatus()));
                 jsonResponse.put("message", serviceResponse.getMessage());
                 response.getWriter().write(jsonResponse.toString());
@@ -57,8 +54,10 @@ public class UploadPfpServlet extends HttpServlet {
                 jsonResponse.put("message", e.getMessage());
                 response.getWriter().write(jsonResponse.toString());
             } catch (Exception e){
-                logger.error(e.getMessage());
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                jsonResponse.put("status", ResponseCode.INTERNAL_SERVER_ERROR.getCode());
+                jsonResponse.put("message", "Internal server error");
+                response.getWriter().write(jsonResponse.toString());
+                logger.error(e.getMessage(), e);
             }
         } else {
             jsonResponse.put("status", HttpServletResponse.SC_UNAUTHORIZED);
