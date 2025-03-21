@@ -2,7 +2,8 @@
 
 ## Overview
 
-Any Post is a Java-based microblogging web application built using Servlets, JSP, and PostgreSQL. It allows users to create posts, comment, like/unlike posts, and manage their profiles in a simple and efficient manner.
+Yarn is a Java-based microblogging web application built using Servlets, JSP, and PostgreSQL. It 
+allows users to create posts, comment, like/unlike posts, and manage their profiles in a simple and efficient manner.
 
 ## Features
 
@@ -38,7 +39,7 @@ Any Post is a Java-based microblogging web application built using Servlets, JSP
 
 1. Clone the repository:
    ```sh
-   git clone <repo-url>
+   git clone https://github.com/EmmaAdabra/yarn
    cd any_post
    ```
 2. Configure the database:
@@ -69,16 +70,16 @@ Any Post is a Java-based microblogging web application built using Servlets, JSP
 ### Comments & Likes
 
 - `POST /add_comment` - Add comment
-- `/fetch_post_comment` - Fetch post comments
+- `/fetch_post_comment`- Fetch post comments
 - `DELETE /delete_comment` - Remove comment
 - `POST /likePost` - Like a post
 - `DELETE /deleteLike` - Unlike a post
 
 ### User Profile
 
-- `POST /editPersonalData`  - Edit user personal data (name and email)
-- `POST /updateBio` - Update user bio text
-- `post /uploadPfp` - Upload user profile picture
+- `POST /editPersonalData` - Edit user personal data (name and email)
+- `POST/updateBio`- Update user bio text
+- `post/uploadPfp`- Upload user profile picture
 
 ## For Demo
 
