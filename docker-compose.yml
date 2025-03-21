@@ -10,8 +10,7 @@ services:
       - "5432:5432"
 
   web:
-    build: .
-#    image: emmanueladb/any_post:latest
+    image: emmanueladb/any_post:latest
     container_name: any_post_app
     depends_on:
       - db
@@ -24,7 +23,6 @@ services:
       - "8080:8080"
     volumes:
       - uploads:/usr/local/tomcat/uploads  # Volume for uploads
-      - ./server.xml:/usr/local/tomcat/conf/server.xml  # Bind mount for server.xml
 
 volumes:
   postgres_data:
