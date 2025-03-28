@@ -5,9 +5,9 @@
          version="4.0">
 
     <listener>
-        <listener-class>com.adb.any_post.config.LogDirectoryListener</listener-class>
+        <listener-class>com.adb.yarn.config.LogDirectoryListener</listener-class>
     </listener>
     <listener>
-        <listener-class>com.adb.any_post.config.SetContextPathListener</listener-class>
+        <listener-class>com.adb.yarn.config.SetContextPathListener</listener-class>
     </listener>
 </web-app>

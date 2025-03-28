@@ -1,4 +1,4 @@
-<%@page import="com.adb.any_post.utils.StringUtils" %>
+<%@page import="com.adb.yarn.utils.StringUtils" %>
 <div class="post-container flex flex-col gap-5 items-center pt-2 pb-10 text-main_text w-full">
   <c:forEach var="post" items="${posts}">
     <C:set var="likedPost" value="${likedPostsMap[post.postId]}" />
