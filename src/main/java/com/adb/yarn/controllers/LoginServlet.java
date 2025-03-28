@@ -45,7 +45,6 @@ public class LoginServlet extends HttpServlet {
 //                add pfp url
                 if(sessionUser.isHasPfp()){
                     String pfpUrl = UserUtil.getUserPfpUrl(sessionUser.getUserId());
-                    System.out.println("servletContextPath: " + GetContextPath.getContextPath());
                     sessionUser.setPfpUrl(pfpUrl);
                 }
 
