@@ -9,5 +9,5 @@ import java.util.List;
 public interface IPostDao {
     List<PostDto> getAllPost() throws DAOException;
     int save(Post post) throws DAOException;
-    int deletePost(int postId, int ownerId) throws DAOException;
+    String deletePost(int postId, int ownerId) throws DAOException;
 }
