@@ -89,8 +89,8 @@ public class PostDao implements IPostDao{
         return updatedRow;
     }
 
-    public int deletePost(int postId, int ownerId) throws DAOException{
-        int deletedRow = 0;
+    public String deletePost(int postId, int ownerId) throws DAOException{
+        String filePath = null;
 
         try(Connection connection = CreateDbConnection.getConnection()){
             String sqlScriptPath = PostSqlScriptsPath.DELETE_POST.getPath();
@@ -104,9 +104,9 @@ public class PostDao implements IPostDao{
                ResultSet resultSet = preparedStatement.executeQuery();
 
                if(resultSet.next()){
-                   deletedRow = 1;
-                   String postMediaFile = resultSet.getString("media");
-                   logger.info("File deleted from upload: {}",postMediaFile);
+                  filePath =  resultSet.getString("media");
+               } else {
+                   filePath = "";
                }
 
             } catch (SQLException e){
@@ -124,7 +124,7 @@ public class PostDao implements IPostDao{
             throw new DAOException("Failed to fetch delete post sql query", e);
         }
 
-        return deletedRow;
+        return filePath;
     }
 
     public boolean doesPostExist(int postId) {
