@@ -150,7 +150,7 @@
                             <artifactId>${project.artifactId}</artifactId>
                             <type>war</type>
                             <properties>
-                                <context>/</context>
+                                <context></context>
                             </properties>
                         </deployable>
                     </deployables>
