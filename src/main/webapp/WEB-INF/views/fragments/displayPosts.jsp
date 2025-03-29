@@ -18,8 +18,7 @@
           <div class="px-3 scroll-container" data-comment-modal="postTextComment">
             <div class="flex items-center justify-start gap-3 post-header pt-3 pb-1.5 relative overflow-hidden">
               <!-- post more icon -->
-              <c:if test="${not empty sessionScope.sessionUser and (post.posterData.id ==
-              sessionScope.sessionUser.userId)}">
+              <c:if test="${not empty sessionScope.sessionUser and (post.posterData.id == sessionScope.sessionUser.userId or isAdmin)}">
                 <div class="absolute top-2 right-0 more-menu-container">
                   <div class="center-icon w-[35px] h-[35px] bg-bg_color3 text-[20px] text-fade_text cursor-pointer  hover:border hover:border-borderClr post-see-more">
                     <i class="ri-more-2-line"></i>
