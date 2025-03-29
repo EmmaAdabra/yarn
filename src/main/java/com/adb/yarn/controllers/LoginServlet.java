@@ -3,9 +3,11 @@
  */
 package com.adb.yarn.controllers;
 
+import com.adb.yarn.config.AdminConfig;
 import com.adb.yarn.dao.userdao.UserDao;
 import com.adb.yarn.dto.SessionUserDTO;
 import com.adb.yarn.models.User;
+import com.adb.yarn.services.AdminService;
 import com.adb.yarn.services.UserService;
 import com.adb.yarn.utils.*;
 import org.slf4j.Logger;
@@ -39,8 +41,17 @@ public class LoginServlet extends HttpServlet {
 
 //            get session user
             if(serviceResponse.getStatus() == ResponseCode.SUCCESS.getCode()){
+                //creating session
+                HttpSession session = request.getSession();
                 Response<SessionUserDTO> sessionUserRes = userService.createSessionUser(serviceResponse.getData());
                 SessionUserDTO sessionUser = sessionUserRes.getData();
+
+//              check if user is admin and set isAdmin session attribute if true
+                boolean isAdmin = AdminService.isAdmin(sessionUser.getUserId());
+                if(isAdmin){
+                    session.setAttribute("isAdmin", isAdmin);
+                    logger.info("Admin with ID: {}. login ", sessionUser.getUserId());
+                }
 
 //                add pfp url
                 if(sessionUser.isHasPfp()){
@@ -48,11 +59,11 @@ public class LoginServlet extends HttpServlet {
                     sessionUser.setPfpUrl(pfpUrl);
                 }
 
-//                creating session
-                HttpSession session = request.getSession();
+//
                 session.setAttribute("sessionUser", sessionUser);
 
-                logger.info("login successfully, userID - {}", serviceResponse.getData().getId());
+                logger.info("user with ID - {}, login successfully",
+                        serviceResponse.getData().getId());
                 response.sendRedirect("/dashboard");
             } else if(serviceResponse.getStatus() == ResponseCode.VALIDATION_ERROR.getCode()){
                 logger.error("failed login, user email - {}", email);
