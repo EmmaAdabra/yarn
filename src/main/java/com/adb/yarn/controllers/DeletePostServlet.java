@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import java.io.File;
 import java.io.IOException;
 
 @WebServlet(name = "DeletePostServlet", value = "/delete_post")
@@ -26,7 +25,6 @@ public class DeletePostServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String postId = request.getParameter("postId");
-        String ownerId = request.getParameter("ownerId");
 
         HttpSession session = request.getSession(false);
 
@@ -34,10 +32,10 @@ public class DeletePostServlet extends HttpServlet {
             SessionUserDTO sessionUser = (SessionUserDTO) session.getAttribute("sessionUser");
 
             try {
-                ValidateInputs.validateQueryParam(postId, ownerId);
+                ValidateInputs.validateQueryParam(postId);
 
                 int post = Integer.parseInt(postId);
-                int owner = Integer.parseInt(ownerId);
+                int owner = sessionUser.getUserId();
                 String filePath;
 
                 if(owner == sessionUser.getUserId()){
@@ -49,7 +47,7 @@ public class DeletePostServlet extends HttpServlet {
                         }
 
                         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-                    } else {
+                    } else if(filePath != null && filePath.isEmpty())  {
                         response.sendError(HttpServletResponse.SC_NOT_FOUND, "post was not found");
                     }
 
