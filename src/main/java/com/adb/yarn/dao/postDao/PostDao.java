@@ -100,6 +100,7 @@ public class PostDao implements IPostDao{
 
                preparedStatement.setInt(1, postId);
                preparedStatement.setInt(2, ownerId);
+               preparedStatement.setInt(3,ownerId);
 
                ResultSet resultSet = preparedStatement.executeQuery();
 
